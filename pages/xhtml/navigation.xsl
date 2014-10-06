@@ -4,7 +4,7 @@
 <xsl:template match="navigation">
 	<ul class="clear">
 		<xsl:apply-templates select="page[not(types/type = 'hidden') and not(types/type = 'admin')]"/>
-		<!--<li><a href="{$root}/rss/">Feed</a></li>-->
+		<li><a href="{$root}/rss/">Feed</a></li>
 	</ul>
 </xsl:template>
 

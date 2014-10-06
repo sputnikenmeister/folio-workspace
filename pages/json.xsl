@@ -3,11 +3,7 @@
 
 <xsl:import href="json/helpers.xsl"/>
 
-<xsl:output method="xml"
-	omit-xml-declaration="yes"
-	encoding="UTF-8"
-	indent="yes" />
-	
+<xsl:output method="xml" omit-xml-declaration="yes" encoding="UTF-8" indent="yes" />
 <xsl:strip-space elements="*"/>
 
 <xsl:template match="/">

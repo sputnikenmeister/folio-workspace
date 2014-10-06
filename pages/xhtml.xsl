@@ -5,7 +5,7 @@
 <xsl:import href="../utilities/date-time-extended.xsl"/>
 <xsl:import href="xhtml/master.xsl"/>
 
-<xsl:template match="data" mode="nav">
+<xsl:template match="data" mode="navigation">
 	<xsl:apply-templates select="all-bundles"/>
 	<div id="bd-nav" class="template">
 		<script id="bd-nav_tmpl" type="text/template" class="template">
@@ -16,7 +16,7 @@
 	</div>
 	<div id="bd-detail">
 		<script id="bd-detail_tmpl" type="text/template" class="template">
-			<h2 class="bundle-name">{{name}}</h2>
+			<!--<h2 class="bundle-name">{{name}}</h2>-->
 			<div class="completed meta pubDate">{{completed}}</div>
 			<div class="description">{{description}}</div>
 		</script>
@@ -24,27 +24,23 @@
 </xsl:template>
 
 <xsl:template match="data">
-<!--	<div class="bd-content">
-		<div id="bd-images" class="pageable" style="width: 480px; height: 350px;">
-			<ul>
-				<li class="template">
-					<img src="" width="480" height="350" title="" alt="" />
-					<div class="caption">{{image.description}}</div>
-				</li>
-			</ul>
-			<div class="pageable-ctls template">
-				<a class="preceding-button button" href="javascript:void(0)"></a>
-				<a class="following-button button" href="javascript:void(0)"></a>
+	<div class="bd-content">
+		<script id="bd-images_tmpl" type="text/template" class="template">
+			<div id="bd-images" class="pageable" style="width: 480px; height: 350px;">
+				<ul>
+					<li class="template">
+						<img src="" width="480" height="350" title="" alt="" />
+						<div class="caption">{{image.description}}</div>
+					</li>
+				</ul>
+				<div class="pageable-ctls template">
+					<a class="preceding-button button" href="javascript:void(0)"></a>
+					<a class="following-button button" href="javascript:void(0)"></a>
+				</div>
 			</div>
-		</div>
-	</div>-->
+		</script>
+	</div>
 </xsl:template>
-
-<!--<xsl:template match="all-types">
-	<ul id="keywords" class="mapped collapsed">
-		<xsl:apply-templates select="entry"/>
-	</ul>
-</xsl:template>-->
 
 <xsl:template match="all-bundles">
 	<ul id="bundles" class="mapped">

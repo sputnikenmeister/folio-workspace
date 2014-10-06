@@ -1,15 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
 
-<xsl:import href="../json/helpers-old.xsl"/>
 <xsl:import href="../json/helpers.xsl"/>
 
 <xsl:output method="xml"
 	doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
 	doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"
-	omit-xml-declaration="yes"
-	encoding="UTF-8"
-	indent="yes" />
+	omit-xml-declaration="yes" encoding="UTF-8" indent="yes" />
 
 <!--<!DOCTYPE html [
   <!ENTITY % htmlDTD
@@ -75,8 +72,8 @@
 			<div id="nav-sidebar">
 				<xsl:apply-templates select="data/all-types"/>
 			</div>
-			<div id="nav-main">
-				<xsl:apply-templates select="data" mode="nav"/>
+			<div id="navigation">
+				<xsl:apply-templates select="data" mode="navigation"/>
 			</div>
 			<div id="main">
 				<xsl:apply-templates select="data"/>
@@ -92,26 +89,21 @@
 				</xsl:if>
 			</div>
 		</div>
-	<xsl:element name="script">
-		window.maps = {<xsl:apply-templates select="data" mode="json-old"/>};
+	<script>
 		window.bootstrap = {<xsl:apply-templates select="data" mode="output-json"/>};
-	</xsl:element>
-<!--	<script>
-		head.js("<xsl:value-of select="concat($workspace, '/assets/lib/jquery-1.7.2.min.js')" />"
-				,"<xsl:value-of select="concat($workspace, '/assets/lib/jquery.cycle.all.2.88.js')" />"
-				,"<xsl:value-of select="concat($workspace, '/assets/js/folio.js')" />"
-		);
-	</script>-->
-<!--
-				,"<xsl:value-of select="concat($workspace, '/assets/lib/font-friend/font-friend-3.2.js')" />"
-				,"http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.js"
-				,"http://www.google-analytics.com/ga.js"
--->
+	</script>
+<!--	head.js("<xsl:value-of select="concat($workspace, '/assets/lib/jquery-1.7.2.min.js')" />"-->
+<!--		,"<xsl:value-of select="concat($workspace, '/assets/lib/jquery.cycle.all.2.88.js')" />"-->
+<!--		,"<xsl:value-of select="concat($workspace, '/assets/js/folio.js')" />"-->
+<!--		,"<xsl:value-of select="concat($workspace, '/assets/lib/font-friend/font-friend-3.2.js')" />"-->
+<!--		,"http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.js"-->
+<!--		,"http://www.google-analytics.com/ga.js"-->
+<!--	);-->
 	</body>
 </html>
 </xsl:template>
 
-<xsl:template match="data" mode="nav">
+<xsl:template match="data" mode="navigation">
 </xsl:template>
 
 <xsl:template match="data">

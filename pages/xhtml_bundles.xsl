@@ -22,7 +22,7 @@
 	</div>
 </xsl:template>
 
-<xsl:template match="bundles-by-handle/entry" mode="nav">
+<xsl:template match="bundles-by-handle/entry" mode="navigation">
 	<div id="bd-nav">
 		<!-- Preceding	-->
 		<xsl:variable name="preceding-bundle" select="//all-bundles/entry[@id = current()/@id]/preceding-sibling::entry[1]"/>

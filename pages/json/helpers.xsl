@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0"
-		xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-		xmlns:exsl="http://exslt.org/common"
-		extension-element-prefixes="exsl">
-		
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<!--xmlns:exsl="http://exslt.org/common" extension-element-prefixes="exsl"-->
+
 <xsl:import href="../../utilities/typography.xsl"/>
 <xsl:import href="../../utilities/output-json.xsl"/>
 <xsl:import href="../../utilities/xml-to-json.xsl"/>
+
 <xsl:strip-space elements="*"/>
 
 <xsl:template match="item | entry" mode="output-json">
@@ -45,11 +44,13 @@
 	<xsl:call-template name="escape-bs-string"><!-- from xml-to-json.xsl -->
 		<xsl:with-param name="s" select="."/>
 	</xsl:call-template>
-<!--	<xsl:call-template name="string-replace">
+<!--	
+	<xsl:call-template name="string-replace">
 		<xsl:with-param name="haystack" select="." />
 		<xsl:with-param name="search" select="'&#34;'" />
 		<xsl:with-param name="replace" select="'&#92;&#34;'" />
-	</xsl:call-template>-->
+	</xsl:call-template>
+-->
 </xsl:template>
 
 <xsl:template match="completed/text()" mode="output-json">
@@ -101,14 +102,16 @@
 	</xsl:if>
 </xsl:template>
 
-<!--<xsl:template match="type" mode="output-json">
+<!--
+<xsl:template match="type" mode="output-json">
 	<xsl:text>"type":"</xsl:text>
 	<xsl:value-of select="item/name/@handle" /> 
 	<xsl:text>"</xsl:text>
 	<xsl:if test="position() != last()">
 		<xsl:text>,</xsl:text>
 	</xsl:if>
-</xsl:template>-->
+</xsl:template>
+-->
 
 <xsl:template match="all-types/entry" mode="output-json">
 	<xsl:call-template name="output-json">

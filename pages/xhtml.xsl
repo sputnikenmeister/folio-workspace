@@ -7,37 +7,37 @@
 
 <xsl:template match="data" mode="navigation">
 	<xsl:apply-templates select="all-bundles"/>
-	<div id="bd-nav" class="template">
+	<div id="bd-nav">
 		<script id="bd-nav_tmpl" type="text/template" class="template">
-			<a id="preceding-bundle" class="button" href="javascript:void(0)">{{preceding}}</a>
-			<a id="following-bundle" class="button" href="javascript:void(0)">{{following}}</a>
-			<a id="close-bundle" class="button" href="javascript:void(0)">Close</a>
-		</script>
-	</div>
-	<div id="bd-detail">
-		<script id="bd-detail_tmpl" type="text/template" class="template">
-			<!--<h2 class="bundle-name">{{name}}</h2>-->
-			<div class="completed meta pubDate">{{completed}}</div>
-			<div class="description">{{description}}</div>
+		<a id="preceding-bundle" class="preceding-button button" href="#preceding-bundle">{{preceding}}</a>
+		<a id="following-bundle" class="following-button button" href="#following-bundle">{{following}}</a>
+		<a id="close-bundle" class="close-button button" href="#close-bundle">Close</a>
 		</script>
 	</div>
 </xsl:template>
 
 <xsl:template match="data">
-	<div class="bd-content">
+	<div id="bd-detail">
+		<script id="bd-detail_tmpl" type="text/template" class="template">
+		<!--<h2 class="bundle-name">{{name}}</h2>-->
+		<div class="completed meta pubDate">{{completed}}</div>
+		<div class="description">{{description}}</div>
+		</script>
+	</div>
+	<div id="bd-images" class="pageable">
 		<script id="bd-images_tmpl" type="text/template" class="template">
-			<div id="bd-images" class="pageable" style="width: 480px; height: 350px;">
-				<ul>
-					<li class="template">
-						<img src="" width="480" height="350" title="" alt="" />
-						<div class="caption">{{image.description}}</div>
-					</li>
-				</ul>
-				<div class="pageable-ctls template">
-					<a class="preceding-button button" href="javascript:void(0)"></a>
-					<a class="following-button button" href="javascript:void(0)"></a>
-				</div>
-			</div>
+		<div id="bd-images-nav" class="pageable-ctls">
+			<a id="preceding-image" class="preceding-button button" href="#preceding-image"></a>
+			<a id="following-image" class="following-button button" href="#following-image"></a>
+		</div>
+		<ul style="width: 480px; height: 350px; overflow: hidden;">
+		</ul>
+		</script>
+		<script id="bd-images-item_tmpl" type="text/template" class="template">
+		<li>
+			<img src="{$root}/image/bundle{{{{url}}}}" width="{{{{width}}}}" height="{{{{height}}}}" title="" alt="" />
+			<div class="caption">{{description}}</div>
+		</li>
 		</script>
 	</div>
 </xsl:template>
@@ -50,7 +50,7 @@
 
 <xsl:template match="all-bundles/entry">
 	<li id="{name/@handle}" class="item">
-		<span class="completed meta pubDate">
+		<span class="completed meta pubDate" data-datetime="{completed/text()}">
 			<xsl:call-template name="format-date">
 				<xsl:with-param name="date" select="completed"/>
 				<xsl:with-param name="format" select="'%y+;'"/>

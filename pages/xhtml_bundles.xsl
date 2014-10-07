@@ -7,8 +7,8 @@
 <xsl:import href="../utilities/typography.xsl"/>
 <xsl:import href="xhtml/master.xsl"/>
 
-<xsl:template match="data" mode="nav">
-	<xsl:apply-templates select="bundles-by-handle/entry[1]" mode="nav"/>
+<xsl:template match="data" mode="navigation">
+	<xsl:apply-templates select="bundles-by-handle/entry[1]" mode="navigation"/>
 	<xsl:apply-templates select="bundles-by-handle/error"/>
 </xsl:template>
 
@@ -23,74 +23,62 @@
 </xsl:template>
 
 <xsl:template match="bundles-by-handle/entry" mode="navigation">
+	<xsl:variable name="preceding-bundle"
+			select="//all-bundles/entry[@id = current()/@id]/preceding-sibling::entry[1]"/>
+	<xsl:variable name="following-bundle"
+			select="//all-bundles/entry[@id = current()/@id]/following-sibling::entry[1]"/>	
+	<h2 class="bundle-name"><xsl:value-of select="name/text()" /></h2>		
 	<div id="bd-nav">
 		<!-- Preceding	-->
-		<xsl:variable name="preceding-bundle" select="//all-bundles/entry[@id = current()/@id]/preceding-sibling::entry[1]"/>
 		<xsl:if test="$preceding-bundle">
 		<a id="preceding-bundle" href="{$parent-path}/{$current-page}/{$preceding-bundle/name/@handle}/">
-			<!--<span class="symbol">&#x2190;</span>-->
 			<xsl:copy-of select="$preceding-bundle/name/text()"/>
 		</a>
 		</xsl:if>
 		<!-- Following	-->
-		<xsl:variable name="following-bundle" select="//all-bundles/entry[@id = current()/@id]/following-sibling::entry[1]"/>
 		<xsl:if test="$following-bundle">
 		<a id="following-bundle" href="{$parent-path}/{$current-page}/{$following-bundle/name/@handle}/">
-			<!--<span class="symbol">&#x2192;</span>-->
 			<xsl:copy-of select="$following-bundle/name/text()"/>
 		</a>
 		</xsl:if>
 		<!-- Close	-->
 		<a id="close-bundle" href="{$parent-path}/">
-			<!--<span class="symbol">&#2715;</span>-->
 			<xsl:text>Close</xsl:text>
 		</a>
 	</div>
+</xsl:template>
+
+<xsl:template match="bundles-by-handle/entry">
 	<div id="bd-detail">
-		<h2 class="bundle-name">
-			<xsl:value-of select="name/text()" />
-		</h2>
-			
-		<div class="completed meta pubDate">
+		<div class="completed meta pubDate" data-datetime="{completed/text()}">
 			<xsl:call-template name="format-date">
 				<xsl:with-param name="date" select="completed"/>
 				<xsl:with-param name="format" select="'%y+;'"/>
 			</xsl:call-template>
 		</div>
-		<!--
-		<xsl:if test="$is-logged-in = 'true'">
-			<div class="meta">
-				<a class="edit" href="{$root}/symphony/publish/{../section/@handle}/edit/{@id}/">Edit</a>
-			</div>
-		</xsl:if>
-		-->
 		<div class="description">
 			<xsl:apply-templates select="description/*" mode="html"/>
 		</div>
 	</div>
-</xsl:template>
-
-<xsl:template match="bundles-by-handle/entry">
-	<div class="bd-content">
-		<xsl:apply-templates select="images" />
-	</div>
+	<xsl:apply-templates select="images" />
 </xsl:template>
 
 <xsl:variable name="img-width" select="480" />
 <!--<xsl:variable name="img-height" select="320" />-->
 
-<xsl:template match="images">
-	<xsl:variable name="image-items" select="item[published = 'Yes']"/>
+<xsl:template match="images[item/published/text() = 'Yes']">
+	<xsl:variable name="image-items" select="item"/>
 	<xsl:variable name="max-height" select="round(($img-width div math:max(item/file/meta/@width)) * math:max(item/file/meta/@height))" />
-	
 	<div id="bd-images" class="pageable" style="width: {$img-width}px; height: {$max-height}px;">
 		<ul>
 			<xsl:apply-templates select="$image-items"/>
 		</ul>
 		<xsl:if test="count($image-items) &gt; 1">
 			<div class="pageable-ctls">
-				<a class="preceding-button button" href="javascript:void(0)"><!--&#x25C0;--></a>
-				<a class="following-button button" href="javascript:void(0)"><!--&#x25B6;--></a>
+				<a id="preceding-image" class="preceding-button button" href="#preceding-image"><!--&#x25C0;--></a>
+				<a id="following-image" class="following-button button" href="#following-image"><!--&#x25B6;--></a>
+				<!--<a class="preceding-button button" href="javascript:void(0)"/>--><!--&#x25C0;-->
+				<!--<a class="following-button button" href="javascript:void(0)"/>--><!--&#x25B6;-->
 			</div>
 		</xsl:if>
 	</div>
@@ -103,7 +91,8 @@
 				<xsl:copy-of select="'display: none'"/>
 			</xsl:attribute>
 		</xsl:if>
-		<img src="{$root}/image/1/{$img-width}/0{file/@path}/{file/filename}" width="{$img-width}" height="{floor(($img-width div file/meta/@width) * file/meta/@height)}" title="{description}" alt="{description}"/>
+		<img src="{$root}/image/bundle{file/@path}/{file/filename}" width="{$img-width}" height="{floor(($img-width div file/meta/@width) * file/meta/@height)}" title="{description}" alt="{description}"/>
+		<!--<img src="{$root}/image/1/{$img-width}/0{file/@path}/{file/filename}" width="{$img-width}" height="{floor(($img-width div file/meta/@width) * file/meta/@height)}" title="{description}" alt="{description}"/>-->
 		<div class="caption">
 			<xsl:apply-templates select="description/*" mode="html"/>
 		</div>

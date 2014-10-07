@@ -85,7 +85,7 @@
 					<dd><a href="{$root}/symphony/">Backend</a></dd>
 					<dd><a href="?debug=xml">Debug</a></dd>
 				</dl>
-				<p>Copyright 2010-2013 Pablo Gª Canillas. All rights reserved.</p>
+				<p>Copyright 1995-2014 Pablo Canillas. All rights reserved.</p>
 				</xsl:if>
 			</div>
 		</div>

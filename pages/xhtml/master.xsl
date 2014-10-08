@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
 
-<xsl:import href="../json/helpers.xsl"/>
-
 <xsl:output method="xml"
 	doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
 	doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"
@@ -24,12 +22,6 @@
 <xsl:variable name="is-logged-in" select="'true'"/>
 <!--<xsl:variable name="is-logged-in" select="/data/events/login-info/@logged-in"/>-->
 
-<xsl:template name="page-title">
-	<xsl:value-of select="$website-name"/>
-	<xsl:text> &#8212; </xsl:text>
-	<xsl:value-of select="$page-title"/>
-</xsl:template>
-
 <xsl:template match="/">
 <html lang="en" class="no-js">
 	<head profile="http://gmpg.org/xfn/11">
@@ -40,13 +32,7 @@
 		<link rel="alternate" type="application/rss+xml" href="{$root}/rss/" />
 		<link rel="stylesheet" type="text/css" href="{$workspace}/assets/css/common.css" />
 		<link rel="stylesheet" type="text/css" href="{$workspace}/assets/css/folio.css" />
-<!--		<script src="{$workspace}/assets/lib/head-0.9.min.js"></script>-->
-<!--		<script src="{$workspace}/assets/lib/jquery.cycle.all.2.88.js"></script>-->
-<!--		<script src="{$workspace}/assets/js/folio.js"></script>-->
-		<script src="{$workspace}/assets/lib/jquery-1.11.1.js"></script>
-		<script src="{$workspace}/assets/lib/underscore.js"></script>
-		<script src="{$workspace}/assets/lib/backbone.js"></script>
-		<script src="{$workspace}/assets/js/backbone.folio.js"></script>
+		<xsl:apply-templates select="data" mode="html-head"/>
 	</head>
 <!--[if lt IE 7 ]>
 	<body class="ie ie6 {$current-page}">
@@ -62,23 +48,15 @@
 	<body class="{$current-page}-page">
 <!--<![endif]-->
 		<div id="container">
-			<div id="header">
+			<div id="header" class="header">
 				<h1 id="site-name">
-					<a href="{$root}"><xsl:value-of select="$website-name"/></a>
+					<a href="#/" data-href="{$root}/#/"><xsl:value-of select="$website-name"/></a>
 				</h1>
-				<!-- <h2><xsl:value-of select="$page-title"/></h2> -->
-				<!--<xsl:apply-templates select="data/navigation"/>-->
 			</div>
-			<div id="nav-sidebar">
-				<xsl:apply-templates select="data/all-types"/>
-			</div>
-			<div id="navigation">
-				<xsl:apply-templates select="data" mode="navigation"/>
-			</div>
-			<div id="main">
-				<xsl:apply-templates select="data"/>
-			</div>
-			<div id="footer">
+			
+			<xsl:apply-templates select="data"/>
+			
+			<div id="footer" class="footer">
 				<xsl:if test="$is-logged-in = 'true'">
 				<dl class="admin">
 					<dt>Tools</dt>
@@ -89,51 +67,37 @@
 				</xsl:if>
 			</div>
 		</div>
-	<script>
-		window.bootstrap = {<xsl:apply-templates select="data" mode="output-json"/>};
-	</script>
-<!--	head.js("<xsl:value-of select="concat($workspace, '/assets/lib/jquery-1.7.2.min.js')" />"-->
-<!--		,"<xsl:value-of select="concat($workspace, '/assets/lib/jquery.cycle.all.2.88.js')" />"-->
-<!--		,"<xsl:value-of select="concat($workspace, '/assets/js/folio.js')" />"-->
-<!--		,"<xsl:value-of select="concat($workspace, '/assets/lib/font-friend/font-friend-3.2.js')" />"-->
-<!--		,"http://ajax.googleapis.com/ajax/libs/jquery/1.6/jquery.js"-->
-<!--		,"http://www.google-analytics.com/ga.js"-->
-<!--	);-->
 	</body>
 </html>
 </xsl:template>
 
-<xsl:template match="data" mode="navigation">
+<xsl:template name="page-title">
+	<xsl:value-of select="$website-name"/>
+	<xsl:text> &#8212; </xsl:text>
+	<xsl:value-of select="$page-title"/>
 </xsl:template>
 
-<xsl:template match="data">
-</xsl:template>
+<xsl:template match="data" mode="html-head"/>
+
+<xsl:template match="data"/>
 
 <xsl:template match="all-types">
-	<ul id="keywords" class="mapped">
+	<dl id="keywords" class="nav mapped">
 		<xsl:apply-templates select="entry"/>
-	</ul>
+	</dl>
 </xsl:template>
 
 <xsl:template match="all-types/entry">
-	<li id="{name/@handle}" class="group">
-		<h3><xsl:value-of select="name/text()"/></h3>
-		<ul>
-			<xsl:apply-templates select="//all-keywords/entry[type/item/@id = current()/@id]"/>
-		</ul>
-	</li>
+	<dt id="{name/@handle}" class="group sc"><xsl:value-of select="name/text()"/></dt>
+	<xsl:apply-templates select="//all-keywords/entry[type/item/@id = current()/@id]"/>
 </xsl:template>
 
 <xsl:template match="all-keywords/entry">
-	<li id="{name/@handle}" class="item">
-		<a href="#{name/@handle}" data-href="{$root}/xhtml/keywords/{name/@handle}">
+	<dd id="{name/@handle}" class="item">
+		<a href="#/keywords/{name/@handle}/" data-href="{$root}/xhtml/keywords/{name/@handle}/">
 			<xsl:value-of select="name/text()"/>
 		</a>
-	</li>
-</xsl:template>
-
-<xsl:template match="data" mode="output-json">
-	<xsl:apply-templates select="all-bundles | all-keywords | all-types" mode="output-json"/>
+	</dd>
 </xsl:template>
 
 </xsl:stylesheet>

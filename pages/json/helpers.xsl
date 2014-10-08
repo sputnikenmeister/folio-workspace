@@ -17,7 +17,7 @@
 	</xsl:if>
 </xsl:template>
 
-<xsl:template match="*[count(item|entry) &gt; 0]" mode="output-json">
+<xsl:template match="*[count(item|entry|empty) &gt; 0]" mode="output-json">
 	<xsl:text>"</xsl:text>
 	<xsl:value-of select="name(.)" /> 
 	<xsl:text>":[</xsl:text>
@@ -44,6 +44,7 @@
 	<xsl:call-template name="escape-bs-string"><!-- from xml-to-json.xsl -->
 		<xsl:with-param name="s" select="."/>
 	</xsl:call-template>
+</xsl:template>
 <!--	
 	<xsl:call-template name="string-replace">
 		<xsl:with-param name="haystack" select="." />
@@ -51,7 +52,6 @@
 		<xsl:with-param name="replace" select="'&#92;&#34;'" />
 	</xsl:call-template>
 -->
-</xsl:template>
 
 <xsl:template match="completed/text()" mode="output-json">
 	<xsl:value-of select="substring(current(),1,4)"/>
@@ -81,6 +81,7 @@
 	<xsl:call-template name="output-json">
 		<xsl:with-param name="xml">
 			<id><xsl:value-of select="name/@handle"/></id>
+			<handle><xsl:value-of select="name/@handle"/></handle>
 			<xsl:copy-of select="name | completed | keywords"/>
 		</xsl:with-param>
 	</xsl:call-template>
@@ -93,6 +94,7 @@
 	<xsl:call-template name="output-json">
 		<xsl:with-param name="xml">
 			<id><xsl:value-of select="name/@handle"/></id>
+			<handle><xsl:value-of select="name/@handle"/></handle>
 			<type><xsl:value-of select="type/item/name/@handle"/></type>
 			<xsl:copy-of select="name"/>
 		</xsl:with-param>
@@ -117,6 +119,7 @@
 	<xsl:call-template name="output-json">
 		<xsl:with-param name="xml">
 			<id><xsl:value-of select="name/@handle"/></id>
+			<handle><xsl:value-of select="name/@handle"/></handle>
 			<xsl:copy-of select="name"/>
 		</xsl:with-param>
 	</xsl:call-template>

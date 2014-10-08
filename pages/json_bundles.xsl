@@ -22,7 +22,18 @@
 	<xsl:call-template name="output-json">
 		<xsl:with-param name="xml">
 			<id><xsl:value-of select="name/@handle"/></id>
-			<xsl:copy-of select="name | images | completed | description | attributes"/>
+			<handle><xsl:value-of select="name/@handle"/></handle>
+			<xsl:copy-of select="name | completed | description | attributes"/>
+			<images>
+			<xsl:choose>
+				<xsl:when test="images/item[published/text() = 'Yes']">
+					<xsl:copy-of select="images/item[published/text() = 'Yes']"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<empty/>
+				</xsl:otherwise>
+			</xsl:choose>
+			</images>
 		</xsl:with-param>
 	</xsl:call-template>
 </xsl:template>
@@ -30,13 +41,12 @@
 <xsl:template match="images/item" mode="output-json">
 	<xsl:call-template name="output-json">
 		<xsl:with-param name="xml">
-<!--		<xsl:element name="item">-->
+			<id><xsl:value-of select="'img-'"/><xsl:value-of select="@id"/></id>
 			<url><xsl:value-of select="file/@path"/>/<xsl:copy-of select="file/filename/text()"/></url>
 			<width><xsl:value-of select="file/meta/@width"/></width>
 			<height><xsl:value-of select="file/meta/@height"/></height>
 			<xsl:copy-of select="description"/>
 			<xsl:copy-of select="attributes"/>
-<!--		</xsl:element>-->
 		</xsl:with-param>
 	</xsl:call-template>
 	<xsl:if test="position() != last()">

@@ -14,6 +14,7 @@ class datasourcebundles_by_handle extends SectionDatasource
     public $dsParamREDIRECTONREQUIRED = 'no';
     public $dsParamREQUIREDPARAM = '$bundles';
     public $dsParamPARAMOUTPUT = array(
+        'system:id',
         'keywords'
         );
     public $dsParamSORT = 'completed';
@@ -28,8 +29,8 @@ class datasourcebundles_by_handle extends SectionDatasource
         'name',
         'completed',
         'description: formatted',
-        'attributes',
-        'images'
+        'images',
+        'attributes'
     );
     
     public $dsParamINCLUDEDASSOCIATIONS = array(
@@ -60,7 +61,7 @@ class datasourcebundles_by_handle extends SectionDatasource
                 'website' => 'http://fulanito.localhost',
                 'email' => 'noreply@localhost.tld'),
             'version' => 'Symphony 2.5.0',
-            'release-date' => '2014-10-02T12:32:54+00:00'
+            'release-date' => '2014-10-07T20:34:35+00:00'
         );
     }
 

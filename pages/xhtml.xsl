@@ -30,33 +30,33 @@
 	<xsl:apply-templates select="all-bundles"/>
 	<!-- bundles pager -->
 	<div id="bd-nav" class="nav rsquare-nav"></div>
-	<script id="bd-nav_tmpl" type="text/template" class="template">
-		<a id="preceding-bundle" class="preceding-button button" href="#/bundles/{{{{preceding_href}}}}/">{{preceding_name}}</a>
-		<a id="following-bundle" class="following-button button" href="#/bundles/{{{{following_href}}}}/">{{following_name}}</a>
-		<a id="close-bundle" class="close-button button" href="#/">Close</a>
-	</script>
 	<!-- details -->
 	<div id="bd-detail"></div>
-	<script id="bd-detail_tmpl" type="text/template" class="template">
-		<h2 class="name">{{name}}</h2>
-		<div class="completed meta pubDate">{{completed}}</div>
-		<div class="description">{{description}}</div>
-	</script>
 </div>
 <div id="main">
-	<script id="bd-images-nav_tmpl" type="text/template" class="template">
-		<div id="bd-images-nav" class="pageable-ctls" style="display:none;">
-			<a id="preceding-image" class="preceding-button button" href="#/preceding-image"></a>
-			<a id="following-image" class="following-button button" href="#/following-image"></a>
-		</div>
-	</script>
-	<script id="bd-images-item_tmpl" type="text/template" class="template">
-		<li>
-			<img src="{$root}/image{{{{url}}}}" width="{{{{width}}}}" height="{{{{height}}}}" title="" alt="" />
-			<div class="caption sc">{{description}}</div>
-		</li>
-	</script>
 </div>
+<script id="bd-nav_tmpl" type="text/template" class="template">
+	<a id="preceding-bundle" class="preceding-button button" href="#/bundles/{{{{preceding_href}}}}/">{{preceding_name}}</a>
+	<a id="following-bundle" class="following-button button" href="#/bundles/{{{{following_href}}}}/">{{following_name}}</a>
+	<a id="close-bundle" class="close-button button" href="#/">Close</a>
+</script>
+<script id="bd-detail_tmpl" type="text/template" class="template">
+	<h2 class="name">{{name}}</h2>
+	<div class="completed meta pubDate">{{completed}}</div>
+	<div class="description">{{description}}</div>
+</script>
+<script id="bd-images-nav_tmpl" type="text/template" class="template">
+	<div id="bd-images-nav" class="pageable-ctls" style="display:none;">
+		<a id="preceding-image" class="preceding-button button" href="#/preceding-image"></a>
+		<a id="following-image" class="following-button button" href="#/following-image"></a>
+	</div>
+</script>
+<script id="bd-images-item_tmpl" type="text/template" class="template">
+	<li>
+		<img src="{$root}/image{{{{url}}}}" width="{{{{width}}}}" height="{{{{height}}}}" title="" alt="" />
+		<div class="caption sc">{{description}}</div>
+	</li>
+</script>
 </xsl:template>
 
 <xsl:template match="all-bundles">

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-<!--<xsl:import href="../utilities/implode.xsl" />-->
 <xsl:import href="../utilities/date-time-extended.xsl"/>
 <xsl:import href="json/helpers.xsl"/>
 <xsl:import href="xhtml/master.xsl"/>
@@ -29,34 +28,62 @@
 	<!-- all bundles-->
 	<xsl:apply-templates select="all-bundles"/>
 	<!-- bundles pager -->
-	<div id="bd-nav" class="nav rsquare-nav"></div>
+	<div id="bd-nav" class="nav text-nav"></div>
 	<!-- details -->
 	<div id="bd-detail"></div>
 </div>
 <div id="main">
 </div>
-<script id="bd-nav_tmpl" type="text/template" class="template">
+
+<xsl:call-template name="embedded-template">
+	<xsl:with-param name="id" select="'bd-nav_tmpl'"/>
+	<xsl:with-param name="xml">
 	<a id="preceding-bundle" class="preceding-button button" href="#/bundles/{{{{preceding_href}}}}/">{{preceding_name}}</a>
 	<a id="following-bundle" class="following-button button" href="#/bundles/{{{{following_href}}}}/">{{following_name}}</a>
 	<a id="close-bundle" class="close-button button" href="#/">Close</a>
-</script>
-<script id="bd-detail_tmpl" type="text/template" class="template">
+	</xsl:with-param>
+</xsl:call-template>
+
+<xsl:call-template name="embedded-template">
+	<xsl:with-param name="id" select="'bd-detail_tmpl'"/>
+	<xsl:with-param name="xml">
 	<h2 class="name">{{name}}</h2>
 	<div class="completed meta pubDate">{{completed}}</div>
 	<div class="description">{{description}}</div>
-</script>
-<script id="bd-images-nav_tmpl" type="text/template" class="template">
+	</xsl:with-param>
+</xsl:call-template>
+
+<xsl:call-template name="embedded-template">
+	<xsl:with-param name="id" select="'bd-images-nav_tmpl'"/>
+	<xsl:with-param name="xml">
 	<div id="bd-images-nav" class="pageable-ctls" style="display:none;">
 		<a id="preceding-image" class="preceding-button button" href="#/preceding-image"></a>
 		<a id="following-image" class="following-button button" href="#/following-image"></a>
 	</div>
-</script>
-<script id="bd-images-item_tmpl" type="text/template" class="template">
+	</xsl:with-param>
+</xsl:call-template>
+
+<xsl:call-template name="embedded-template">
+	<xsl:with-param name="id" select="'bd-images-item_tmpl'"/>
+	<xsl:with-param name="xml">
 	<li>
-		<img src="{$root}/image{{{{url}}}}" width="{{{{width}}}}" height="{{{{height}}}}" title="" alt="" />
+		<img src="{$root}/image{{{{url}}}}" width="{{width}}" height="{{{{height}}}}" title="" alt="" />
 		<div class="caption sc">{{description}}</div>
 	</li>
-</script>
+	</xsl:with-param>
+</xsl:call-template>
+
+<!--
+<xsl:call-template name="embedded-template">
+	<xsl:with-param name="id" select="'test_tmpl'"/>
+	<xsl:with-param name="xml">
+		<img src="{$root}/image{{{{url}}}}" width="{{{{width}}}}" height="{{{{height}}}}" title="" alt="" />
+		<img src="{$root}/image{{{{url}}}}" width="{{{{width}}}}" height="{{{{height}}}}" title="" alt="" />
+		<img src="{$root}/image{{{{url}}}}" width="{{{{width}}}}" height="{{{{height}}}}" title="" alt="" />
+	</xsl:with-param>
+</xsl:call-template>
+-->
+
 </xsl:template>
 
 <xsl:template match="all-bundles">
@@ -66,7 +93,7 @@
 </xsl:template>
 
 <xsl:template match="all-bundles/entry">
-	<li id="{name/@handle}" class="item">
+	<li id="{name/@handle}" class="item heading">
 		<span class="completed meta pubDate" data-datetime="{completed/text()}">
 			<xsl:call-template name="format-date">
 				<xsl:with-param name="date" select="completed"/>

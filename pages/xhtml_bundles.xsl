@@ -28,7 +28,7 @@
 	<div id="bundles">
 		<h2 class="bundle-name"><xsl:value-of select="$current-bundle/name/text()" /></h2>
 	</div>
-	<div id="bd-nav">
+	<div id="bd-nav" class="text-nav">
 		<xsl:if test="$preceding-bundle">
 		<a id="preceding-bundle" class="preceding-button button" href="{$parent-path}/{$current-page}/{$preceding-bundle/name/@handle}/">
 			<xsl:copy-of select="$preceding-bundle/name/text()"/>
@@ -67,7 +67,8 @@
 	</div>
 </xsl:template>
 
-<xsl:variable name="img-width" select="480" />
+<xsl:variable name="img-width" select="700" />
+<!--<xsl:variable name="img-width" select="480" />-->
 <!--<xsl:variable name="img-height" select="320" />-->
 
 <xsl:template match="images[item/published/text() = 'Yes']">
@@ -93,8 +94,9 @@
 				<xsl:copy-of select="'display: none'"/>
 			</xsl:attribute>
 		</xsl:if>
-		<img width="{$img-width}" height="{floor(($img-width div file/meta/@width) * file/meta/@height)}" title="{description}" alt="{description}" src="{$root}/image/bundle{file/@path}/{file/filename}"/>
-		<!-- Without JIT recipe: src="{$root}/image/1/{$img-width}/0{file/@path}/{file/filename}" -->
+		<img width="{$img-width}" height="{floor(($img-width div file/meta/@width) * file/meta/@height)}" title="{description}" alt="{description}" src="{$root}/image/1/{$img-width}/0{file/@path}/{file/filename}"/>
+		<!-- Without JIT recipe:	src="{$root}/image/1/{$img-width}/0{file/@path}/{file/filename}" -->
+		<!-- With JIT recipe:		src="{$root}/image/bundle{file/@path}/{file/filename}"	-->
 		<div class="caption">
 			<xsl:apply-templates select="description/*" mode="html"/>
 		</div>

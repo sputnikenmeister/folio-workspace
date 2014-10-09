@@ -1,10 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"
+	xmlns:exsl="http://exslt.org/common"
+	extension-element-prefixes="exsl">
 
 <xsl:output method="xml"
 	doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
 	doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"
-	omit-xml-declaration="yes" encoding="UTF-8" indent="yes" />
+	omit-xml-declaration="yes"
+	cdata-section-elements="script"
+	encoding="UTF-8"
+	indent="yes" />
 
 <!--<!DOCTYPE html [
   <!ENTITY % htmlDTD
@@ -97,6 +102,18 @@
 			<xsl:value-of select="name/text()"/>
 		</a>
 	</dd>
+</xsl:template>
+
+<xsl:template name="embedded-template">
+	<xsl:param name="id"/>
+	<xsl:param name="xml"/>
+	<xsl:param name="type" select="'text/template'"/>
+	<xsl:param name="class" select="'template'"/>
+	<script id="{$id}" type="{$type}" class="{$class}">
+	<xsl:text disable-output-escaping="yes">&lt;![CDATA[</xsl:text>
+	<xsl:copy-of select="exsl:node-set($xml)"/>
+	<xsl:text disable-output-escaping="yes">]]&gt;</xsl:text>
+	</script>
 </xsl:template>
 
 </xsl:stylesheet>

@@ -8,8 +8,7 @@ module.exports = function (grunt) {
 			'assets/css/src/folio.xhtml.css',
 		],
 //		'assets/css/flash.min.css': [
-//			'assets/css/src/folio.css',
-//			'assets/css/src/folio.flash.css',
+//			'assets/css/flash.css'
 //		],
 	};
 

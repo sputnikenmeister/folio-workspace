@@ -30,8 +30,7 @@
 		<meta name="author" content="{$root}/humans.txt" />
 		<meta name="description" content=""/>
 		<link rel="alternate" type="application/rss+xml" href="{$root}/rss/" />
-		<link rel="stylesheet" type="text/css" href="{$workspace}/assets/css/common.css" />
-		<link rel="stylesheet" type="text/css" href="{$workspace}/assets/css/folio.css" />
+		<link rel="stylesheet" type="text/css" href="{$workspace}/assets/css/folio.min.css" />
 		<xsl:apply-templates select="data" mode="html-head"/>
 	</head>
 <!--[if lt IE 7 ]>

@@ -4,3 +4,7 @@ assets-jm/
 assets/flash/
 assets/fonts/
 assets/lib/
+node_modules/
+*.min.css
+*.min.js
+*.esproj

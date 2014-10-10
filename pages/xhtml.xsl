@@ -15,7 +15,8 @@
 	<script src="{$workspace}/assets/lib/jquery-1.11.1.js"></script>
 	<script src="{$workspace}/assets/lib/underscore.js"></script>
 	<script src="{$workspace}/assets/lib/backbone.js"></script>
-	<script src="{$workspace}/assets/js/backbone.folio.js"></script>
+	<!--<script src="{$workspace}/assets/js/backbone.folio.js"></script>-->
+	<script type="text/javascript" src="{$workspace}/assets/js/app-cjsc.js"></script>
 	<script>
 		window.bootstrap = {<xsl:apply-templates select="all-bundles | all-keywords | all-types" mode="output-json"/>};
 	</script>
@@ -34,16 +35,15 @@
 </div>
 <div id="main">
 </div>
-
+<!-- javascript embedded templates -->
 <xsl:call-template name="embedded-template">
-	<xsl:with-param name="id" select="'bd-nav_tmpl'"/>
+	<xsl:with-param name="id" select="'pager-nav_tmpl'"/>
 	<xsl:with-param name="xml">
-	<a id="preceding-bundle" class="preceding-button button" href="#/bundles/{{{{preceding_href}}}}/">{{preceding_name}}</a>
-	<a id="following-bundle" class="following-button button" href="#/bundles/{{{{following_href}}}}/">{{following_name}}</a>
-	<a id="close-bundle" class="close-button button" href="#/">Close</a>
+	<a class="preceding-button button" href="{{{{preceding_href}}}}">{{preceding_label}}</a>
+	<a class="following-button button" href="{{{{following_href}}}}">{{following_label}}</a>
+	<a class="close-button button" href="{{{{close_href}}}}">{{close_label}}</a>
 	</xsl:with-param>
 </xsl:call-template>
-
 <xsl:call-template name="embedded-template">
 	<xsl:with-param name="id" select="'bd-detail_tmpl'"/>
 	<xsl:with-param name="xml">
@@ -52,17 +52,6 @@
 	<div class="description">{{description}}</div>
 	</xsl:with-param>
 </xsl:call-template>
-
-<xsl:call-template name="embedded-template">
-	<xsl:with-param name="id" select="'bd-images-nav_tmpl'"/>
-	<xsl:with-param name="xml">
-	<div id="bd-images-nav" class="pageable-ctls" style="display:none;">
-		<a id="preceding-image" class="preceding-button button" href="#/preceding-image"></a>
-		<a id="following-image" class="following-button button" href="#/following-image"></a>
-	</div>
-	</xsl:with-param>
-</xsl:call-template>
-
 <xsl:call-template name="embedded-template">
 	<xsl:with-param name="id" select="'bd-images-item_tmpl'"/>
 	<xsl:with-param name="xml">
@@ -72,18 +61,15 @@
 	</li>
 	</xsl:with-param>
 </xsl:call-template>
-
-<!--
 <xsl:call-template name="embedded-template">
-	<xsl:with-param name="id" select="'test_tmpl'"/>
+	<xsl:with-param name="id" select="'bd-images-nav_tmpl'"/>
 	<xsl:with-param name="xml">
-		<img src="{$root}/image{{{{url}}}}" width="{{{{width}}}}" height="{{{{height}}}}" title="" alt="" />
-		<img src="{$root}/image{{{{url}}}}" width="{{{{width}}}}" height="{{{{height}}}}" title="" alt="" />
-		<img src="{$root}/image{{{{url}}}}" width="{{{{width}}}}" height="{{{{height}}}}" title="" alt="" />
+	<div id="bd-images-nav" class="pageable-ctls" style="display:none;">
+		<a id="preceding-image" class="preceding-button button" href="#/preceding-image"></a>
+		<a id="following-image" class="following-button button" href="#/following-image"></a>
+	</div>
 	</xsl:with-param>
 </xsl:call-template>
--->
-
 </xsl:template>
 
 <xsl:template match="all-bundles">

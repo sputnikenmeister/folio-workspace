@@ -18,7 +18,8 @@
 		</xsl:otherwise>
 	</xsl:choose>
 </xsl:variable>
-<xsl:variable name="installswf" select="concat($workspace,$approot,'/playerProductInstall.swf')">
+<xsl:variable name="appswf" select="concat($workspace,$approot,'/playerProductInstall.swf')">
+<xsl:variable name="installswf" select="concat($workspace,$approot,'/FolioApp.swf')">
 
 <xsl:template match="/" mode="swfobject-dyn">
 <html lang="en" xml:lang="en" class="flash">
@@ -42,7 +43,7 @@
 	<div id="flash">
 		<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
 			width="100%" height="100%" id="FolioApp" name="FolioApp" align="middle">
-			<param name="movie" value="{$approot}/FolioApp.swf" />
+			<param name="movie" value="{$appswf}" />
 			<param name="menu" value="false" />
 			<param name="scale" value="noscale" />
 			<param name="wMode" value="opaque" />
@@ -51,7 +52,7 @@
 			<param name="allowScriptAccess" value="sameDomain"/>
 			<param name="allowfullscreen" value="true" />
 			<!--[if !IE]>-->
-			<object type="application/x-shockwave-flash" data="{$approot}/FolioApp.swf"
+			<object type="application/x-shockwave-flash" data="{$appswf}"
 				width="100%" height="100%" align="middle">
 				<param name="menu" value="false" />
 				<param name="scale" value="noscale" />
@@ -96,7 +97,7 @@
 	</div>
 	<script type="text/javascript">
 	var xpinst 		= "<xsl:value-of select="$installswf"/>";
-	var swf_url 	= "<xsl:value-of select="$approot"/>/FolioApp.swf";
+	var swf_url 	= "<xsl:value-of select="$appswf"/>";
 	var swf_vars 	= {};
 	var swf_attrs 	= { id: "FolioApp", name: "FolioApp", align: "middle" };
 	var swf_params 	= { menu: "false", quality: "high", bgcolor: "#FFFFFF", allowfullscreen: "true", swliveconnect: "true" };

@@ -2,32 +2,22 @@
 module.exports = function (grunt) {
 	"use strict";
 	
+	// Sass
+	grunt.loadNpmTasks("grunt-contrib-compass");
 	// CSS
 	grunt.loadNpmTasks("grunt-contrib-concat");
 	grunt.loadNpmTasks("grunt-autoprefixer");
 	grunt.loadNpmTasks("grunt-csso");
-	
-	// Sass
-	grunt.loadNpmTasks("grunt-contrib-compass");
-	
 	// JavaScript
 	grunt.loadNpmTasks("grunt-contrib-jshint");
 	grunt.loadNpmTasks("grunt-contrib-jscs");
 	grunt.loadNpmTasks("grunt-contrib-cjsc");
-	
 	// Worflow
 	grunt.loadNpmTasks("grunt-contrib-watch");
 	
 	
-	var cssSrcFiles = [
-			"./assets/css/src/folio.elements.css",
-			"./assets/css/src/folio.typography.css",
-			"./assets/css/src/folio.layout.css",
-			"./assets/css/src/folio.buttons.css",
-	];
-//	var flashCssTarget = {
-//		"./assets/css/flash.css": "./assets/css/src/flash.css"
-//	};
+	var flashCssSource = "./assets/src/css/flash.css";
+	var flashCssTarget = { "./assets/css/flash.css": flashCssSource };
 
 	grunt.initConfig({
 	
@@ -41,14 +31,14 @@ module.exports = function (grunt) {
 		compass: {
 			dist: {
 				options: {
-					sassDir: "./assets/css/sass",
+					sassDir: "./assets/src/sass",
 					cssDir: "./assets/css",
 					outputStyle: "compressed"
 				}
 			},
 			debug: {
 				options: {
-					sassDir: "./assets/css/sass",
+					sassDir: "./assets/src/sass",
 					cssDir: "./assets/css"
 				}
 			}
@@ -62,17 +52,33 @@ module.exports = function (grunt) {
 		 */
 		concat: {
 			css: {
-				files: { "./assets/css/folio.css": cssSrcFiles }
+				files: {
+					"./assets/css/folio.css": [
+						"./assets/src/css/folio.elements.css",
+						"./assets/src/css/folio.typography.css",
+						"./assets/src/css/folio.layout.css",
+						"./assets/src/css/folio.buttons.css",
+					]
+				}
+			},
+			flash: {
+				files: { "./assets/css/flash.css": "./assets/src/css/flash.css" }
 			}
 		},
 		autoprefixer: {
 			css: {
 				files: { "./assets/css/folio.css": "./assets/css/folio.css" }
+			},
+			flash: {
+				files: { "./assets/css/flash.css": "./assets/css/flash.css" }
 			}
 		},
 		csso: {
 			css: {
 				files: { "./assets/css/folio.min.css": "./assets/css/folio.css" }
+			},
+			flash: {
+				files: { "./assets/css/flash.min.css": "./assets/css/flash.css" }
 			}
 		},
 		
@@ -88,7 +94,7 @@ module.exports = function (grunt) {
 				jshintrc: ".jshintrc"
 			},
 			files: [ 
-				"./assets/js/src/**/**/*.js"
+				"./assets/src/js/**/**/*.js"
 			]
 		},
 		jscs: {
@@ -97,7 +103,7 @@ module.exports = function (grunt) {
 					standard: "Jquery"
 				},
 				files: {
-					src: [ "./assets/js/src" ]
+					src: [ "./assets/src/js" ]
 				}
 			},
 			test: {
@@ -106,7 +112,7 @@ module.exports = function (grunt) {
 					reportFull: true
 				},
 				files: {
-					src: [ "./assets/js/src" ]
+					src: [ "./assets/src/js" ]
 				}
 			}
 		},
@@ -114,7 +120,7 @@ module.exports = function (grunt) {
 			debug: {
 				options: {
 					sourceMap: "./assets/js/*.map",
-					sourceMapRoot: "./src/app/",
+					sourceMapRoot: "../src/js/app/",
 					minify: false,
 					config: {
 						"jquery": {
@@ -129,7 +135,7 @@ module.exports = function (grunt) {
 					}
 				 },
 				 files: {
-				 		"./assets/js/app-cjsc.js": "./assets/js/src/app/App.js"
+				 		"./assets/js/folio.js": "./assets/src/js/app/App.js"
 				 }
 			 },
 			 dist: {
@@ -151,7 +157,7 @@ module.exports = function (grunt) {
 					}
 				 },
 				 files: {
-						"./assets/js/app-cjsc.min.js": "./assets/js/src/app/App.js"
+						"./assets/js/folio.min.js": "./assets/src/js/app/App.js"
 				 }
 			 }
 		},
@@ -161,25 +167,29 @@ module.exports = function (grunt) {
 				livereload: false
 			},
 			js: {
-				files: [ "./assets/js/src/**/*.js" ],
+				files: [ "./assets/src/js/**/*.js" ],
 				tasks: [ "cjsc:debug" ]
 			},
 			styles: {
-				files: [ "./assets/css/sass/**/*.scss" ],
+				files: [ "./assets/src/sass/**/*.scss" ],
 				tasks: [ "compass:debug", "autoprefixer" ]
 			}
 		},
 	});
 	
-	grunt.registerTask("debug",[
-//		"concat",
+	grunt.registerTask("css-flash", [
+		"concat:flash",
+		"autoprefixer:flash",
+		"csso:flash"
+	]);
+	
+	grunt.registerTask("debug", [
 		"compass:debug",
 		"autoprefixer",
 		"cjsc:debug"
 	]);
 	
 	grunt.registerTask("dist", [
-//		"concat",
 		"compass:dist",
 		"autoprefixer",
 		"csso",

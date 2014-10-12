@@ -36,6 +36,7 @@
 <div id="main">
 </div>
 <!-- javascript embedded templates -->
+<!--
 <xsl:call-template name="embedded-template">
 	<xsl:with-param name="id" select="'pager-nav_tmpl'"/>
 	<xsl:with-param name="xml">
@@ -70,6 +71,7 @@
 	</div>
 	</xsl:with-param>
 </xsl:call-template>
+-->
 </xsl:template>
 
 <xsl:template match="all-bundles">
@@ -79,7 +81,7 @@
 </xsl:template>
 
 <xsl:template match="all-bundles/entry">
-	<li id="{name/@handle}" class="item heading">
+	<li id="{name/@handle}" class="item">
 		<span class="completed meta pubDate" data-datetime="{completed/text()}">
 			<xsl:call-template name="format-date">
 				<xsl:with-param name="date" select="completed"/>

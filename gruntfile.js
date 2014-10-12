@@ -2,53 +2,87 @@
 module.exports = function (grunt) {
 	"use strict";
 	
-	grunt.loadNpmTasks("grunt-contrib-jshint");
-	grunt.loadNpmTasks("grunt-contrib-jscs");
-	grunt.loadNpmTasks("grunt-contrib-watch");
-	grunt.loadNpmTasks("grunt-contrib-compass");
-	grunt.loadNpmTasks("grunt-contrib-cjsc");
+	// CSS
 	grunt.loadNpmTasks("grunt-contrib-concat");
 	grunt.loadNpmTasks("grunt-autoprefixer");
 	grunt.loadNpmTasks("grunt-csso");
 	
-	var cssFiles = {
-		"./assets/css/folio.min.css": [
-			"./assets/css/src/folio.css",
-			"./assets/css/src/folio.xhtml.css"
-		]
-	};
-	var flashCssFiles = {
-		"./assets/css/flash.min.css": [
-			"./assets/css/flash.css"
-		]
-	};
+	// Sass
+	grunt.loadNpmTasks("grunt-contrib-compass");
+	
+	// JavaScript
+	grunt.loadNpmTasks("grunt-contrib-jshint");
+	grunt.loadNpmTasks("grunt-contrib-jscs");
+	grunt.loadNpmTasks("grunt-contrib-cjsc");
+	
+	// Worflow
+	grunt.loadNpmTasks("grunt-contrib-watch");
+	
+	
+	var cssSrcFiles = [
+			"./assets/css/src/folio.elements.css",
+			"./assets/css/src/folio.typography.css",
+			"./assets/css/src/folio.layout.css",
+			"./assets/css/src/folio.buttons.css",
+	];
+//	var flashCssTarget = {
+//		"./assets/css/flash.css": "./assets/css/src/flash.css"
+//	};
 
 	grunt.initConfig({
 	
 		pkg: grunt.file.readJSON("package.json"),
 		
-		// Concatenate CSS files
-		concat: {
+		/*
+		 * Sass:
+		 *
+		 * Using Compass compiler (requires gem)
+		 */
+		compass: {
 			dist: {
-				files: cssFiles,
+				options: {
+					sassDir: "./assets/css/sass",
+					cssDir: "./assets/css",
+					outputStyle: "compressed"
+				}
 			},
+			debug: {
+				options: {
+					sassDir: "./assets/css/sass",
+					cssDir: "./assets/css"
+				}
+			}
 		},
 		
-		// Add CSS property prefixes (-moz-prop, -webkit-prop, etc.)
+		/*
+		 * CSS:
+		 *
+		 * Concatenate, add prefixes (-moz-, -webkit-, etc.)
+		 * and optimize/minimize
+		 */
+		concat: {
+			css: {
+				files: { "./assets/css/folio.css": cssSrcFiles }
+			}
+		},
 		autoprefixer: {
-			styles: {
-				files: cssFiles,
+			css: {
+				files: { "./assets/css/folio.css": "./assets/css/folio.css" }
 			}
 		},
-
-		// Optimize (minimize) CSS
 		csso: {
-			styles: {
-				files: cssFiles,
+			css: {
+				files: { "./assets/css/folio.min.css": "./assets/css/folio.css" }
 			}
 		},
-
-		// JavaScript code quality check
+		
+		/*
+		 * JavaScript:
+		 *
+		 * jshint: code quality check
+		 * jscs: code style check
+		 * cjsc: CommonJS compile
+		 */
 		jshint: {
 			options: {
 				jshintrc: ".jshintrc"
@@ -57,8 +91,6 @@ module.exports = function (grunt) {
 				"./assets/js/src/**/**/*.js"
 			]
 		},
-		
-		// JSCS: JavaScript Code Style check
 		jscs: {
 			dist: {
 				options: {
@@ -78,8 +110,6 @@ module.exports = function (grunt) {
 				}
 			}
 		},
-
-		// CommonJS Compiler
 		cjsc: {
 			debug: {
 				options: {
@@ -131,37 +161,35 @@ module.exports = function (grunt) {
 				livereload: false
 			},
 			js: {
-				files: [ "./assets/js/src/**/**/**/**/*.js" ],
+				files: [ "./assets/js/src/**/*.js" ],
 				tasks: [ "cjsc:debug" ]
 			},
 			styles: {
-				files: "./assets/css/src/*.css",
-				tasks: ["watch-css"]
+				files: [ "./assets/css/sass/**/*.scss" ],
+				tasks: [ "compass:debug", "autoprefixer" ]
 			}
 		},
 	});
-
-	grunt.registerTask("watch-css",[
-		"concat",
-		"autoprefixer"
-	]);
+	
 	grunt.registerTask("debug",[
-		"concat",
+//		"concat",
+		"compass:debug",
 		"autoprefixer",
 		"cjsc:debug"
 	]);
-	grunt.registerTask( "build", [ 
-
-		"concat",
+	
+	grunt.registerTask("dist", [
+//		"concat",
+		"compass:dist",
 		"autoprefixer",
 		"csso",
-//		"jshint",
-//		"jscs:test",
+		"jshint",
+		"jscs:test",
 		"cjsc:dist" 
 	]);
 	
 	grunt.registerTask("default", ["debug"]);
-//	grunt.registerTask("default", ["build"]);
+//	grunt.registerTask("default", ["dist"]);
 };
 
 

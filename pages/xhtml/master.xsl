@@ -35,7 +35,7 @@
 		<meta name="author" content="{$root}/humans.txt" />
 		<meta name="description" content=""/>
 		<link rel="alternate" type="application/rss+xml" href="{$root}/rss/" />
-		<link rel="stylesheet" type="text/css" href="{$workspace}/assets/css/folio.min.css" />
+		<link rel="stylesheet" type="text/css" href="{$workspace}/assets/css/folio.css" />
 		<xsl:apply-templates select="data" mode="html-head"/>
 	</head>
 <!--[if lt IE 7 ]>
@@ -92,7 +92,7 @@
 </xsl:template>
 
 <xsl:template match="all-types/entry">
-	<dt id="{name/@handle}" class="group sc"><xsl:value-of select="name/text()"/></dt>
+	<dt id="{name/@handle}" class="group"><xsl:value-of select="name/text()"/></dt>
 	<xsl:apply-templates select="//all-keywords/entry[type/item/@id = current()/@id]"/>
 </xsl:template>
 

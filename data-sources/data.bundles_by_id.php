@@ -19,8 +19,8 @@ class datasourcebundles_by_id extends SectionDatasource
     public $dsParamASSOCIATEDENTRYCOUNTS = 'no';
 
     public $dsParamFILTERS = array(
-        'system:id' => '{$bundles}',
         '5' => 'yes',
+        'system:id' => '{$bundles}',
     );
 
     public $dsParamINCLUDEDELEMENTS = array(

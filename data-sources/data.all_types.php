@@ -7,8 +7,8 @@ class datasourceall_types extends SectionDatasource
     public $dsParamROOTELEMENT = 'all-types';
     public $dsParamORDER = 'asc';
     public $dsParamPAGINATERESULTS = 'no';
-    public $dsParamLIMIT = '20';
-    public $dsParamSTARTPAGE = '1';
+    public $dsParamLIMIT = '{$url-pagesize:99}';
+    public $dsParamSTARTPAGE = '{$url-pagenum:1}';
     public $dsParamREDIRECTONEMPTY = 'no';
     public $dsParamREDIRECTONFORBIDDEN = 'no';
     public $dsParamREDIRECTONREQUIRED = 'no';

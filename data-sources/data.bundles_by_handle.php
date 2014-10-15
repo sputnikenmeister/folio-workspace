@@ -9,9 +9,9 @@ class datasourcebundles_by_handle extends SectionDatasource
     public $dsParamPAGINATERESULTS = 'no';
     public $dsParamLIMIT = '{$url-pagesize:99}';
     public $dsParamSTARTPAGE = '{$url-pagenum:1}';
-    public $dsParamREDIRECTONEMPTY = 'no';
+    public $dsParamREDIRECTONEMPTY = 'yes';
     public $dsParamREDIRECTONFORBIDDEN = 'no';
-    public $dsParamREDIRECTONREQUIRED = 'no';
+    public $dsParamREDIRECTONREQUIRED = 'yes';
     public $dsParamREQUIREDPARAM = '$bundles';
     public $dsParamPARAMOUTPUT = array(
         'system:id',
@@ -21,7 +21,7 @@ class datasourcebundles_by_handle extends SectionDatasource
     public $dsParamASSOCIATEDENTRYCOUNTS = 'no';
 
     public $dsParamFILTERS = array(
-        '1' => '{$bundles}',
+        '1' => '{$ds-bundles-by-id-to-handle.name:$bundles}',
         '5' => 'yes',
     );
 
@@ -49,7 +49,7 @@ class datasourcebundles_by_handle extends SectionDatasource
     public function __construct($env = null, $process_params = true)
     {
         parent::__construct($env, $process_params);
-        $this->_dependencies = array();
+        $this->_dependencies = array('$ds-bundles-by-id-to-handle.name');
     }
 
     public function about()
@@ -60,8 +60,8 @@ class datasourcebundles_by_handle extends SectionDatasource
                 'name' => 'Pablo Canillas',
                 'website' => 'http://fulanito.localhost',
                 'email' => 'noreply@localhost.tld'),
-            'version' => 'Symphony 2.5.0',
-            'release-date' => '2014-10-07T20:34:35+00:00'
+            'version' => 'Symphony 2.5.1',
+            'release-date' => '2014-10-15T11:53:48+00:00'
         );
     }
 

@@ -7,12 +7,13 @@ class datasourceall_bundles extends SectionDatasource
     public $dsParamROOTELEMENT = 'all-bundles';
     public $dsParamORDER = 'desc';
     public $dsParamPAGINATERESULTS = 'no';
-    public $dsParamLIMIT = '20';
-    public $dsParamSTARTPAGE = '1';
+    public $dsParamLIMIT = '{$url-pagesize:99}';
+    public $dsParamSTARTPAGE = '{$url-pagenum:1}';
     public $dsParamREDIRECTONEMPTY = 'no';
     public $dsParamREDIRECTONFORBIDDEN = 'no';
     public $dsParamREDIRECTONREQUIRED = 'no';
     public $dsParamPARAMOUTPUT = array(
+        'images',
         'keywords'
         );
     public $dsParamSORT = 'completed';
@@ -52,8 +53,8 @@ class datasourceall_bundles extends SectionDatasource
                 'name' => 'Pablo Canillas',
                 'website' => 'http://fulanito.localhost',
                 'email' => 'noreply@localhost.tld'),
-            'version' => 'Symphony 2.5.0',
-            'release-date' => '2014-09-28T15:47:03+00:00'
+            'version' => 'Symphony 2.5.1',
+            'release-date' => '2014-10-13T22:19:58+00:00'
         );
     }
 

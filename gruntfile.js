@@ -10,7 +10,7 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks("grunt-csso");
 	// JavaScript
 	grunt.loadNpmTasks("grunt-contrib-jshint");
-	grunt.loadNpmTasks("grunt-contrib-jscs");
+//	grunt.loadNpmTasks("grunt-contrib-jscs");
 	grunt.loadNpmTasks("grunt-contrib-cjsc");
 	// Worflow
 	grunt.loadNpmTasks("grunt-contrib-watch");
@@ -18,6 +18,8 @@ module.exports = function (grunt) {
 	
 	var flashCssSource = "./assets/src/css/flash.css";
 	var flashCssTarget = { "./assets/css/flash.css": flashCssSource };
+ 	
+// 	grunt.file.setBase('.');
 
 	grunt.initConfig({
 	
@@ -97,25 +99,25 @@ module.exports = function (grunt) {
 				"./assets/src/js/**/**/*.js"
 			]
 		},
-		jscs: {
-			dist: {
-				options: {
-					standard: "Jquery"
-				},
-				files: {
-					src: [ "./assets/src/js" ]
-				}
-			},
-			test: {
-				options: {
-					standard: "Jquery",
-					reportFull: true
-				},
-				files: {
-					src: [ "./assets/src/js" ]
-				}
-			}
-		},
+//		jscs: {
+//			dist: {
+//				options: {
+//					standard: "Jquery"
+//				},
+//				files: {
+//					src: [ "./assets/src/js" ]
+//				}
+//			},
+//			test: {
+//				options: {
+//					standard: "Jquery",
+//					reportFull: true
+//				},
+//				files: {
+//					src: [ "./assets/src/js" ]
+//				}
+//			}
+//		},
 		cjsc: {
 			debug: {
 				options: {
@@ -167,8 +169,8 @@ module.exports = function (grunt) {
 				livereload: false
 			},
 			js: {
-				files: [ "./assets/src/js/**/*.js" ],
-				tasks: [ "cjsc:debug" ]
+				files: [ "./assets/src/js/**/*.js", "./assets/src/js/**/*.tpl" ],
+				tasks: [ "jshint", "cjsc:debug" ]
 			},
 			styles: {
 				files: [ "./assets/src/sass/**/*.scss" ],
@@ -186,6 +188,7 @@ module.exports = function (grunt) {
 	grunt.registerTask("debug", [
 		"compass:debug",
 		"autoprefixer",
+		"jshint",
 		"cjsc:debug"
 	]);
 	
@@ -194,12 +197,15 @@ module.exports = function (grunt) {
 		"autoprefixer",
 		"csso",
 		"jshint",
-		"jscs:test",
 		"cjsc:dist" 
 	]);
 	
+	grunt.registerTask("test", [
+		"jshint",
+//		"jscs:test",
+	]);
+	
 	grunt.registerTask("default", ["debug"]);
-//	grunt.registerTask("default", ["dist"]);
 };
 
 

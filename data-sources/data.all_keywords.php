@@ -7,8 +7,8 @@ class datasourceall_keywords extends SectionDatasource
     public $dsParamROOTELEMENT = 'all-keywords';
     public $dsParamORDER = 'desc';
     public $dsParamPAGINATERESULTS = 'no';
-    public $dsParamLIMIT = '20';
-    public $dsParamSTARTPAGE = '1';
+    public $dsParamLIMIT = '{$url-pagesize:99}';
+    public $dsParamSTARTPAGE = '{$url-pagenum:1}';
     public $dsParamREDIRECTONEMPTY = 'no';
     public $dsParamREDIRECTONFORBIDDEN = 'no';
     public $dsParamREDIRECTONREQUIRED = 'no';
@@ -19,8 +19,8 @@ class datasourceall_keywords extends SectionDatasource
     public $dsParamASSOCIATEDENTRYCOUNTS = 'no';
 
     public $dsParamFILTERS = array(
-        'system:id' => '{$ds-all-bundles.keywords:$ds-bundles-by-handle.keywords}',
         '32' => 'yes',
+        'system:id' => '{$ds-all-bundles.keywords:$ds-bundles-by-handle.keywords}',
     );
 
     public $dsParamINCLUDEDELEMENTS = array(

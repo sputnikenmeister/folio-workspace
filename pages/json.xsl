@@ -7,7 +7,7 @@
 <xsl:strip-space elements="*"/>
 
 <xsl:template match="/">
-	<xsl:apply-templates select="data/all-bundles | data/all-keywords | data/all-types" mode="output-json"/>
+	<xsl:apply-templates select="/data/all-bundles | /data/all-keywords | /data/all-types" mode="output-json"/>
 <!--	<xsl:apply-templates select="data/all-bundles/error"/>-->
 </xsl:template>
 

@@ -16,7 +16,7 @@ class datasourceimages_by_id extends SectionDatasource
     public $dsParamASSOCIATEDENTRYCOUNTS = 'no';
 
     public $dsParamFILTERS = array(
-        'system:id' => '{$images}',
+        'system:id' => '{$images:$ds-bundles-by-handle.images}',
         '26' => 'yes',
     );
 
@@ -24,7 +24,6 @@ class datasourceimages_by_id extends SectionDatasource
         'system:pagination',
         'name',
         'file',
-        'bundle',
         'description: unformatted',
         'attributes'
     );
@@ -32,7 +31,7 @@ class datasourceimages_by_id extends SectionDatasource
     public function __construct($env = null, $process_params = true)
     {
         parent::__construct($env, $process_params);
-        $this->_dependencies = array();
+        $this->_dependencies = array('$ds-bundles-by-handle.images');
     }
 
     public function about()
@@ -41,10 +40,10 @@ class datasourceimages_by_id extends SectionDatasource
             'name' => 'Images by ID',
             'author' => array(
                 'name' => 'Pablo Canillas',
-                'website' => 'http://folio24.localhost',
+                'website' => 'http://fulanito.localhost',
                 'email' => 'noreply@localhost.tld'),
-            'version' => 'Symphony 2.5.0',
-            'release-date' => '2014-09-20T18:17:49+00:00'
+            'version' => 'Symphony 2.5.1',
+            'release-date' => '2014-10-13T22:51:37+00:00'
         );
     }
 

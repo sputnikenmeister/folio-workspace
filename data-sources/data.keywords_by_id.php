@@ -19,8 +19,8 @@ class datasourcekeywords_by_id extends SectionDatasource
     public $dsParamASSOCIATEDENTRYCOUNTS = 'no';
 
     public $dsParamFILTERS = array(
-        'system:id' => '{$keywords:$ds-bundles-by-id.keywords:$ds-bundles-by-handle.keywords}',
         '32' => 'yes',
+        'system:id' => '{$keywords:$ds-bundles-by-id.keywords:$ds-bundles-by-handle.keywords}',
     );
 
     public $dsParamINCLUDEDELEMENTS = array(

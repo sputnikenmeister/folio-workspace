@@ -4,8 +4,8 @@
 <xsl:include href="xhtml/master.xsl" />
 
 <xsl:template match="data">
-	<div class="entry">
-		<h2 class="entry-name">Error 404</h2>
+	<div id="main" class="main">
+		<h2>Here be dragons, ye be warned.</h2>
 		<p>Something&#8217;s not right.</p>
 	</div>
 </xsl:template>

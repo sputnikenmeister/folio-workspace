@@ -36,7 +36,7 @@
 		<meta name="description" content=""/>
 		<link rel="alternate" type="application/rss+xml" href="{$root}/rss/" />
 		<link rel="stylesheet" type="text/css" href="{$workspace}/assets/css/folio.css" />
-		<xsl:apply-templates select="data" mode="html-head"/>
+		<xsl:apply-templates select="data" mode="html-head-scripts"/>
 	</head>
 <!--[if lt IE 7 ]>
 	<body class="ie ie6 {$current-page}">
@@ -71,19 +71,14 @@
 				</xsl:if>
 			</div>
 		</div>
+		<xsl:apply-templates select="data" mode="html-footer-scripts"/>
 	</body>
 </html>
 </xsl:template>
 
-<xsl:template name="page-title">
-	<xsl:value-of select="$website-name"/>
-	<xsl:text> &#8212; </xsl:text>
-	<xsl:value-of select="$page-title"/>
-</xsl:template>
-
-<xsl:template match="data" mode="html-head"/>
-
 <xsl:template match="data"/>
+<xsl:template match="data" mode="html-head-scripts"/>
+<xsl:template match="data" mode="html-footer-scripts"/>
 
 <xsl:template match="all-types">
 	<dl id="keywords" class="nav mapped">
@@ -98,10 +93,16 @@
 
 <xsl:template match="all-keywords/entry">
 	<dd id="{name/@handle}" class="item">
-		<a href="#/keywords/{name/@handle}/" data-href="{$root}/xhtml/keywords/{name/@handle}/">
+		<a href="#/keywords/{name/@handle}/" data-href="{$root}/keywords/{name/@handle}/">
 			<xsl:value-of select="name/text()"/>
 		</a>
 	</dd>
+</xsl:template>
+
+<xsl:template name="page-title">
+	<xsl:value-of select="$website-name"/>
+	<xsl:text> &#8212; </xsl:text>
+	<xsl:value-of select="$page-title"/>
 </xsl:template>
 
 <xsl:template name="embedded-template">

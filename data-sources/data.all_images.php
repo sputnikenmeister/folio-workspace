@@ -2,49 +2,52 @@
 
 require_once TOOLKIT . '/class.datasource.php';
 
-class datasourcebundles_to_handles extends SectionDatasource
+class datasourceall_images extends SectionDatasource
 {
-    public $dsParamROOTELEMENT = 'bundles-to-handles';
+    public $dsParamROOTELEMENT = 'all-images';
     public $dsParamORDER = 'desc';
-    public $dsParamPAGINATERESULTS = 'yes';
-    public $dsParamLIMIT = '20';
-    public $dsParamSTARTPAGE = '1';
+    public $dsParamPAGINATERESULTS = 'no';
+    public $dsParamLIMIT = '{$url-pagesize:99}';
+    public $dsParamSTARTPAGE = '{$url-pagenum:1}';
     public $dsParamREDIRECTONEMPTY = 'no';
     public $dsParamREDIRECTONFORBIDDEN = 'no';
     public $dsParamREDIRECTONREQUIRED = 'no';
-    public $dsParamPARAMOUTPUT = array(
-        'system:id'
-        );
     public $dsParamSORT = 'system:id';
     public $dsParamASSOCIATEDENTRYCOUNTS = 'no';
 
     public $dsParamFILTERS = array(
-        '1' => '{$bundles}',
-        '5' => 'yes',
+        '26' => 'yes',
+        'system:id' => '{$ds-bundles-by-handle.images:$ds-all-bundles.images}',
+    );
+
+    public $dsParamINCLUDEDELEMENTS = array(
+        'file',
+        'description: formatted',
+        'attributes'
     );
 
     public function __construct($env = null, $process_params = true)
     {
         parent::__construct($env, $process_params);
-        $this->_dependencies = array();
+        $this->_dependencies = array('$ds-bundles-by-handle.images', '$ds-all-bundles.images');
     }
 
     public function about()
     {
         return array(
-            'name' => 'Bundles to handles',
+            'name' => 'All Images',
             'author' => array(
                 'name' => 'Pablo Canillas',
-                'website' => 'http://folio24.localhost',
+                'website' => 'http://fulanito.localhost',
                 'email' => 'noreply@localhost.tld'),
-            'version' => 'Symphony 2.5.0',
-            'release-date' => '2014-09-22T09:42:01+00:00'
+            'version' => 'Symphony 2.5.1',
+            'release-date' => '2014-10-13T22:40:01+00:00'
         );
     }
 
     public function getSource()
     {
-        return '1';
+        return '5';
     }
 
     public function allowEditorToParse()

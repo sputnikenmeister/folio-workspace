@@ -1,7 +1,7 @@
 /*global module*/
 module.exports = function (grunt) {
 	"use strict";
-	
+
 	// Sass
 	grunt.loadNpmTasks("grunt-contrib-compass");
 	// CSS
@@ -14,17 +14,17 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks("grunt-contrib-cjsc");
 	// Worflow
 	grunt.loadNpmTasks("grunt-contrib-watch");
-	
-	
+
+
 	var flashCssSource = "./assets/src/css/flash.css";
 	var flashCssTarget = { "./assets/css/flash.css": flashCssSource };
- 	
+
 // 	grunt.file.setBase('.');
 
 	grunt.initConfig({
-	
+
 		pkg: grunt.file.readJSON("package.json"),
-		
+
 		/*
 		 * Sass:
 		 *
@@ -45,7 +45,7 @@ module.exports = function (grunt) {
 				}
 			}
 		},
-		
+
 		/*
 		 * CSS:
 		 *
@@ -83,7 +83,7 @@ module.exports = function (grunt) {
 				files: { "./assets/css/flash.min.css": "./assets/css/flash.css" }
 			}
 		},
-		
+
 		/*
 		 * JavaScript:
 		 *
@@ -95,7 +95,7 @@ module.exports = function (grunt) {
 			options: {
 				jshintrc: ".jshintrc"
 			},
-			files: [ 
+			files: [
 				"./assets/src/js/**/**/*.js"
 			]
 		},
@@ -174,39 +174,36 @@ module.exports = function (grunt) {
 			},
 			styles: {
 				files: [ "./assets/src/sass/**/*.scss" ],
-				tasks: [ "compass:debug", "autoprefixer" ]
+				tasks: [ "compass:debug", "autoprefixer:css" ]
 			}
 		},
 	});
-	
+
 	grunt.registerTask("css-flash", [
 		"concat:flash",
 		"autoprefixer:flash",
 		"csso:flash"
 	]);
-	
+
 	grunt.registerTask("debug", [
 		"compass:debug",
-		"autoprefixer",
+		"autoprefixer:css",
 		"jshint",
 		"cjsc:debug"
 	]);
-	
+
 	grunt.registerTask("dist", [
 		"compass:dist",
-		"autoprefixer",
-		"csso",
+		"autoprefixer:css",
+		"csso:css",
 		"jshint",
-		"cjsc:dist" 
+		"cjsc:dist"
 	]);
-	
+
 	grunt.registerTask("test", [
 		"jshint",
 //		"jscs:test",
 	]);
-	
+
 	grunt.registerTask("default", ["debug"]);
 };
-
-
-

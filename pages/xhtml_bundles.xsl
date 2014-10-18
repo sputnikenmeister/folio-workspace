@@ -19,7 +19,9 @@
 <div id="navigation">
 	<xsl:apply-templates select="all-types"/>
 	<xsl:apply-templates select="bundles-by-handle/entry[1]" mode="nav"/>
-<!--	<xsl:apply-templates select="all-bundles/entry[@id = //ds-bundles-by-handle.system-id/item[1]/@handle]"/>-->
+	<!--
+	<xsl:apply-templates select="all-bundles/entry[@id = //ds-bundles-by-handle.system-id/item[1]/@handle]"/>
+	-->
 </div>
 <div id="main">
 	<xsl:apply-templates select="bundles-by-handle/entry[1]" mode="main"/>
@@ -31,10 +33,11 @@
 	<xsl:variable name="current-bundle" select="//all-bundles/entry[@id = current()/@id]"/>
 	<xsl:variable name="preceding-bundle" select="$current-bundle/preceding-sibling::entry[1]"/>
 	<xsl:variable name="following-bundle" select="$current-bundle/following-sibling::entry[1]"/>
-	
-	<!--<div id="bundles">
+	<!--
+	<div id="bundle-list">
 		<h2 class="bundle-name"><xsl:value-of select="$current-bundle/name/text()" /></h2>
-	</div>-->
+	</div>
+	-->
 	<div id="bundle-pager" class="text-pager">
 		<xsl:if test="$preceding-bundle">
 		<a id="preceding-bundle" class="preceding-button button" href="/{$current-page}/{$preceding-bundle/name/@handle}">
@@ -82,16 +85,17 @@
 <xsl:template match="images[item/published/text() = 'Yes']">
 	<xsl:variable name="image-items" select="item"/>
 	<xsl:variable name="max-height" select="round(($img-width div math:max(item/file/meta/@width)) * math:max(item/file/meta/@height))" />
-	
-	<ul id="bundle-images" class="image-list" style="width: {$img-width}px; height: {$max-height}px;">
-		<xsl:apply-templates select="$image-items"/>
-	</ul>
+
 	<xsl:if test="count($image-items) &gt; 1">
 	<div id="bundle-images-pager" class="rsquare-pager">
 		<a id="preceding-image" class="preceding-button button" href="#"><!--&#x25C0;--></a>
 		<a id="following-image" class="following-button button" href="#"><!--&#x25B6;--></a>
 	</div>
 	</xsl:if>
+
+	<ul id="bundle-images" class="image-list" style="width: {$img-width}px; height: {$max-height}px;">
+		<xsl:apply-templates select="$image-items"/>
+	</ul>
 </xsl:template>
 
 <xsl:template match="images/item">
@@ -111,7 +115,7 @@
 </xsl:template>
 
 <xsl:template match="all-types">
-	<dl id="keywords" class="mapped has-highlight">
+	<dl id="keyword-list" class="mapped-list has-highlight">
 		<xsl:apply-templates select="entry"/>
 	</dl>
 </xsl:template>

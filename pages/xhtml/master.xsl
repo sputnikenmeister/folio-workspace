@@ -7,34 +7,20 @@
 	doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
 	doctype-system="http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"
 	omit-xml-declaration="yes"
-	cdata-section-elements="script"
 	encoding="UTF-8"
 	indent="yes" />
-
-<!--<!DOCTYPE html [
-  <!ENTITY % htmlDTD
-    PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-    "DTD/xhtml1-strict.dtd">
-  %htmlDTD;
-  <!ENTITY % globalDTD
-    SYSTEM "chrome://global/locale/global.dtd">
-  %globalDTD;
-  <!ENTITY % feedDTD
-    SYSTEM "chrome://browser/locale/feeds/subscribe.dtd">
-  %feedDTD;
-]>-->
 
 <xsl:variable name="is-logged-in" select="'true'"/>
 <!--<xsl:variable name="is-logged-in" select="/data/events/login-info/@logged-in"/>-->
 
 <xsl:template match="/">
-<html lang="en" class="no-js">
+<html lang="en">
 	<head profile="http://gmpg.org/xfn/11">
 		<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8" />
 		<title><xsl:call-template name="page-title"/></title>
 		<meta name="author" content="{$root}/humans.txt" />
 		<meta name="description" content=""/>
-		<link rel="alternate" type="application/rss+xml" href="{$root}/rss/" />
+		<link rel="alternate" type="application/rss+xml" href="{$root}/rss" />
 		<link rel="stylesheet" type="text/css" href="{$workspace}/assets/css/folio.css" />
 		<xsl:apply-templates select="data" mode="html-head-scripts"/>
 	</head>
@@ -57,31 +43,28 @@
 					<a href="#/" data-href="{$root}/#/"><xsl:value-of select="$website-name"/></a>
 				</h1>
 			</div>
-			
 			<xsl:apply-templates select="data"/>
-			
-			<div id="footer" class="footer">
-				<xsl:if test="$is-logged-in = 'true'">
-				<dl class="admin">
-					<dt>Tools</dt>
-					<dd><a href="{$root}/symphony/">Backend</a></dd>
-					<dd><a href="?debug=xml">Debug</a></dd>
-				</dl>
-				<p>Copyright 1995-2014 Pablo Canillas. All rights reserved.</p>
-				</xsl:if>
-			</div>
+			<div id="container-footer"></div>
+		</div>
+		<div id="footer" class="footer">
+			<xsl:if test="$is-logged-in = 'true'">
+			<dl class="admin">
+				<dt>Tools</dt>
+				<dd><a href="{$root}/symphony/">Backend</a></dd>
+				<dd><a href="?debug=xml">Debug</a></dd>
+			</dl>
+			<p>Copyright 1995-2014 Pablo Canillas. All rights reserved.</p>
+			</xsl:if>
 		</div>
 		<xsl:apply-templates select="data" mode="html-footer-scripts"/>
 	</body>
 </html>
 </xsl:template>
 
-<xsl:template match="data"/>
-<xsl:template match="data" mode="html-head-scripts"/>
-<xsl:template match="data" mode="html-footer-scripts"/>
+<xsl:template match="data"></xsl:template>
 
 <xsl:template match="all-types">
-	<dl id="keywords" class="nav mapped">
+	<dl id="keyword-list" class="mapped-list">
 		<xsl:apply-templates select="entry"/>
 	</dl>
 </xsl:template>
@@ -105,15 +88,19 @@
 	<xsl:value-of select="$page-title"/>
 </xsl:template>
 
+<xsl:template match="data" mode="html-head-scripts"></xsl:template>
+
+<xsl:template match="data" mode="html-footer-scripts"></xsl:template>
+
 <xsl:template name="embedded-template">
 	<xsl:param name="id"/>
 	<xsl:param name="xml"/>
 	<xsl:param name="type" select="'text/template'"/>
 	<xsl:param name="class" select="'template'"/>
 	<script id="{$id}" type="{$type}" class="{$class}">
-	<xsl:text disable-output-escaping="yes">&lt;![CDATA[</xsl:text>
-	<xsl:copy-of select="exsl:node-set($xml)"/>
-	<xsl:text disable-output-escaping="yes">]]&gt;</xsl:text>
+		<xsl:text disable-output-escaping="yes">&lt;![CDATA[</xsl:text>
+		<xsl:copy-of select="exsl:node-set($xml)"/>
+		<xsl:text disable-output-escaping="yes">]]&gt;</xsl:text>
 	</script>
 </xsl:template>
 

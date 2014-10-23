@@ -1,0 +1,41 @@
+{
+  "name": "folio-sym-workspace",
+  "version": "0.1.0",
+  "authors": [
+    "Pablo Canillas <pablo@canillas.name>"
+  ],
+  "description": "Symphony CMS workspace, for personal portfolio website",
+  "moduleType": [
+    "node"
+  ],
+  "license": "none",
+  "private": true,
+  "ignore": [
+    "**/.*"
+  ],
+  "dependencies": {
+    "hammerjs": "~2.0.4",
+    "jquery": "~1.11.1",
+    "jquery-hammerjs": "~2.0.0",
+    "backbone": "~1.1.2",
+    "backbone.hammer": "~1.0.1",
+    "modernizr": "~2.8.3",
+    "marionette": "~2.2.1",
+    "backbone.radio": "~0.7.0",
+    "es5-shim": "~4.0.3",
+    "html5shiv": "~3.7.2"
+  },
+  "devDependencies": {
+    "zepto": "~1.1.4",
+    "headjs": "~1.0.3",
+    "jquery-address": "*",
+    "hammer-touchemulator": "~0.0.2",
+    "backbone.picky": "~0.2.0",
+    "backbone.babysitter": "~0.1.5"
+  },
+  "resolutions": {
+    "hammerjs": "~2.0.4",
+    "jquery-hammerjs": "~2.0.0",
+    "jquery": "2.1.x"
+  }
+}

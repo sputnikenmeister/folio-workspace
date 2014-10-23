@@ -2,6 +2,9 @@
 module.exports = function (grunt) {
 	"use strict";
 
+	// Worflow
+	// grunt.loadNpmTasks('grunt-contrib-copy');
+	grunt.loadNpmTasks("grunt-contrib-watch");
 	// Sass
 	grunt.loadNpmTasks("grunt-contrib-compass");
 	// CSS
@@ -10,16 +13,14 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks("grunt-csso");
 	// JavaScript
 	grunt.loadNpmTasks("grunt-contrib-jshint");
-//	grunt.loadNpmTasks("grunt-contrib-jscs");
+	// grunt.loadNpmTasks("grunt-contrib-jscs");
 	grunt.loadNpmTasks("grunt-contrib-cjsc");
-	// Worflow
-	grunt.loadNpmTasks("grunt-contrib-watch");
 
 
 	var flashCssSource = "./assets/src/css/flash.css";
 	var flashCssTarget = { "./assets/css/flash.css": flashCssSource };
 
-// 	grunt.file.setBase('.');
+	// grunt.file.setBase('.');
 
 	grunt.initConfig({
 
@@ -99,25 +100,25 @@ module.exports = function (grunt) {
 				"./assets/src/js/**/**/*.js"
 			]
 		},
-//		jscs: {
-//			dist: {
-//				options: {
-//					standard: "Jquery"
-//				},
-//				files: {
-//					src: [ "./assets/src/js" ]
-//				}
-//			},
-//			test: {
-//				options: {
-//					standard: "Jquery",
-//					reportFull: true
-//				},
-//				files: {
-//					src: [ "./assets/src/js" ]
-//				}
-//			}
-//		},
+		// jscs: {
+		// 	dist: {
+		// 		options: {
+		// 			standard: "Jquery"
+		// 		},
+		// 		files: {
+		// 			src: [ "./assets/src/js" ]
+		// 		}
+		// 	},
+		// 	test: {
+		// 		options: {
+		// 			standard: "Jquery",
+		// 			reportFull: true
+		// 		},
+		// 		files: {
+		// 			src: [ "./assets/src/js" ]
+		// 		}
+		// 	}
+		// },
 		cjsc: {
 			debug: {
 				options: {
@@ -125,19 +126,14 @@ module.exports = function (grunt) {
 					sourceMapRoot: "../src/js/app/",
 					minify: false,
 					config: {
-						"jquery": {
-							"globalProperty": "$"
-						},
-						"underscore": {
-							"globalProperty": "_"
-						},
-						"backbone": {
-							"globalProperty": "Backbone"
-						}
+						"jquery": { "globalProperty": "$" },
+						"hammerjs": { "globalProperty": "Hammer" },
+						"underscore": { "globalProperty": "_" },
+						"backbone": { "globalProperty": "Backbone" }
 					}
 				 },
 				 files: {
-				 		"./assets/js/folio.js": "./assets/src/js/app/App.js"
+						"./assets/js/folio.js": "./assets/src/js/app/App.js"
 				 }
 			 },
 			 dist: {
@@ -147,15 +143,10 @@ module.exports = function (grunt) {
 					banner: "/*! <%= pkg.name %> - v<%= pkg.version %> - " +
 								"<%= grunt.template.today(\"yyyy-mm-dd\") %> */",
 					config: {
-						"jquery": {
-							"globalProperty": "$"
-						},
-						"underscore": {
-							"globalProperty": "_"
-						},
-						"backbone": {
-							"globalProperty": "Backbone"
-						}
+						"jquery": { "globalProperty": "$" },
+						"hammerjs": { "globalProperty": "Hammer" },
+						"underscore": { "globalProperty": "_" },
+						"backbone": { "globalProperty": "Backbone" }
 					}
 				 },
 				 files: {

@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+	xmlns:exsl="http://exslt.org/common"
+	extension-element-prefixes="exsl">
 
 <xsl:import href="../utilities/date-time-extended.xsl"/>
 <xsl:import href="json/helpers.xsl"/>
@@ -11,19 +13,26 @@
 	<xsl:value-of select="$website-name"/>
 </xsl:template>
 
+<!-- Head Scripts -->
 <xsl:template match="data" mode="html-head-scripts">
-	<script src="{$workspace}/assets/lib/jquery-1.11.1.js"></script>
+	<script src="{$workspace}/assets/lib/jquery.js"></script>
+	<script src="{$workspace}/assets/lib/hammer.js"></script>
+	<script src="{$workspace}/assets/lib/jquery.hammer.js"></script>
 	<script src="{$workspace}/assets/lib/underscore.js"></script>
 	<script src="{$workspace}/assets/lib/backbone.js"></script>
 </xsl:template>
 
+<!-- Footer Scripts -->
 <xsl:template match="data" mode="html-footer-scripts">
-	<script type="text/javascript" >
-		window.bootstrap = {<xsl:apply-templates select="/data/all-bundles | /data/all-keywords | /data/all-types | /data/params/root" mode="output-json"/>};
-	</script>
+	<!-- Bootstrap data -->
+	<xsl:call-template name="inline-script">
+		<xsl:with-param name="content">window.bootstrap = {<xsl:apply-templates select="/data/all-bundles | /data/all-keywords | /data/all-types | /data/params/root" mode="output-json"/>};</xsl:with-param>
+	</xsl:call-template>
+	<!-- Application -->
 	<script type="text/javascript" src="{$workspace}/assets/js/folio.js"></script>
 </xsl:template>
 
+<!-- Body HTML -->
 <xsl:template match="data">
 	<div id="navigation">
 		<!-- all keywords+types -->
@@ -31,19 +40,21 @@
 		<!-- all bundles-->
 		<xsl:apply-templates select="all-bundles"/>
 		<!-- bundles pager -->
-		<div id="bundle-pager" class="fontello-pager"></div>
+		<!-- <div id="bundle-pager" class="fontello-pill-pager"></div> -->
 		<!-- details -->
-		<div id="bundle-detail"></div>
+		<!-- <div id="bundle-detail"></div> -->
 	</div>
-	<div id="main"></div>
+	<!-- <div id="content"></div> -->
 </xsl:template>
 
+<!-- Bundle List -->
 <xsl:template match="all-bundles">
-	<ul id="bundle-list" class="mapped-list">
+	<ul id="bundle-list" class="selectable-list">
 		<xsl:apply-templates select="entry"/>
 	</ul>
 </xsl:template>
 
+<!-- Bundle Item -->
 <xsl:template match="all-bundles/entry">
 	<li id="{name/@handle}" class="item">
 		<span class="completed meta pubDate" data-datetime="{completed/text()}">
@@ -67,11 +78,44 @@
 	</li>
 </xsl:template>
 
+<!-- JavaScript CDATA script wrapper -->
+<xsl:template name="inline-script">
+	<xsl:param name="id"/>
+	<xsl:param name="type" select="'text/javascript'"/>
+	<xsl:param name="content" />
+	<xsl:element name="script">
+		<xsl:if test="$id">
+			<xsl:attribute name="id">
+				<xsl:value-of select="$id"/>
+			</xsl:attribute>
+		</xsl:if>
+		<xsl:attribute name="type">
+			<xsl:value-of select="$type"/>
+		</xsl:attribute>
+		<!-- newline: &#xa;, fwd slash :&#47; -->
+		<xsl:text disable-output-escaping="yes">&#xa;&#47;&#47;&lt;![CDATA[&#xa;</xsl:text>
+		<xsl:copy-of select="exsl:node-set($content)"/>
+		<xsl:text disable-output-escaping="yes">&#xa;&#47;&#47;]]&gt;</xsl:text>
+	</xsl:element>
+</xsl:template>
+
 <!-- underscore.js embedded templates -->
 <!--
+<xsl:template name="embedded-template">
+	<xsl:param name="id"/>
+	<xsl:param name="content"/>
+	<xsl:param name="type" select="'text/template'"/>
+	<xsl:param name="class" select="'template'"/>
+	<script id="{$id}" type="{$type}" class="{$class}">
+		<xsl:text disable-output-escaping="yes">&lt;![CDATA[</xsl:text>
+		<xsl:copy-of select="exsl:node-set($content)"/>
+		<xsl:text disable-output-escaping="yes">]]&gt;</xsl:text>
+	</script>
+</xsl:template>
+
 <xsl:call-template name="embedded-template">
 	<xsl:with-param name="id" select="'pager-nav_tmpl'"/>
-	<xsl:with-param name="xml">
+	<xsl:with-param name="content">
 	<a class="preceding-button button" href="{{{{preceding_href}}}}">{{preceding_label}}</a>
 	<a class="following-button button" href="{{{{following_href}}}}">{{following_label}}</a>
 	<a class="close-button button" href="{{{{close_href}}}}">{{close_label}}</a>
@@ -80,7 +124,7 @@
 
 <xsl:call-template name="embedded-template">
 	<xsl:with-param name="id" select="'bundle-detail_tmpl'"/>
-	<xsl:with-param name="xml">
+	<xsl:with-param name="content">
 	<h2 class="name">{{name}}</h2>
 	<div class="completed meta pubDate">{{completed}}</div>
 	<div class="description">{{description}}</div>
@@ -89,7 +133,7 @@
 
 <xsl:call-template name="embedded-template">
 	<xsl:with-param name="id" select="'bundle-images-item_tmpl'"/>
-	<xsl:with-param name="xml">
+	<xsl:with-param name="content">
 	<li>
 		<img src="{$root}/image{{{{url}}}}" width="{{width}}" height="{{{{height}}}}" title="" alt="" />
 		<div class="caption sc">{{description}}</div>

@@ -4,6 +4,7 @@ assets/flash/
 assets/fonts/
 assets/lib/
 node_modules/
+bower_components/
 *.min.css
 *.min.js
 *.esproj

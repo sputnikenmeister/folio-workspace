@@ -23,7 +23,7 @@
 	<xsl:apply-templates select="all-bundles/entry[@id = //ds-bundles-by-handle.system-id/item[1]/@handle]"/>
 	-->
 </div>
-<div id="main">
+<div id="content">
 	<xsl:apply-templates select="bundles-by-handle/entry[1]" mode="main"/>
 	<xsl:apply-templates select="bundles-by-handle/error"/>
 </div>
@@ -115,7 +115,7 @@
 </xsl:template>
 
 <xsl:template match="all-types">
-	<dl id="keyword-list" class="mapped-list has-highlight">
+	<dl id="keyword-list" class="selectable-list has-highlight">
 		<xsl:apply-templates select="entry"/>
 	</dl>
 </xsl:template>

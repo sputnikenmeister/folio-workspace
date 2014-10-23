@@ -29,5 +29,6 @@
 	"unused": false,
 	"sub": true,
 	"-W099": true,
-	"-W081": true
+	"-W081": true,
+	"-W041": true
 }

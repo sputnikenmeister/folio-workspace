@@ -3,8 +3,9 @@ module.exports = function (grunt) {
 	"use strict";
 
 	// Worflow
-	// grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks("grunt-contrib-watch");
+	grunt.loadNpmTasks("grunt-bower-install-simple");
+	grunt.loadNpmTasks('grunt-bowercopy');
 	// Sass
 	grunt.loadNpmTasks("grunt-contrib-compass");
 	// CSS
@@ -13,8 +14,10 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks("grunt-csso");
 	// JavaScript
 	grunt.loadNpmTasks("grunt-contrib-jshint");
-	// grunt.loadNpmTasks("grunt-contrib-jscs");
 	grunt.loadNpmTasks("grunt-contrib-cjsc");
+
+	// grunt.loadNpmTasks('grunt-contrib-copy');
+	// grunt.loadNpmTasks("grunt-contrib-jscs");
 
 
 	var flashCssSource = "./assets/src/css/flash.css";
@@ -25,6 +28,39 @@ module.exports = function (grunt) {
 	grunt.initConfig({
 
 		pkg: grunt.file.readJSON("package.json"),
+
+		/*
+		* Bower dependencies
+		*/
+		"bower-install-simple": {
+			options: {
+				color: true,
+				directory: ".bower-cache"
+			},
+			dev: {
+				options: {
+					production: false,
+					clean: false
+				}
+			}
+		},
+
+		bowercopy: {
+			options: {
+				srcPrefix: ".bower-cache"
+			},
+			libs: {
+				options: {
+					destPrefix: "assets/lib"
+				},
+				files: {
+					"backbone.js"		: "backbone/backbone.js",
+					"underscore.js"		: "underscore/underscore.js",
+					"jquery.js"			: "jquery/dist/jquery.js",
+					"hammer.js"			: "hammerjs/hammer.js",
+				}
+			}
+		},
 
 		/*
 		 * Sass:
@@ -194,6 +230,11 @@ module.exports = function (grunt) {
 	grunt.registerTask("test", [
 		"jshint",
 //		"jscs:test",
+	]);
+
+	grunt.registerTask("install", [
+		"bower-install-simple",
+		"bowercopy"
 	]);
 
 	grunt.registerTask("default", ["debug"]);

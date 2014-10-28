@@ -7,14 +7,17 @@
 <xsl:strip-space elements="*"/>
 
 <xsl:template match="/">
-	<h1><xsl:value-of select="/data/all-images/entry"/></h1>
+	{ msg: "unused page "}
 </xsl:template>
 
+
+<!--
 <xsl:template match="all-images/entry" mode="output-json">
 	<xsl:call-template name="output-json">
 		<xsl:with-param name="xml">
 			<id><xsl:value-of select="@id"/></id>
-			<url><xsl:value-of select="file/@path"/>/<xsl:copy-of select="file/filename/text()"/></url>
+			<uid><xsl:value-of select="uid/@handle"/></uid>
+			<file><xsl:copy-of select="file/filename/text()"/></file>
 			<width><xsl:value-of select="file/meta/@width"/></width>
 			<height><xsl:value-of select="file/meta/@height"/></height>
 			<xsl:copy-of select="description"/>
@@ -25,5 +28,6 @@
 		<xsl:text>,</xsl:text>
 	</xsl:if>
 </xsl:template>
+-->
 
 </xsl:stylesheet>

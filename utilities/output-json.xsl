@@ -4,51 +4,69 @@
 	xmlns:exsl="http://exslt.org/common"
 	extension-element-prefixes="exsl">
 
-<xsl:import href="string-replace.xsl" />
-<xsl:strip-space elements="*"/>
+<!-- <xsl:import href="string-replace.xsl" /> -->
+<xsl:import href="escape-string.xsl" />
+<!-- <xsl:strip-space elements="*"/> -->
 
 <!--
-Example call
-
-	<xsl:call-template name="output-json">
-		<xsl:with-param name="xml">
-			[Any XSLT-transformation]
-		</xsl:with-param>
-	</xsl:call-template>
+Example call:
+<xsl:call-template name="output-json">
+	<xsl:with-param name="xml">
+		[Any XSLT-transformation]
+	</xsl:with-param>
+</xsl:call-template>
 -->
 
-	<xsl:template name="output-json">
-		<xsl:param name="xml" />
+<xsl:template name="output-json">
+	<xsl:param name="xml" />
+	<xsl:text>{</xsl:text>
+	<xsl:apply-templates select="exsl:node-set($xml)" mode="output-json"/>
+	<xsl:text>}</xsl:text>
+</xsl:template>
+
+<xsl:template match="*" mode="output-json">
+	<xsl:variable name="has-siblings" select="name(.) = name(preceding-sibling::*) or name(.) = name(following-sibling::*)" />
+	<xsl:variable name="has-children" select="child::*" />
+	<xsl:variable name="is-node" select="$has-siblings and position() = 1 or not($has-siblings)" />
+
+	<!-- Name -->
+	<xsl:if test="$is-node">"<xsl:value-of select="name(.)" />":</xsl:if>
+	<!-- Array -->
+	<xsl:if test="$has-siblings and position() = 1">
+		<xsl:text>[</xsl:text>
+	</xsl:if>
+	<!-- Object -->
+	<xsl:if test="$has-children">
 		<xsl:text>{</xsl:text>
-		<xsl:apply-templates select="exsl:node-set($xml)" mode="output-json"/>
+	</xsl:if>
+
+	<!-- Recursion -->
+	<xsl:apply-templates select="* | text()" mode="output-json"/>
+
+	<!-- Empty Element -->
+	<xsl:if test=". = ''">null</xsl:if>
+	<!-- /Object -->
+	<xsl:if test="$has-children">
 		<xsl:text>}</xsl:text>
-	</xsl:template>
+	</xsl:if>
+	<!-- /Array -->
+	<xsl:if test="$has-siblings and position() = last()">
+		<xsl:text>]</xsl:text>
+	</xsl:if>
+	<!-- Separator -->
+	<xsl:if test="position() != last()">
+		<xsl:text>,</xsl:text>
+	</xsl:if>
+</xsl:template>
 
-	<xsl:template match="*" mode="output-json">
-		<xsl:variable name="has-siblings" select="name(.) = name(preceding-sibling::*) or name(.) = name(following-sibling::*)" />
-		<xsl:variable name="has-children" select="child::*" />
-		<xsl:variable name="is-node" select="$has-siblings and position() = 1 or not($has-siblings)" />
+<xsl:template match="text()" mode="output-json">
+	<xsl:variable name="is-string" select="string(number(.)) = 'NaN' and . != 'true' and . != 'false'" />
 
-		<xsl:if test="$is-node">"<xsl:value-of select="name(.)" />":</xsl:if>	<!-- Name -->
-		<xsl:if test="$has-siblings and position() = 1">[</xsl:if> 				<!-- Array -->
-		<xsl:if test="$has-children">{</xsl:if>									<!-- Object -->
-		<xsl:apply-templates select="* | text()" mode="output-json"/> 					<!-- Recursion -->
-		<xsl:if test=". = ''">null</xsl:if> 									<!-- Empty Element -->
-		<xsl:if test="$has-children">}</xsl:if>									<!-- /Object -->
-		<xsl:if test="$has-siblings and position() = last()">]</xsl:if> 		<!-- /Array -->
-		<xsl:if test="position() != last()">,</xsl:if>							<!-- Separator -->
-	</xsl:template>
-
-	<xsl:template match="text()" mode="output-json">
-		<xsl:variable name="is-string" select="string(number(.)) = 'NaN' and . != 'true' and . != 'false'" />
-
-		<xsl:if test="$is-string">"</xsl:if>
-		<xsl:call-template name="string-replace">								<!-- Escape Quotes -->
-			<xsl:with-param name="haystack" select="." />
-			<xsl:with-param name="search" select="'&#34;'" />
-			<xsl:with-param name="replace" select="'&#92;&#34;'" />
-		</xsl:call-template>
-		<xsl:if test="$is-string">"</xsl:if>
-	</xsl:template>
+	<xsl:if test="$is-string">"</xsl:if>
+	<xsl:call-template name="escape-bs-string">
+		<xsl:with-param name="s" select="."/>
+	</xsl:call-template>
+	<xsl:if test="$is-string">"</xsl:if>
+</xsl:template>
 
 </xsl:stylesheet>

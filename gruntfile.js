@@ -4,8 +4,9 @@ module.exports = function (grunt) {
 
 	// Worflow
 	grunt.loadNpmTasks("grunt-contrib-watch");
+	// grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks("grunt-bower-install-simple");
-	grunt.loadNpmTasks('grunt-bowercopy');
+	grunt.loadNpmTasks("grunt-bowercopy");
 	// Sass
 	grunt.loadNpmTasks("grunt-contrib-compass");
 	// CSS
@@ -15,27 +16,69 @@ module.exports = function (grunt) {
 	// JavaScript
 	grunt.loadNpmTasks("grunt-contrib-jshint");
 	grunt.loadNpmTasks("grunt-contrib-cjsc");
-
-	// grunt.loadNpmTasks('grunt-contrib-copy');
 	// grunt.loadNpmTasks("grunt-contrib-jscs");
 
-
-	var flashCssSource = "./assets/src/css/flash.css";
-	var flashCssTarget = { "./assets/css/flash.css": flashCssSource };
-
-	// grunt.file.setBase('.');
-
 	grunt.initConfig({
-
 		pkg: grunt.file.readJSON("package.json"),
 
 		/*
-		* Bower dependencies
-		*/
+		 * Sass:
+		 * Using Compass compiler (requires gem)
+		 */
+		compass: {
+			debug: {
+				options: {
+					sassDir: "./assets/src/sass",
+					cssDir: "./assets/css"
+				}
+			},
+			dist: {
+				options: {
+					sassDir: "./assets/src/sass",
+					cssDir: "./assets/css",
+					outputStyle: "compressed"
+				}
+			}
+		},
+
+		/*
+		 * CSS:
+		 * Concatenate, add prefixes (-moz-, -webkit-, etc.)
+		 * and optimize/minimize
+		 */
+		concat: {
+			flash: {
+				files: { "./assets/css/flash.css": [
+						"./assets/src/css/reset.css",
+						"./assets/src/css/flash.css"
+					]
+				}
+			}
+		},
+		autoprefixer: {
+			styles: {
+				files: { "./assets/css/folio.css": "./assets/css/folio.css" }
+			},
+			flash: {
+				files: { "./assets/css/flash.css": "./assets/css/flash.css" }
+			}
+		},
+		csso: {
+			styles: {
+				files: { "./assets/css/folio.min.css": "./assets/css/folio.css" }
+			},
+			flash: {
+				files: { "./assets/css/flash.min.css": "./assets/css/flash.css" }
+			}
+		},
+
+		/*
+		 * Bower dependencies
+		 */
 		"bower-install-simple": {
 			options: {
 				color: true,
-				directory: ".bower-cache"
+				directory: ".bower_components"
 			},
 			dev: {
 				options: {
@@ -47,83 +90,23 @@ module.exports = function (grunt) {
 
 		bowercopy: {
 			options: {
-				srcPrefix: ".bower-cache"
+				srcPrefix: ".bower_components"
 			},
 			libs: {
 				options: {
 					destPrefix: "assets/lib"
 				},
 				files: {
-					"backbone.js"		: "backbone/backbone.js",
-					"underscore.js"		: "underscore/underscore.js",
 					"jquery.js"			: "jquery/dist/jquery.js",
 					"hammer.js"			: "hammerjs/hammer.js",
+					"underscore.js"		: "underscore/underscore.js",
+					"backbone.js"		: "backbone/backbone.js",
 				}
-			}
-		},
-
-		/*
-		 * Sass:
-		 *
-		 * Using Compass compiler (requires gem)
-		 */
-		compass: {
-			dist: {
-				options: {
-					sassDir: "./assets/src/sass",
-					cssDir: "./assets/css",
-					outputStyle: "compressed"
-				}
-			},
-			debug: {
-				options: {
-					sassDir: "./assets/src/sass",
-					cssDir: "./assets/css"
-				}
-			}
-		},
-
-		/*
-		 * CSS:
-		 *
-		 * Concatenate, add prefixes (-moz-, -webkit-, etc.)
-		 * and optimize/minimize
-		 */
-		concat: {
-			css: {
-				files: {
-					"./assets/css/folio.css": [
-						"./assets/src/css/folio.elements.css",
-						"./assets/src/css/folio.typography.css",
-						"./assets/src/css/folio.layout.css",
-						"./assets/src/css/folio.buttons.css",
-					]
-				}
-			},
-			flash: {
-				files: { "./assets/css/flash.css": "./assets/src/css/flash.css" }
-			}
-		},
-		autoprefixer: {
-			css: {
-				files: { "./assets/css/folio.css": "./assets/css/folio.css" }
-			},
-			flash: {
-				files: { "./assets/css/flash.css": "./assets/css/flash.css" }
-			}
-		},
-		csso: {
-			css: {
-				files: { "./assets/css/folio.min.css": "./assets/css/folio.css" }
-			},
-			flash: {
-				files: { "./assets/css/flash.min.css": "./assets/css/flash.css" }
 			}
 		},
 
 		/*
 		 * JavaScript:
-		 *
 		 * jshint: code quality check
 		 * jscs: code style check
 		 * cjsc: CommonJS compile
@@ -162,10 +145,10 @@ module.exports = function (grunt) {
 					sourceMapRoot: "../src/js/app/",
 					minify: false,
 					config: {
-						"jquery": { "globalProperty": "$" },
-						"hammerjs": { "globalProperty": "Hammer" },
-						"underscore": { "globalProperty": "_" },
-						"backbone": { "globalProperty": "Backbone" }
+						"jquery"      : { "globalProperty": "$" },
+						"hammerjs"    : { "globalProperty": "Hammer" },
+						"underscore"  : { "globalProperty": "_" },
+						"backbone"    : { "globalProperty": "Backbone" }
 					}
 				 },
 				 files: {
@@ -179,14 +162,14 @@ module.exports = function (grunt) {
 					banner: "/*! <%= pkg.name %> - v<%= pkg.version %> - " +
 								"<%= grunt.template.today(\"yyyy-mm-dd\") %> */",
 					config: {
-						"jquery": { "globalProperty": "$" },
-						"hammerjs": { "globalProperty": "Hammer" },
-						"underscore": { "globalProperty": "_" },
-						"backbone": { "globalProperty": "Backbone" }
+						"jquery"      : { "globalProperty": "$" },
+						"hammerjs"    : { "globalProperty": "Hammer" },
+						"underscore"  : { "globalProperty": "_" },
+						"backbone"    : { "globalProperty": "Backbone" }
 					}
 				 },
 				 files: {
-						"./assets/js/folio.min.js": "./assets/src/js/app/App.js"
+					"./assets/js/folio.min.js": "./assets/src/js/app/App.js"
 				 }
 			 }
 		},
@@ -196,15 +179,20 @@ module.exports = function (grunt) {
 				livereload: false
 			},
 			js: {
-				files: [ "./assets/src/js/**/*.js", "./assets/src/js/**/*.tpl" ],
+				files: [ "./assets/src/js/**/*.js", "./assets/src/js/**/**/**/*.tpl" ],
 				tasks: [ "jshint", "cjsc:debug" ]
 			},
 			styles: {
 				files: [ "./assets/src/sass/**/*.scss" ],
-				tasks: [ "compass:debug", "autoprefixer:css" ]
+				tasks: [ "compass:debug", "autoprefixer:styles" ]
 			}
 		},
 	});
+
+	grunt.registerTask("install", [
+		"bower-install-simple",
+		"bowercopy"
+	]);
 
 	grunt.registerTask("css-flash", [
 		"concat:flash",
@@ -214,15 +202,15 @@ module.exports = function (grunt) {
 
 	grunt.registerTask("debug", [
 		"compass:debug",
-		"autoprefixer:css",
+		"autoprefixer:styles",
 		"jshint",
 		"cjsc:debug"
 	]);
 
 	grunt.registerTask("dist", [
 		"compass:dist",
-		"autoprefixer:css",
-		"csso:css",
+		"autoprefixer:styles",
+		"csso:styles",
 		"jshint",
 		"cjsc:dist"
 	]);
@@ -230,11 +218,6 @@ module.exports = function (grunt) {
 	grunt.registerTask("test", [
 		"jshint",
 //		"jscs:test",
-	]);
-
-	grunt.registerTask("install", [
-		"bower-install-simple",
-		"bowercopy"
 	]);
 
 	grunt.registerTask("default", ["debug"]);

@@ -17,16 +17,18 @@ class datasourceall_keywords extends SectionDatasource
         );
     public $dsParamSORT = 'system:id';
     public $dsParamASSOCIATEDENTRYCOUNTS = 'no';
+    public $dsParamCACHE = '';
 
     public $dsParamFILTERS = array(
-        '32' => 'yes',
         'system:id' => '{$ds-all-bundles.keywords:$ds-bundles-by-handle.keywords}',
+        '32' => 'yes',
     );
 
     public $dsParamINCLUDEDELEMENTS = array(
         'name',
         'type',
-        'attributes'
+        'attributes',
+        'uid'
     );
     
     public $dsParamINCLUDEDASSOCIATIONS = array(
@@ -53,8 +55,8 @@ class datasourceall_keywords extends SectionDatasource
                 'name' => 'Pablo Canillas',
                 'website' => 'http://fulanito.localhost',
                 'email' => 'noreply@localhost.tld'),
-            'version' => 'Symphony 2.5.0',
-            'release-date' => '2014-09-28T15:45:45+00:00'
+            'version' => 'Symphony 2.5.1',
+            'release-date' => '2014-10-27T12:58:29+00:00'
         );
     }
 

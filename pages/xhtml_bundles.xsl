@@ -12,7 +12,7 @@
 <xsl:template name="page-title">
 	<xsl:value-of select="$website-name"/>
 	<xsl:text> &#8212; </xsl:text>
-	<xsl:value-of select="//bundles-by-handle/entry[1]/name/text()"/>
+	<xsl:value-of select="/data/bundles-by-handle/entry[1]/name/text()"/>
 </xsl:template>
 
 <xsl:template match="data">
@@ -30,7 +30,7 @@
 </xsl:template>
 
 <xsl:template match="bundles-by-handle/entry" mode="nav">
-	<xsl:variable name="current-bundle" select="//all-bundles/entry[@id = current()/@id]"/>
+	<xsl:variable name="current-bundle" select="/data/all-bundles/entry[@id = current()/@id]"/>
 	<xsl:variable name="preceding-bundle" select="$current-bundle/preceding-sibling::entry[1]"/>
 	<xsl:variable name="following-bundle" select="$current-bundle/following-sibling::entry[1]"/>
 	<!--
@@ -78,6 +78,8 @@
 	</div>
 </xsl:template>
 
+<!-- Images -->
+
 <xsl:variable name="img-width" select="700" />
 <!--<xsl:variable name="img-width" select="480" />-->
 <!--<xsl:variable name="img-height" select="320" />-->
@@ -105,7 +107,10 @@
 				<xsl:copy-of select="'display: none'"/>
 			</xsl:attribute>
 		</xsl:if>
-		<img width="{$img-width}" height="{floor(($img-width div file/meta/@width) * file/meta/@height)}" title="{description}" alt="{description}" src="{$root}/image/1/{$img-width}/0{file/@path}/{file/filename}"/>
+		<img width="{$img-width}"
+			 height="{floor(($img-width div file/meta/@width) * file/meta/@height)}"
+			 title="{file/filename}" alt="{file/filename}"
+			 src="{$root}/image/1/{$img-width}/0{file/@path}/{file/filename}"/>
 		<!-- Without JIT recipe:	src="{$root}/image/1/{$img-width}/0{file/@path}/{file/filename}" -->
 		<!-- With JIT recipe:		src="{$root}/image/bundle{file/@path}/{file/filename}"	-->
 		<div class="caption">
@@ -114,43 +119,48 @@
 	</li>
 </xsl:template>
 
+<!--
+  -- Types/Keywords
+  -->
+<xsl:variable name="bundle-keywords" select="//ds-bundles-by-handle.keywords" />
+
 <xsl:template match="all-types">
-	<dl id="keyword-list" class="selectable-list has-highlight">
+	<dl id="keyword-list" class="selectable-list has-filters">
 		<xsl:apply-templates select="entry"/>
 	</dl>
 </xsl:template>
 
 <xsl:template match="all-types/entry">
-	<xsl:variable name="current-keywords" select="//all-keywords/entry[type/item/@id = current()/@id]"/>
-	<dt id="{name/@handle}">
+	<xsl:variable name="current-type-keywords" select="/data/all-keywords/entry[type/item/@id = current()/@id]"/>
+	<dt id="{uid/@handle}">
 		<xsl:attribute name="class">
 			<xsl:choose>
-				<xsl:when test="//ds-bundles-by-handle.keywords/item[@handle = $current-keywords/@id]">
-					<xsl:copy-of select="'group highlight'"/>
+				<xsl:when test="$bundle-keywords/item[@handle = $current-type-keywords/@id]">
+					<xsl:copy-of select="'group'"/>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:copy-of select="'group'"/>
+					<xsl:copy-of select="'group excluded'"/>
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:attribute>
 		<xsl:value-of select="name/text()"/>
 	</dt>
-	<xsl:apply-templates select="$current-keywords"/>
+	<xsl:apply-templates select="$current-type-keywords"/>
 </xsl:template>
 
 <xsl:template match="all-keywords/entry">
-	<dd id="{name/@handle}">
+	<dd id="{uid/@handle}">
 		<xsl:attribute name="class">
 			<xsl:choose>
-				<xsl:when test="//ds-bundles-by-handle.keywords/item[@handle = current()/@id]">
-					<xsl:copy-of select="'item highlight'"/>
+				<xsl:when test="$bundle-keywords/item[@handle = current()/@id]">
+					<xsl:copy-of select="'item'"/>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:copy-of select="'item'"/>
+					<xsl:copy-of select="'item excluded'"/>
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:attribute>
-		<a href="#{name/@handle}" data-href="{$root}/keywords/{name/@handle}">
+		<a href="#keywords/{name/@handle}" data-href="{$root}/keywords/{name/@handle}">
 			<xsl:value-of select="name/text()"/>
 		</a>
 	</dd>

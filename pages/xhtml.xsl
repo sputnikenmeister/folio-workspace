@@ -4,7 +4,7 @@
 	extension-element-prefixes="exsl">
 
 <xsl:import href="../utilities/date-time-extended.xsl"/>
-<xsl:import href="json/helpers.xsl"/>
+<xsl:import href="json/short.xsl"/>
 <xsl:import href="xhtml/master.xsl"/>
 
 <xsl:strip-space elements="*"/>
@@ -26,37 +26,40 @@
 <xsl:template match="data" mode="html-footer-scripts">
 	<!-- Bootstrap data -->
 	<xsl:call-template name="inline-script">
-		<xsl:with-param name="content">window.bootstrap = {<xsl:apply-templates select="/data/all-bundles | /data/all-keywords | /data/all-types | /data/params/root" mode="output-json"/>};</xsl:with-param>
+		<xsl:with-param name="content">
+			window.bootstrap = {
+				<xsl:apply-templates select="/data/all-types" mode="output-json"/>,
+				<xsl:apply-templates select="/data/all-keywords" mode="output-json"/>,
+				<xsl:apply-templates select="/data/all-bundles" mode="output-json"/>,
+				<xsl:apply-templates select="/data/params/root" mode="output-json"/>
+			};
+		</xsl:with-param>
 	</xsl:call-template>
 	<!-- Application -->
 	<script type="text/javascript" src="{$workspace}/assets/js/folio.js"></script>
 </xsl:template>
 
-<!-- Body HTML -->
+<!-- Container HTML -->
 <xsl:template match="data">
 	<div id="navigation">
 		<!-- all keywords+types -->
 		<xsl:apply-templates select="all-types"/>
 		<!-- all bundles-->
 		<xsl:apply-templates select="all-bundles"/>
-		<!-- bundles pager -->
-		<!-- <div id="bundle-pager" class="fontello-pill-pager"></div> -->
-		<!-- details -->
-		<!-- <div id="bundle-detail"></div> -->
 	</div>
 	<!-- <div id="content"></div> -->
 </xsl:template>
 
-<!-- Bundle List -->
+<!-- bundle-list -->
 <xsl:template match="all-bundles">
 	<ul id="bundle-list" class="selectable-list">
 		<xsl:apply-templates select="entry"/>
 	</ul>
 </xsl:template>
 
-<!-- Bundle Item -->
+<!-- bundle-list item -->
 <xsl:template match="all-bundles/entry">
-	<li id="{name/@handle}" class="item">
+	<li id="{uid/@handle}" class="item">
 		<span class="completed meta pubDate" data-datetime="{completed/text()}">
 			<xsl:call-template name="format-date">
 				<xsl:with-param name="date" select="completed"/>
@@ -64,7 +67,7 @@
 			</xsl:call-template>
 		</span>
 		<span class="name">
-			<a href="#/bundles/{name/@handle}/" data-href="{$root}/bundles/{name/@handle}/">
+			<a href="#bundles/{name/@handle}" data-href="{$root}/bundles/{name/@handle}">
 				<xsl:choose>
 					<xsl:when test="display-name">
 						<xsl:apply-templates select="display-name/*" mode="html"/>

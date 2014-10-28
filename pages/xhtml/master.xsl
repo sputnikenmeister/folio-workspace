@@ -42,7 +42,7 @@
 	<body class="{$current-page}-page">
 <!--<![endif]-->
 		<div id="container">
-			<div id="header" class="header">
+			<div id="header" class="header" role="header">
 				<h1 id="site-name">
 					<a href="{$root}/"><xsl:value-of select="$website-name"/></a>
 				</h1>
@@ -50,15 +50,15 @@
 			<xsl:apply-templates select="data"/>
 			<div id="container-footer"></div>
 		</div>
-		<div id="footer" class="footer">
+		<div id="footer" class="footer" role="footer">
 			<xsl:if test="$is-logged-in = 'true'">
 			<dl class="admin">
 				<dt>Tools</dt>
 				<dd><a href="{$root}/symphony/">Backend</a></dd>
 				<dd><a href="?debug=xml">Debug</a></dd>
 			</dl>
-			<p>Copyright 1995-2014 Pablo Canillas. All rights reserved.</p>
 			</xsl:if>
+			<p>Copyright 1995-2014 Pablo Canillas. All rights reserved.</p>
 		</div>
 		<xsl:apply-templates select="data" mode="html-footer-scripts"/>
 	</body>
@@ -81,13 +81,13 @@
 </xsl:template>
 
 <xsl:template match="all-types/entry">
-	<dt id="{name/@handle}" class="group"><xsl:value-of select="name/text()"/></dt>
+	<dt id="{uid/@handle}" class="group"><xsl:value-of select="name/text()"/></dt>
 	<xsl:apply-templates select="//all-keywords/entry[type/item/@id = current()/@id]"/>
 </xsl:template>
 
 <xsl:template match="all-keywords/entry">
-	<dd id="{name/@handle}" class="item">
-		<a href="#/keywords/{name/@handle}/" data-href="{$root}/keywords/{name/@handle}/">
+	<dd id="{uid/@handle}" class="item">
+		<a href="{$root}/keywords/{name/@handle}/">
 			<xsl:value-of select="name/text()"/>
 		</a>
 	</dd>

@@ -18,7 +18,8 @@ class datasourcebundles_by_handle extends SectionDatasource
         'keywords'
         );
     public $dsParamSORT = 'completed';
-    public $dsParamASSOCIATEDENTRYCOUNTS = 'no';
+    public $dsParamASSOCIATEDENTRYCOUNTS = 'yes';
+    public $dsParamCACHE = '0';
 
     public $dsParamFILTERS = array(
         '1' => '{$ds-bundles-by-id-to-handle.name:$bundles}',
@@ -30,7 +31,8 @@ class datasourcebundles_by_handle extends SectionDatasource
         'completed',
         'description: formatted',
         'images',
-        'attributes'
+        'attributes',
+        'uid'
     );
     
     public $dsParamINCLUDEDASSOCIATIONS = array(
@@ -38,8 +40,8 @@ class datasourcebundles_by_handle extends SectionDatasource
             'section_id' => '5',
             'field_id' => '45',
             'elements' => array(
-                'file',
                 'published',
+                'file',
                 'description: formatted',
                 'attributes'
             )
@@ -61,7 +63,7 @@ class datasourcebundles_by_handle extends SectionDatasource
                 'website' => 'http://fulanito.localhost',
                 'email' => 'noreply@localhost.tld'),
             'version' => 'Symphony 2.5.1',
-            'release-date' => '2014-10-15T11:53:48+00:00'
+            'release-date' => '2014-10-27T13:22:08+00:00'
         );
     }
 

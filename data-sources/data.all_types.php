@@ -13,16 +13,18 @@ class datasourceall_types extends SectionDatasource
     public $dsParamREDIRECTONFORBIDDEN = 'no';
     public $dsParamREDIRECTONREQUIRED = 'no';
     public $dsParamSORT = 'order';
-    public $dsParamASSOCIATEDENTRYCOUNTS = 'no';
+    public $dsParamASSOCIATEDENTRYCOUNTS = 'yes';
+    public $dsParamCACHE = '0';
 
     public $dsParamFILTERS = array(
-        '29' => 'yes',
         'system:id' => '{$ds-all-keywords.type}',
+        '29' => 'yes',
     );
 
     public $dsParamINCLUDEDELEMENTS = array(
         'name',
-        'attributes'
+        'attributes',
+        'uid'
     );
 
     public function __construct($env = null, $process_params = true)
@@ -39,8 +41,8 @@ class datasourceall_types extends SectionDatasource
                 'name' => 'Pablo Canillas',
                 'website' => 'http://fulanito.localhost',
                 'email' => 'noreply@localhost.tld'),
-            'version' => 'Symphony 2.5.0',
-            'release-date' => '2014-09-27T11:50:27+00:00'
+            'version' => 'Symphony 2.5.1',
+            'release-date' => '2014-10-27T13:03:11+00:00'
         );
     }
 

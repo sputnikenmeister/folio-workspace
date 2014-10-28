@@ -27,10 +27,21 @@ class datasourceall_bundles extends SectionDatasource
     public $dsParamINCLUDEDELEMENTS = array(
         'name',
         'completed',
-        'keywords'
+        'images',
+        'keywords',
+        'uid'
     );
     
     public $dsParamINCLUDEDASSOCIATIONS = array(
+        'images' => array(
+            'section_id' => '5',
+            'field_id' => '45',
+            'elements' => array(
+                'published',
+                'file',
+                'uid'
+            )
+        ),
         'keywords' => array(
             'section_id' => '2',
             'field_id' => '46',
@@ -55,7 +66,7 @@ class datasourceall_bundles extends SectionDatasource
                 'website' => 'http://fulanito.localhost',
                 'email' => 'noreply@localhost.tld'),
             'version' => 'Symphony 2.5.1',
-            'release-date' => '2014-10-23T15:01:01+00:00'
+            'release-date' => '2014-10-27T13:23:19+00:00'
         );
     }
 

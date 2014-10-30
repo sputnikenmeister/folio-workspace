@@ -17,34 +17,23 @@ class datasourceall_keywords extends SectionDatasource
         );
     public $dsParamSORT = 'system:id';
     public $dsParamASSOCIATEDENTRYCOUNTS = 'no';
-    public $dsParamCACHE = '';
+    public $dsParamCACHE = '0';
 
     public $dsParamFILTERS = array(
-        'system:id' => '{$ds-all-bundles.keywords:$ds-bundles-by-handle.keywords}',
         '32' => 'yes',
+        'system:id' => '{$ds-all-bundles.keywords}',
     );
 
     public $dsParamINCLUDEDELEMENTS = array(
         'name',
         'type',
-        'attributes',
-        'uid'
-    );
-    
-    public $dsParamINCLUDEDASSOCIATIONS = array(
-        'type' => array(
-            'section_id' => '7',
-            'field_id' => '28',
-            'elements' => array(
-                'name'
-            )
-        )
+        'attributes'
     );
 
     public function __construct($env = null, $process_params = true)
     {
         parent::__construct($env, $process_params);
-        $this->_dependencies = array('$ds-all-bundles.keywords', '$ds-bundles-by-handle.keywords');
+        $this->_dependencies = array('$ds-all-bundles.keywords');
     }
 
     public function about()
@@ -56,7 +45,7 @@ class datasourceall_keywords extends SectionDatasource
                 'website' => 'http://fulanito.localhost',
                 'email' => 'noreply@localhost.tld'),
             'version' => 'Symphony 2.5.1',
-            'release-date' => '2014-10-27T12:58:29+00:00'
+            'release-date' => '2014-10-29T12:05:47+00:00'
         );
     }
 

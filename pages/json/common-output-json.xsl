@@ -5,16 +5,8 @@
 <xsl:import href="../../utilities/typography.xsl"/>
 <xsl:import href="../../utilities/output-json.xsl"/>
 <xsl:import href="../../utilities/escape-string.xsl"/>
-<!-- <xsl:import href="../../utilities/xml-to-json.xsl"/> -->
 
 <xsl:strip-space elements="*"/>
-
-<!-- Escape Quotes -->
-<xsl:template match="text()" mode="html">
-	<xsl:call-template name="escape-bs-string"><!-- from escape-string.xsl -->
-		<xsl:with-param name="s" select="."/>
-	</xsl:call-template>
-</xsl:template>
 
 <!-- Generic HTML text -->
 <xsl:template match="*[@mode='formatted']" mode="output-json">
@@ -27,6 +19,12 @@
 		<xsl:text>,</xsl:text>
 	</xsl:if>
 </xsl:template>
+	<!-- Escape Quotes -->
+	<xsl:template match="text()" mode="html">
+		<xsl:call-template name="escape-bs-string"><!-- from escape-string.xsl -->
+			<xsl:with-param name="s" select="."/>
+		</xsl:call-template>
+	</xsl:template>
 
 <!-- Ignored -->
 <xsl:template match="section" mode="output-json"/>
@@ -38,25 +36,6 @@
 	<xsl:text>"</xsl:text>
 </xsl:template>
 
-<!--<xsl:template match="description[@mode='formatted']" mode="output-json">
-	<xsl:text>"desc":"</xsl:text>
-	<xsl:apply-templates select="node()|text()" mode="html"/>
-	<xsl:text>"</xsl:text>
-	<xsl:if test="position() != last()">
-		<xsl:text>,</xsl:text>
-	</xsl:if>
-</xsl:template>-->
-
-<!--
-<xsl:template match="attributes/item" mode="output-json">
-	<xsl:text>"</xsl:text>
-	<xsl:value-of select="text()" />
-	<xsl:text>"</xsl:text>
-	<xsl:if test="position() != last()">
-		<xsl:text>,</xsl:text>
-	</xsl:if>
-</xsl:template>
--->
 
 <!-- Generic text-only array (e.g. atrributes) -->
 <xsl:template match="item[count(text()) = count(node())]" mode="output-json">
@@ -82,11 +61,10 @@
 
 <!--  All types -->
 <xsl:template match="all-types/entry" mode="output-json">
-	<xsl:text>&#xa;</xsl:text>
+	<xsl:text>&#xa;&#9;&#9;&#9;</xsl:text>
 	<xsl:call-template name="output-json">
 		<xsl:with-param name="xml">
 			<id><xsl:value-of select="@id"/></id>
-			<uid><xsl:value-of select="uid/@handle"/></uid>
 			<handle><xsl:value-of select="name/@handle"/></handle>
 			<xsl:copy-of select="name"/>
 		</xsl:with-param>
@@ -98,11 +76,10 @@
 
 <!-- All keywords -->
 <xsl:template match="all-keywords/entry" mode="output-json">
-	<xsl:text>&#xa;</xsl:text>
+	<xsl:text>&#xa;&#9;&#9;&#9;</xsl:text>
 	<xsl:call-template name="output-json">
 		<xsl:with-param name="xml">
 			<id><xsl:value-of select="@id"/></id>
-			<uid><xsl:value-of select="uid/@handle"/></uid>
 			<handle><xsl:value-of select="name/@handle"/></handle>
 			<typeId><xsl:value-of select="type/item/@id"/></typeId>
 			<xsl:copy-of select="name"/>
@@ -112,5 +89,6 @@
 		<xsl:text>,</xsl:text>
 	</xsl:if>
 </xsl:template>
+
 
 </xsl:stylesheet>

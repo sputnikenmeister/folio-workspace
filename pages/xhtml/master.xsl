@@ -81,13 +81,13 @@
 </xsl:template>
 
 <xsl:template match="all-types/entry">
-	<dt id="{uid/@handle}" class="group"><xsl:value-of select="name/text()"/></dt>
+	<dt id="t{@id}" class="group"><xsl:value-of select="name/text()"/></dt>
 	<xsl:apply-templates select="//all-keywords/entry[type/item/@id = current()/@id]"/>
 </xsl:template>
 
 <xsl:template match="all-keywords/entry">
-	<dd id="{uid/@handle}" class="item">
-		<a href="{$root}/keywords/{name/@handle}/">
+	<dd id="k{@id}" class="item">
+		<a href="{$root}/keywords/{name/@handle}">
 			<xsl:value-of select="name/text()"/>
 		</a>
 	</dd>

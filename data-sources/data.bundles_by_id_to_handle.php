@@ -18,6 +18,7 @@ class datasourcebundles_by_id_to_handle extends SectionDatasource
         );
     public $dsParamSORT = 'system:id';
     public $dsParamASSOCIATEDENTRYCOUNTS = 'no';
+    public $dsParamCACHE = '0';
 
     public $dsParamFILTERS = array(
         'system:id' => '{$bundles}',
@@ -39,7 +40,7 @@ class datasourcebundles_by_id_to_handle extends SectionDatasource
                 'website' => 'http://fulanito.localhost',
                 'email' => 'noreply@localhost.tld'),
             'version' => 'Symphony 2.5.1',
-            'release-date' => '2014-10-15T11:51:44+00:00'
+            'release-date' => '2014-10-29T16:42:08+00:00'
         );
     }
 

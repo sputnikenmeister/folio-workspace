@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns:math="http://exslt.org/math"
-	extension-element-prefixes="math">
+<xsl:stylesheet version="1.0"
+	 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+	 xmlns:math="http://exslt.org/math"
+	 extension-element-prefixes="math">
 
 <xsl:import href="../utilities/date-time-extended.xsl"/>
 <xsl:import href="../utilities/typography.xsl"/>
 <xsl:import href="xhtml/master.xsl"/>
 
-<xsl:strip-space elements="*"/>
+<!-- <xsl:strip-space elements="*"/> -->
 
 <xsl:template name="page-title">
 	<xsl:value-of select="$website-name"/>
@@ -18,26 +19,22 @@
 <xsl:template match="data">
 <div id="navigation">
 	<xsl:apply-templates select="all-types"/>
-	<xsl:apply-templates select="bundles-by-handle/entry[1]" mode="nav"/>
-	<!--
-	<xsl:apply-templates select="all-bundles/entry[@id = //ds-bundles-by-handle.system-id/item[1]/@handle]"/>
-	-->
+	<xsl:apply-templates select="bundles-by-handle/entry[1]" mode="navigation"/>
 </div>
 <div id="content">
-	<xsl:apply-templates select="bundles-by-handle/entry[1]" mode="main"/>
+	<xsl:apply-templates select="bundles-by-handle/entry[1]" mode="content"/>
 	<xsl:apply-templates select="bundles-by-handle/error"/>
 </div>
 </xsl:template>
 
-<xsl:template match="bundles-by-handle/entry" mode="nav">
+<!--
+  ** Bundle
+  -->
+<xsl:template match="bundles-by-handle/entry" mode="navigation">
+	<!-- bundle pager -->
 	<xsl:variable name="current-bundle" select="/data/all-bundles/entry[@id = current()/@id]"/>
 	<xsl:variable name="preceding-bundle" select="$current-bundle/preceding-sibling::entry[1]"/>
 	<xsl:variable name="following-bundle" select="$current-bundle/following-sibling::entry[1]"/>
-	<!--
-	<div id="bundle-list">
-		<h2 class="bundle-name"><xsl:value-of select="$current-bundle/name/text()" /></h2>
-	</div>
-	-->
 	<div id="bundle-pager" class="text-pager">
 		<xsl:if test="$preceding-bundle">
 		<a id="preceding-bundle" class="preceding-button button" href="/{$current-page}/{$preceding-bundle/name/@handle}">
@@ -53,6 +50,7 @@
 			<xsl:text>Close</xsl:text>
 		</a>
 	</div>
+	<!-- bundle detail -->
 	<div id="bundle-detail">
 		<h2 class="name"><xsl:value-of select="name/text()" /></h2>
 		<div class="completed meta pubDate" data-datetime="{completed/text()}">
@@ -67,7 +65,7 @@
 	</div>
 </xsl:template>
 
-<xsl:template match="bundles-by-handle/entry" mode="main">
+<xsl:template match="bundles-by-handle/entry" mode="content">
 	<xsl:apply-templates select="images" />
 </xsl:template>
 
@@ -78,30 +76,29 @@
 	</div>
 </xsl:template>
 
-<!-- Images -->
-
+<!--
+  ** Images
+  -->
 <xsl:variable name="img-width" select="700" />
-<!--<xsl:variable name="img-width" select="480" />-->
-<!--<xsl:variable name="img-height" select="320" />-->
 
 <xsl:template match="images[item/published/text() = 'Yes']">
 	<xsl:variable name="image-items" select="item"/>
 	<xsl:variable name="max-height" select="round(($img-width div math:max(item/file/meta/@width)) * math:max(item/file/meta/@height))" />
-
+	<!-- Image Pager -->
 	<xsl:if test="count($image-items) &gt; 1">
 	<div id="bundle-images-pager" class="rsquare-pager">
 		<a id="preceding-image" class="preceding-button button" href="#"><!--&#x25C0;--></a>
 		<a id="following-image" class="following-button button" href="#"><!--&#x25B6;--></a>
 	</div>
 	</xsl:if>
-
+	<!-- Image List -->
 	<ul id="bundle-images" class="image-list" style="width: {$img-width}px; height: {$max-height}px;">
 		<xsl:apply-templates select="$image-items"/>
 	</ul>
 </xsl:template>
 
 <xsl:template match="images/item">
-	<li class="image-item">
+	<li id="i{@id}" class="image-item">
 		<xsl:if test="position() &gt; 1">
 			<xsl:attribute name="style">
 				<xsl:copy-of select="'display: none'"/>
@@ -120,19 +117,19 @@
 </xsl:template>
 
 <!--
-  -- Types/Keywords
+  ** Types/Keywords
   -->
 <xsl:variable name="bundle-keywords" select="//ds-bundles-by-handle.keywords" />
 
 <xsl:template match="all-types">
-	<dl id="keyword-list" class="selectable-list has-filters">
+	<dl id="keyword-list" class="selectable-list">
 		<xsl:apply-templates select="entry"/>
 	</dl>
 </xsl:template>
 
 <xsl:template match="all-types/entry">
 	<xsl:variable name="current-type-keywords" select="/data/all-keywords/entry[type/item/@id = current()/@id]"/>
-	<dt id="{uid/@handle}">
+	<dt id="t{@id}">
 		<xsl:attribute name="class">
 			<xsl:choose>
 				<xsl:when test="$bundle-keywords/item[@handle = $current-type-keywords/@id]">
@@ -149,7 +146,7 @@
 </xsl:template>
 
 <xsl:template match="all-keywords/entry">
-	<dd id="{uid/@handle}">
+	<dd id="k{@id}">
 		<xsl:attribute name="class">
 			<xsl:choose>
 				<xsl:when test="$bundle-keywords/item[@handle = current()/@id]">
@@ -160,7 +157,7 @@
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:attribute>
-		<a href="#keywords/{name/@handle}" data-href="{$root}/keywords/{name/@handle}">
+		<a href="{$root}/keywords/{name/@handle}">
 			<xsl:value-of select="name/text()"/>
 		</a>
 	</dd>

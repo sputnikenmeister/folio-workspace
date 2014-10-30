@@ -12,30 +12,25 @@ class datasourceall_images extends SectionDatasource
     public $dsParamREDIRECTONEMPTY = 'no';
     public $dsParamREDIRECTONFORBIDDEN = 'no';
     public $dsParamREDIRECTONREQUIRED = 'no';
-    public $dsParamPARAMOUTPUT = array(
-        'bundle'
-        );
     public $dsParamSORT = 'system:id';
-    public $dsParamASSOCIATEDENTRYCOUNTS = 'yes';
+    public $dsParamASSOCIATEDENTRYCOUNTS = 'no';
     public $dsParamCACHE = '0';
 
     public $dsParamFILTERS = array(
-        'system:id' => '{$ds-bundles-by-handle.images:$ds-all-bundles.images}',
         '26' => 'yes',
     );
 
     public $dsParamINCLUDEDELEMENTS = array(
-        'bundle',
         'file',
+        'bundle',
         'description: formatted',
-        'attributes',
-        'uid'
+        'attributes'
     );
 
     public function __construct($env = null, $process_params = true)
     {
         parent::__construct($env, $process_params);
-        $this->_dependencies = array('$ds-bundles-by-handle.images', '$ds-all-bundles.images');
+        $this->_dependencies = array();
     }
 
     public function about()
@@ -47,7 +42,7 @@ class datasourceall_images extends SectionDatasource
                 'website' => 'http://fulanito.localhost',
                 'email' => 'noreply@localhost.tld'),
             'version' => 'Symphony 2.5.1',
-            'release-date' => '2014-10-27T12:57:08+00:00'
+            'release-date' => '2014-10-28T23:07:43+00:00'
         );
     }
 

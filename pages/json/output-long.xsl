@@ -2,9 +2,9 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <!-- <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform" xmlns:exsl="http://exslt.org/common" extension-element-prefixes="exsl"> -->
 
+<xsl:import href="common-prepare-json.xsl"/>
+<xsl:import href="common-output-json.xsl"/>
 <xsl:strip-space elements="*"/>
-
-<xsl:include href="helpers.xsl"/>
 
 <xsl:template match="images/item" mode="output-json">
 	<xsl:call-template name="output-json">
@@ -35,25 +35,6 @@
 			</xsl:otherwise>
 		</xsl:choose>
 	</images>
-</xsl:template>
-
-<xsl:template match="attributes" mode="prepare-json">
-	<attrs>
-		<xsl:choose>
-			<xsl:when test="item">
-				<xsl:copy-of select="item"/>
-			</xsl:when>
-			<xsl:otherwise>
-				<empty/>
-			</xsl:otherwise>
-		</xsl:choose>
-	</attrs>
-</xsl:template>
-
-<xsl:template match="description" mode="prepare-json">
-	<desc mode="formatted">
-		<xsl:copy-of select="*"/>
-	</desc>
 </xsl:template>
 
 </xsl:stylesheet>

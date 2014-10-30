@@ -81,8 +81,8 @@
 		<xsl:with-param name="xml">
 			<id><xsl:value-of select="@id"/></id>
 			<handle><xsl:value-of select="name/@handle"/></handle>
-			<typeId><xsl:value-of select="type/item/@id"/></typeId>
 			<xsl:copy-of select="name"/>
+			<tId><xsl:value-of select="type/item/@id"/></tId>
 		</xsl:with-param>
 	</xsl:call-template>
 	<xsl:if test="position() != last()">

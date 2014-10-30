@@ -14,7 +14,6 @@ class datasourceall_images extends SectionDatasource
     public $dsParamREDIRECTONREQUIRED = 'no';
     public $dsParamSORT = 'system:id';
     public $dsParamASSOCIATEDENTRYCOUNTS = 'no';
-    public $dsParamCACHE = '0';
 
     public $dsParamFILTERS = array(
         '26' => 'yes',

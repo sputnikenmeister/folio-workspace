@@ -2,56 +2,52 @@
 
 require_once TOOLKIT . '/class.datasource.php';
 
-class datasourcekeywords_by_id extends SectionDatasource
+class datasourcefind_types extends SectionDatasource
 {
-    public $dsParamROOTELEMENT = 'keywords-by-id';
-    public $dsParamORDER = 'desc';
+    public $dsParamROOTELEMENT = 'find-types';
+    public $dsParamORDER = 'asc';
     public $dsParamPAGINATERESULTS = 'yes';
     public $dsParamLIMIT = '{$url-pagesize:99}';
     public $dsParamSTARTPAGE = '{$url-pagenum:1}';
     public $dsParamREDIRECTONEMPTY = 'no';
     public $dsParamREDIRECTONFORBIDDEN = 'no';
     public $dsParamREDIRECTONREQUIRED = 'no';
-    public $dsParamPARAMOUTPUT = array(
-        'type'
-        );
-    public $dsParamSORT = 'system:id';
+    public $dsParamSORT = 'order';
     public $dsParamASSOCIATEDENTRYCOUNTS = 'no';
 
     public $dsParamFILTERS = array(
-        '32' => 'yes',
-        'system:id' => '{$keywords:$ds-bundles-by-id.keywords:$ds-bundles-by-handle.keywords}',
+        'system:id' => '{$ds-find-keywords.type:$types}',
+        '29' => 'yes',
     );
 
     public $dsParamINCLUDEDELEMENTS = array(
         'system:pagination',
         'name',
-        'type',
         'attributes'
     );
 
     public function __construct($env = null, $process_params = true)
     {
         parent::__construct($env, $process_params);
-        $this->_dependencies = array('$ds-bundles-by-id.keywords', '$ds-bundles-by-handle.keywords');
+        $this->_dependencies = array('$ds-find-keywords.type');
     }
 
     public function about()
     {
         return array(
-            'name' => 'Keywords by ID',
+            'name' => 'Find Types',
             'author' => array(
                 'name' => 'Pablo Canillas',
                 'website' => 'http://fulanito.localhost',
                 'email' => 'noreply@localhost.tld'),
-            'version' => 'Symphony 2.5.0',
-            'release-date' => '2014-09-30T20:51:59+00:00'
+            'version' => 'Symphony 2.5.1',
+            'release-date' => '2014-10-30T14:09:06+00:00'
         );
     }
 
     public function getSource()
     {
-        return '2';
+        return '7';
     }
 
     public function allowEditorToParse()

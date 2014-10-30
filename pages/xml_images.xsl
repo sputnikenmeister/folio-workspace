@@ -8,7 +8,7 @@
 	<xsl:choose>
 		<xsl:when test="$filter = 'count'">
 			<count>
-				<xsl:value-of select="data/images-by-id/pagination/@total-entries" />
+				<xsl:value-of select="data/find-images/pagination/@total-entries" />
 			</count>
 		</xsl:when>
 		<xsl:when test="($filter = 'items') and ($images = '')">
@@ -16,7 +16,7 @@
 		</xsl:when>
 		<xsl:otherwise>
 			<data>
-				<xsl:apply-templates select="data/images-by-id/entry"/>
+				<xsl:apply-templates select="data/find-images/entry"/>
 			</data>
 		</xsl:otherwise>
 	</xsl:choose>

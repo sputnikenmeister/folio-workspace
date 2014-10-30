@@ -13,7 +13,7 @@
 	<xsl:call-template name="output-json">
 		<xsl:with-param name="xml">
 			<id><xsl:value-of select="@id"/></id>
-			<file><xsl:copy-of select="file/filename/text()"/></file>
+			<f><xsl:copy-of select="file/filename/text()"/></f>
 			<!-- <url><xsl:value-of select="file/@path"/>/<xsl:copy-of select="file/filename/text()"/></url> -->
 			<w><xsl:value-of select="file/meta/@width"/></w>
 			<h><xsl:value-of select="file/meta/@height"/></h>
@@ -34,7 +34,8 @@
 			<id><xsl:value-of select="@id"/></id>
 			<handle><xsl:value-of select="name/@handle"/></handle>
 			<xsl:copy-of select="name | completed"/>
-			<xsl:apply-templates select="attributes | keywords | images" mode="prepare-json"/>
+			<xsl:apply-templates select="keywords | images" mode="prepare-json"/>
+			<xsl:apply-templates select="attributes" mode="prepare-json"/>
 		</xsl:with-param>
 	</xsl:call-template>
 	<xsl:if test="position() != last()">
@@ -44,11 +45,11 @@
 
 <!-- Keywords -->
 <xsl:template match="keywords" mode="prepare-json">
-	<keywordIds>
+	<kIds>
 		<xsl:copy-of select="item"/>
-	</keywordIds>
+	</kIds>
 </xsl:template>
-<xsl:template match="keywordIds/item" mode="output-json">
+<xsl:template match="kIds/item" mode="output-json">
 	<xsl:value-of select="@id" />
 	<xsl:if test="position() != last()">
 		<xsl:text>,</xsl:text>
@@ -59,7 +60,7 @@
 <xsl:template match="images" mode="prepare-json">
 	<xsl:variable name="item-list" select="item[published/text() = 'Yes']"/>
 	<!-- <xsl:variable name="item-list" select="item"/> -->
-	<imageIds>
+	<iIds>
 		<xsl:choose>
 			<xsl:when test="$item-list">
 				<xsl:copy-of select="$item-list"/>
@@ -69,9 +70,9 @@
 				<empty/>
 			</xsl:otherwise>
 		</xsl:choose>
-	</imageIds>
+	</iIds>
 </xsl:template>
-<xsl:template match="imageIds/item" mode="output-json">
+<xsl:template match="iIds/item" mode="output-json">
 	<xsl:value-of select="@id" />
 	<xsl:if test="position() != last()">
 		<xsl:text>,</xsl:text>

@@ -14,7 +14,6 @@ class datasourceall_types extends SectionDatasource
     public $dsParamREDIRECTONREQUIRED = 'no';
     public $dsParamSORT = 'order';
     public $dsParamASSOCIATEDENTRYCOUNTS = 'no';
-    public $dsParamCACHE = '0';
 
     public $dsParamFILTERS = array(
         '29' => 'yes',

@@ -2,9 +2,9 @@
 
 require_once TOOLKIT . '/class.datasource.php';
 
-class datasourceimages_by_id extends SectionDatasource
+class datasourcefind_images extends SectionDatasource
 {
-    public $dsParamROOTELEMENT = 'images-by-id';
+    public $dsParamROOTELEMENT = 'find-images';
     public $dsParamORDER = 'desc';
     public $dsParamPAGINATERESULTS = 'yes';
     public $dsParamLIMIT = '{$url-pagesize:99}';
@@ -16,14 +16,14 @@ class datasourceimages_by_id extends SectionDatasource
     public $dsParamASSOCIATEDENTRYCOUNTS = 'no';
 
     public $dsParamFILTERS = array(
-        'system:id' => '{$images:$ds-bundles-by-handle.images}',
+        'system:id' => '{$images}',
         '26' => 'yes',
     );
 
     public $dsParamINCLUDEDELEMENTS = array(
         'system:pagination',
-        'name',
         'file',
+        'bundle',
         'description: unformatted',
         'attributes'
     );
@@ -31,19 +31,19 @@ class datasourceimages_by_id extends SectionDatasource
     public function __construct($env = null, $process_params = true)
     {
         parent::__construct($env, $process_params);
-        $this->_dependencies = array('$ds-bundles-by-handle.images');
+        $this->_dependencies = array();
     }
 
     public function about()
     {
         return array(
-            'name' => 'Images by ID',
+            'name' => 'Find Images',
             'author' => array(
                 'name' => 'Pablo Canillas',
                 'website' => 'http://fulanito.localhost',
                 'email' => 'noreply@localhost.tld'),
             'version' => 'Symphony 2.5.1',
-            'release-date' => '2014-10-13T22:51:37+00:00'
+            'release-date' => '2014-10-30T14:08:00+00:00'
         );
     }
 

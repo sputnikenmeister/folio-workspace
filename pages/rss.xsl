@@ -33,12 +33,12 @@
 			<sy:updatePeriod>weekly</sy:updatePeriod>
 			<sy:updateFrequency>1</sy:updateFrequency>
 			<generator>Symphony (build <xsl:value-of select="$symphony-version"/>)</generator>
-			<xsl:apply-templates select="bundles-by-id/entry" />
+			<xsl:apply-templates select="find-bundles/entry" />
 		</channel>
 	</rss>
 </xsl:template>
 
-<xsl:template match="bundles-by-id/entry" >
+<xsl:template match="find-bundles/entry" >
 	<item>
 		<title><xsl:value-of select="name"/></title>
 		<link><xsl:value-of select="$root"/>/bundles/<xsl:value-of select="name/@handle"/>/</link>

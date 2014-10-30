@@ -7,9 +7,9 @@
 
 <xsl:template match="/">
 	<data>
-		<xsl:apply-templates select="//types-by-id/entry" />
-		<xsl:apply-templates select="//keywords-by-id/entry" />
-		<xsl:apply-templates select="//bundles-by-id/entry" />
+		<xsl:apply-templates select="data/find-types/entry" />
+		<xsl:apply-templates select="data/find-keywords/entry" />
+		<xsl:apply-templates select="data/find-bundles/entry" />
 	</data>
 </xsl:template>
 

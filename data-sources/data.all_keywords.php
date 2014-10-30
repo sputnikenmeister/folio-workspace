@@ -17,7 +17,6 @@ class datasourceall_keywords extends SectionDatasource
         );
     public $dsParamSORT = 'system:id';
     public $dsParamASSOCIATEDENTRYCOUNTS = 'no';
-    public $dsParamCACHE = '0';
 
     public $dsParamFILTERS = array(
         '32' => 'yes',

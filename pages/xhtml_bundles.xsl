@@ -13,24 +13,24 @@
 <xsl:template name="page-title">
 	<xsl:value-of select="$website-name"/>
 	<xsl:text> &#8212; </xsl:text>
-	<xsl:value-of select="/data/bundles-by-handle/entry[1]/name/text()"/>
+	<xsl:value-of select="/data/get-bundle/entry[1]/name/text()"/>
 </xsl:template>
 
 <xsl:template match="data">
 <div id="navigation">
 	<xsl:apply-templates select="all-types"/>
-	<xsl:apply-templates select="bundles-by-handle/entry[1]" mode="navigation"/>
+	<xsl:apply-templates select="get-bundle/entry[1]" mode="navigation"/>
 </div>
 <div id="content">
-	<xsl:apply-templates select="bundles-by-handle/entry[1]" mode="content"/>
-	<xsl:apply-templates select="bundles-by-handle/error"/>
+	<xsl:apply-templates select="get-bundle/entry[1]" mode="content"/>
+	<xsl:apply-templates select="get-bundle/error"/>
 </div>
 </xsl:template>
 
 <!--
   ** Bundle
   -->
-<xsl:template match="bundles-by-handle/entry" mode="navigation">
+<xsl:template match="get-bundle/entry" mode="navigation">
 	<!-- bundle pager -->
 	<xsl:variable name="current-bundle" select="/data/all-bundles/entry[@id = current()/@id]"/>
 	<xsl:variable name="preceding-bundle" select="$current-bundle/preceding-sibling::entry[1]"/>
@@ -65,11 +65,11 @@
 	</div>
 </xsl:template>
 
-<xsl:template match="bundles-by-handle/entry" mode="content">
+<xsl:template match="get-bundle/entry" mode="content">
 	<xsl:apply-templates select="images" />
 </xsl:template>
 
-<xsl:template match="bundles-by-handle/error">
+<xsl:template match="get-bundle/error">
 	<div class="bundle-detail">
 		<h2>Here be dragons, ye be warned</h2>
 		<p>Ok, I maybe made a mistake on my website.</p>
@@ -119,7 +119,7 @@
 <!--
   ** Types/Keywords
   -->
-<xsl:variable name="bundle-keywords" select="//ds-bundles-by-handle.keywords" />
+<xsl:variable name="bundle-keywords" select="//ds-get-bundle.keywords" />
 
 <xsl:template match="all-types">
 	<dl id="keyword-list" class="selectable-list">

@@ -2,52 +2,71 @@
 
 require_once TOOLKIT . '/class.datasource.php';
 
-class datasourcetypes_by_id extends SectionDatasource
+class datasourceget_bundle extends SectionDatasource
 {
-    public $dsParamROOTELEMENT = 'types-by-id';
-    public $dsParamORDER = 'asc';
+    public $dsParamROOTELEMENT = 'get-bundle';
+    public $dsParamORDER = 'desc';
     public $dsParamPAGINATERESULTS = 'yes';
-    public $dsParamLIMIT = '{$url-pagesize:99}';
-    public $dsParamSTARTPAGE = '{$url-pagenum:1}';
-    public $dsParamREDIRECTONEMPTY = 'no';
+    public $dsParamLIMIT = '1';
+    public $dsParamSTARTPAGE = '1';
+    public $dsParamREDIRECTONEMPTY = 'yes';
     public $dsParamREDIRECTONFORBIDDEN = 'no';
     public $dsParamREDIRECTONREQUIRED = 'no';
-    public $dsParamSORT = 'order';
+    public $dsParamPARAMOUTPUT = array(
+        'images',
+        'keywords'
+        );
+    public $dsParamSORT = 'completed';
     public $dsParamASSOCIATEDENTRYCOUNTS = 'no';
 
     public $dsParamFILTERS = array(
-        '29' => 'yes',
-        'system:id' => '{$types:$ds-keywords-by-id.type}',
+        'system:id' => '{$ds-map-bundles-by-handle.system-id:$bundles:0}',
+        '5' => 'yes',
     );
 
     public $dsParamINCLUDEDELEMENTS = array(
-        'system:pagination',
         'name',
+        'completed',
+        'description: formatted',
+        'images',
         'attributes'
+    );
+    
+    public $dsParamINCLUDEDASSOCIATIONS = array(
+        'images' => array(
+            'section_id' => '5',
+            'field_id' => '45',
+            'elements' => array(
+                'published',
+                'file',
+                'description: formatted',
+                'attributes'
+            )
+        )
     );
 
     public function __construct($env = null, $process_params = true)
     {
         parent::__construct($env, $process_params);
-        $this->_dependencies = array('$ds-keywords-by-id.type');
+        $this->_dependencies = array('$ds-map-bundles-by-handle.system-id');
     }
 
     public function about()
     {
         return array(
-            'name' => 'Types by ID',
+            'name' => 'Get Bundle',
             'author' => array(
                 'name' => 'Pablo Canillas',
                 'website' => 'http://fulanito.localhost',
                 'email' => 'noreply@localhost.tld'),
-            'version' => 'Symphony 2.5.0',
-            'release-date' => '2014-09-28T10:34:21+00:00'
+            'version' => 'Symphony 2.5.1',
+            'release-date' => '2014-10-30T14:26:47+00:00'
         );
     }
 
     public function getSource()
     {
-        return '7';
+        return '1';
     }
 
     public function allowEditorToParse()

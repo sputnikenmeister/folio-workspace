@@ -8,7 +8,7 @@
 	<xsl:choose>
 		<xsl:when test="$filter = 'count'">
 			<count>
-				<xsl:value-of select="data/types-by-id/pagination/@total-entries" />
+				<xsl:value-of select="data/find-types/pagination/@total-entries" />
 			</count>
 		</xsl:when>
 		<xsl:when test="($filter = 'items') and ($types = '')">
@@ -16,7 +16,7 @@
 		</xsl:when>
 		<xsl:otherwise>
 			<data>
-				<xsl:apply-templates select="data/types-by-id/entry" />
+				<xsl:apply-templates select="data/find-types/entry" />
 			</data>
 		</xsl:otherwise>
 	</xsl:choose>

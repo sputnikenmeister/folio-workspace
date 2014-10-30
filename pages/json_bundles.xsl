@@ -6,22 +6,21 @@
 <xsl:strip-space elements="*"/>
 
 <xsl:template match="/">
-	<xsl:apply-templates select="/data/bundles-by-handle/entry"/>
-	<xsl:apply-templates select="/data/bundles-by-handle/error"/>
+	<xsl:apply-templates select="/data/get-bundle/entry"/>
+	<xsl:apply-templates select="/data/get-bundle/error"/>
 </xsl:template>
 
-<xsl:template match="bundles-by-handle/error">
+<xsl:template match="get-bundle/error">
 	<xsl:text>{}</xsl:text>
 </xsl:template>
 
-<xsl:template match="bundles-by-handle/entry">
+<xsl:template match="get-bundle/entry">
 </xsl:template>
 
-<xsl:template match="bundles-by-handle/entry[1]">
+<xsl:template match="get-bundle/entry[1]">
 	<xsl:call-template name="output-json">
 		<xsl:with-param name="xml">
 			<id><xsl:value-of select="@id"/></id>
-			<uid><xsl:value-of select="uid/@handle"/></uid>
 			<handle><xsl:value-of select="name/@handle"/></handle>
 			<xsl:copy-of select="name | completed "/>
 			<xsl:apply-templates select="description | attributes | images" mode="prepare-json"/>

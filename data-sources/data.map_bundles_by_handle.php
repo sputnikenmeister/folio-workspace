@@ -2,57 +2,26 @@
 
 require_once TOOLKIT . '/class.datasource.php';
 
-class datasourcebundles_by_id extends SectionDatasource
+class datasourcemap_bundles_by_handle extends SectionDatasource
 {
-    public $dsParamROOTELEMENT = 'bundles-by-id';
+    public $dsParamROOTELEMENT = 'map-bundles-by-handle';
     public $dsParamORDER = 'desc';
-    public $dsParamPAGINATERESULTS = 'yes';
-    public $dsParamLIMIT = '{$url-pagesize:99}';
-    public $dsParamSTARTPAGE = '{$url-pagenum:1}';
+    public $dsParamPAGINATERESULTS = 'no';
+    public $dsParamLIMIT = '20';
+    public $dsParamSTARTPAGE = '1';
     public $dsParamREDIRECTONEMPTY = 'no';
     public $dsParamREDIRECTONFORBIDDEN = 'no';
     public $dsParamREDIRECTONREQUIRED = 'no';
+    public $dsParamREQUIREDPARAM = '$bundles';
     public $dsParamPARAMOUTPUT = array(
-        'keywords'
+        'system:id'
         );
-    public $dsParamSORT = 'completed';
+    public $dsParamSORT = 'system:id';
     public $dsParamASSOCIATEDENTRYCOUNTS = 'no';
 
     public $dsParamFILTERS = array(
+        '1' => '{$bundles}',
         '5' => 'yes',
-        'system:id' => '{$bundles}',
-    );
-
-    public $dsParamINCLUDEDELEMENTS = array(
-        'system:pagination',
-        'name',
-        'completed',
-        'description: formatted',
-        'attributes',
-        'images',
-        'keywords'
-    );
-    
-    public $dsParamINCLUDEDASSOCIATIONS = array(
-        'images' => array(
-            'section_id' => '5',
-            'field_id' => '45',
-            'elements' => array(
-                'file',
-                'published',
-                'description: formatted',
-                'attributes'
-            )
-        ),
-        'keywords' => array(
-            'section_id' => '2',
-            'field_id' => '46',
-            'elements' => array(
-                'published',
-                'name',
-                'attributes'
-            )
-        )
     );
 
     public function __construct($env = null, $process_params = true)
@@ -64,13 +33,13 @@ class datasourcebundles_by_id extends SectionDatasource
     public function about()
     {
         return array(
-            'name' => 'Bundles by ID',
+            'name' => 'Map Bundles by Handle',
             'author' => array(
                 'name' => 'Pablo Canillas',
                 'website' => 'http://fulanito.localhost',
                 'email' => 'noreply@localhost.tld'),
-            'version' => 'Symphony 2.5.0',
-            'release-date' => '2014-09-28T12:07:59+00:00'
+            'version' => 'Symphony 2.5.1',
+            'release-date' => '2014-10-30T13:01:16+00:00'
         );
     }
 

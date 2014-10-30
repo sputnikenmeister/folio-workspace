@@ -2,14 +2,14 @@
 
 require_once TOOLKIT . '/class.datasource.php';
 
-class datasourcebundles_by_handle extends SectionDatasource
+class datasourcefind_bundles extends SectionDatasource
 {
-    public $dsParamROOTELEMENT = 'bundles-by-handle';
+    public $dsParamROOTELEMENT = 'find-bundles';
     public $dsParamORDER = 'desc';
-    public $dsParamPAGINATERESULTS = 'no';
+    public $dsParamPAGINATERESULTS = 'yes';
     public $dsParamLIMIT = '{$url-pagesize:99}';
     public $dsParamSTARTPAGE = '{$url-pagenum:1}';
-    public $dsParamREDIRECTONEMPTY = 'yes';
+    public $dsParamREDIRECTONEMPTY = 'no';
     public $dsParamREDIRECTONFORBIDDEN = 'no';
     public $dsParamREDIRECTONREQUIRED = 'no';
     public $dsParamPARAMOUTPUT = array(
@@ -19,15 +19,17 @@ class datasourcebundles_by_handle extends SectionDatasource
     public $dsParamASSOCIATEDENTRYCOUNTS = 'no';
 
     public $dsParamFILTERS = array(
-        '1' => '{$ds-bundles-by-id-to-handle.name:$bundles}',
+        'system:id' => '{$bundles}',
         '5' => 'yes',
     );
 
     public $dsParamINCLUDEDELEMENTS = array(
+        'system:pagination',
         'name',
         'completed',
         'description: formatted',
         'images',
+        'keywords',
         'attributes'
     );
     
@@ -41,25 +43,34 @@ class datasourcebundles_by_handle extends SectionDatasource
                 'description: formatted',
                 'attributes'
             )
+        ),
+        'keywords' => array(
+            'section_id' => '2',
+            'field_id' => '46',
+            'elements' => array(
+                'published',
+                'name',
+                'attributes'
+            )
         )
     );
 
     public function __construct($env = null, $process_params = true)
     {
         parent::__construct($env, $process_params);
-        $this->_dependencies = array('$ds-bundles-by-id-to-handle.name');
+        $this->_dependencies = array();
     }
 
     public function about()
     {
         return array(
-            'name' => 'Bundles by handle',
+            'name' => 'Find Bundles',
             'author' => array(
                 'name' => 'Pablo Canillas',
                 'website' => 'http://fulanito.localhost',
                 'email' => 'noreply@localhost.tld'),
             'version' => 'Symphony 2.5.1',
-            'release-date' => '2014-10-29T17:30:03+00:00'
+            'release-date' => '2014-10-30T14:07:28+00:00'
         );
     }
 

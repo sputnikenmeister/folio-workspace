@@ -20,6 +20,7 @@
 	<!-- <script type="text/javascript" src="{$workspace}/assets/lib/jquery.hammer.js"></script> -->
 	<script type="text/javascript" src="{$workspace}/assets/lib/underscore.js"></script>
 	<script type="text/javascript" src="{$workspace}/assets/lib/backbone.js"></script>
+	<script type="text/javascript" src="{$workspace}/assets/lib/backbone.babysitter.js"></script>
 </xsl:template>
 
 <!-- Footer Scripts -->

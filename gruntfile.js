@@ -47,6 +47,7 @@ module.exports = function (grunt) {
 					"hammer.js"			: "hammerjs/hammer.js",
 					"underscore.js"		: "underscore/underscore.js",
 					"backbone.js"		: "backbone/backbone.js",
+					"backbone.babysitter.js"		: "backbone.babysitter/lib/backbone.babysitter.js",
 				}
 			}
 		},
@@ -155,6 +156,7 @@ module.exports = function (grunt) {
 						"hammerjs"    : { "path": "assets/lib/hammer.js" },
 						"underscore"  : { "path": "assets/lib/underscore.js" },
 						"backbone"    : { "path": "assets/lib/backbone.js" },
+						// "backbone.babysitter"    : { "path": "assets/lib/backbone.babysitter.js" },
 					}
 				 },
 				 files: {

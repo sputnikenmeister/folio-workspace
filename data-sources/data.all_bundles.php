@@ -60,10 +60,10 @@ class datasourceall_bundles extends SectionDatasource
             'name' => 'All Bundles',
             'author' => array(
                 'name' => 'Pablo Canillas',
-                'website' => 'http://fulanito.localhost',
+                'website' => 'http://folio.local.',
                 'email' => 'noreply@localhost.tld'),
             'version' => 'Symphony 2.5.1',
-            'release-date' => '2014-10-30T15:18:20+00:00'
+            'release-date' => '2014-11-01T23:10:46+00:00'
         );
     }
 

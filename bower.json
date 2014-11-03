@@ -18,22 +18,19 @@
     "jquery": "~1.11.1",
     "jquery-hammerjs": "~2.0.0",
     "backbone": "~1.1.2",
-    "backbone.hammer": "~1.0.1",
+    "backbone.babysitter": "~0.1.5",
     "modernizr": "~2.8.3",
-    "marionette": "~2.2.1",
-    "backbone.radio": "~0.7.0",
+    "headjs": "~1.0.3",
     "es5-shim": "~4.0.3",
-    "html5shiv": "~3.7.2",
-    "animation-frame": "~0.1.7",
-    "exoskeleton": "~0.7.0"
+    "html5shiv": "~3.7.2"
   },
   "devDependencies": {
-    "zepto": "~1.1.4",
-    "headjs": "~1.0.3",
-    "jquery-address": "*",
-    "hammer-touchemulator": "~0.0.2",
     "backbone.picky": "~0.2.0",
-    "backbone.babysitter": "~0.1.5"
+    "animation-frame": "~0.1.7",
+    "marionette": "~2.2.1",
+    "backbone.radio": "~0.7.0",
+    "exoskeleton": "~0.7.0",
+    "zepto": "~1.1.4"
   },
   "resolutions": {
     "hammerjs": "~2.0.4",

@@ -43,13 +43,13 @@
 
 <!-- Container HTML -->
 <xsl:template match="data">
-	<div id="navigation">
+	<div id="navigation" class="navigation">
 		<!-- all keywords+types -->
 		<xsl:apply-templates select="all-types"/>
 		<!-- all bundles-->
 		<xsl:apply-templates select="all-bundles"/>
 	</div>
-	<div id="content" class="viewport"></div>
+	<div id="content" class="content viewport"></div>
 </xsl:template>
 
 <!-- bundle-list -->
@@ -62,10 +62,10 @@
 <!-- bundle-list item -->
 <xsl:template match="all-bundles/entry">
 	<li id="b{@id}" class="item">
-		<span class="completed meta pubDate" data-datetime="{completed/text()}">
-			<xsl:value-of select="substring(completed/text(),1,4)"/>
-		</span>
-		<span class="name">
+		<!-- <span class="completed meta pubDate" data-datetime="{completed/text()}"> -->
+			<!-- <xsl:value-of select="substring(completed/text(),1,4)"/> -->
+		<!-- </span> -->
+		<!-- <span class="name"> -->
 			<a href="{$root}/bundles/{name/@handle}">
 				<xsl:choose>
 					<xsl:when test="display-name">
@@ -76,7 +76,7 @@
 					</xsl:otherwise>
 				</xsl:choose>
 			</a>
-		</span>
+		<!-- </span> -->
 	</li>
 </xsl:template>
 

@@ -28,7 +28,7 @@
 </xsl:template>
 
 <!--
-  ** Bundle
+  ~~ Bundle
   -->
 <xsl:template match="get-bundle/entry" mode="navigation">
 	<!-- bundle pager -->
@@ -65,10 +65,6 @@
 	</div>
 </xsl:template>
 
-<xsl:template match="get-bundle/entry" mode="content">
-	<xsl:apply-templates select="images" />
-</xsl:template>
-
 <xsl:template match="get-bundle/error">
 	<div class="bundle-detail">
 		<h2>Here be dragons, ye be warned</h2>
@@ -76,8 +72,12 @@
 	</div>
 </xsl:template>
 
+<xsl:template match="get-bundle/entry" mode="content">
+	<xsl:apply-templates select="images" />
+</xsl:template>
+
 <!--
-  ** Images
+  ~~ Images
   -->
 <xsl:variable name="img-width" select="700" />
 
@@ -106,23 +106,21 @@
 		</xsl:if>
 		<img width="{$img-width}"
 			 height="{floor(($img-width div file/meta/@width) * file/meta/@height)}"
-			 title="{file/filename}" alt="{file/filename}"
+			 title="{file/filename}" alt="{file/filename}" longdesc="#i{@id}-caption"
 			 src="{$root}/image/1/{$img-width}/0{file/@path}/{file/filename}"/>
-		<!-- Without JIT recipe:	src="{$root}/image/1/{$img-width}/0{file/@path}/{file/filename}" -->
-		<!-- With JIT recipe:		src="{$root}/image/bundle{file/@path}/{file/filename}"	-->
-		<div class="caption">
+		<div id="i{@id}-caption" class="caption longdesc">
 			<xsl:apply-templates select="description/*" mode="html"/>
 		</div>
 	</li>
 </xsl:template>
 
 <!--
-  ** Types/Keywords
+  ~~ Types/Keywords
   -->
 <xsl:variable name="bundle-keywords" select="//ds-get-bundle.keywords" />
 
 <xsl:template match="all-types">
-	<dl id="keyword-list" class="selectable-list">
+	<dl id="keyword-list" class="list selectable filterable grouped">
 		<xsl:apply-templates select="entry"/>
 	</dl>
 </xsl:template>
@@ -133,10 +131,10 @@
 		<xsl:attribute name="class">
 			<xsl:choose>
 				<xsl:when test="$bundle-keywords/item[@handle = $current-type-keywords/@id]">
-					<xsl:copy-of select="'group'"/>
+					<xsl:copy-of select="'list-group'"/>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:copy-of select="'group excluded'"/>
+					<xsl:copy-of select="'list-group excluded'"/>
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:attribute>
@@ -150,10 +148,10 @@
 		<xsl:attribute name="class">
 			<xsl:choose>
 				<xsl:when test="$bundle-keywords/item[@handle = current()/@id]">
-					<xsl:copy-of select="'item'"/>
+					<xsl:copy-of select="'list-item'"/>
 				</xsl:when>
 				<xsl:otherwise>
-					<xsl:copy-of select="'item excluded'"/>
+					<xsl:copy-of select="'list-item excluded'"/>
 				</xsl:otherwise>
 			</xsl:choose>
 		</xsl:attribute>

@@ -15,12 +15,13 @@
 
 <!-- Head Scripts -->
 <xsl:template match="data" mode="html-head-scripts">
-	<script type="text/javascript" src="{$workspace}/assets/lib/jquery.js"></script>
-	<script type="text/javascript" src="{$workspace}/assets/lib/hammer.js"></script>
-	<!-- <script type="text/javascript" src="{$workspace}/assets/lib/jquery.hammer.js"></script> -->
-	<script type="text/javascript" src="{$workspace}/assets/lib/underscore.js"></script>
-	<script type="text/javascript" src="{$workspace}/assets/lib/backbone.js"></script>
-	<script type="text/javascript" src="{$workspace}/assets/lib/backbone.babysitter.js"></script>
+	<!-- Library bundle -->
+	<script type="text/javascript" src="{$workspace}/assets/js/vendor.js"></script>
+	<!-- <script type="text/javascript" src="{$workspace}/assets/lib/jquery.js"></script> -->
+	<!-- <script type="text/javascript" src="{$workspace}/assets/lib/hammer.js"></script> -->
+	<!-- <script type="text/javascript" src="{$workspace}/assets/lib/underscore.js"></script> -->
+	<!-- <script type="text/javascript" src="{$workspace}/assets/lib/backbone.js"></script> -->
+	<!-- <script type="text/javascript" src="{$workspace}/assets/lib/modernizr.js"></script> -->
 </xsl:template>
 
 <!-- Footer Scripts -->
@@ -54,29 +55,27 @@
 
 <!-- bundle-list -->
 <xsl:template match="all-bundles">
-	<ul id="bundle-list" class="selectable-list">
+	<ul id="bundle-list" class="list selectable filterable">
 		<xsl:apply-templates select="entry"/>
 	</ul>
 </xsl:template>
 
 <!-- bundle-list item -->
 <xsl:template match="all-bundles/entry">
-	<li id="b{@id}" class="item">
-		<!-- <span class="completed meta pubDate" data-datetime="{completed/text()}"> -->
-			<!-- <xsl:value-of select="substring(completed/text(),1,4)"/> -->
-		<!-- </span> -->
-		<!-- <span class="name"> -->
-			<a href="{$root}/bundles/{name/@handle}">
-				<xsl:choose>
-					<xsl:when test="display-name">
-						<xsl:apply-templates select="display-name/*" mode="html"/>
-					</xsl:when>
-					<xsl:otherwise>
-						<xsl:copy-of select="name/text()"/>
-					</xsl:otherwise>
-				</xsl:choose>
-			</a>
-		<!-- </span> -->
+	<li id="b{@id}" class="list-item">
+		<span class="completed meta pubDate" data-datetime="{completed/text()}">
+			<xsl:value-of select="substring(completed/text(),1,4)"/>
+		</span>
+		<a class="name" href="{$root}/bundles/{name/@handle}">
+			<xsl:choose>
+				<xsl:when test="display-name">
+					<xsl:apply-templates select="display-name/*[1]/*" mode="html"/>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:copy-of select="name/text()"/>
+				</xsl:otherwise>
+			</xsl:choose>
+		</a>
 	</li>
 </xsl:template>
 

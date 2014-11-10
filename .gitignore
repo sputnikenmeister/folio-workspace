@@ -1,6 +1,7 @@
 .DS_Store
 *.esproj
 ~*
+_~*
 node_modules/
 bower_components/
 .bower_components/
@@ -12,3 +13,4 @@ assets/fonts/
 assets/js/
 assets/lib/
 assets/html/
+assets/src/js/vendor/

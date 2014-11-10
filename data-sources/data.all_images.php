@@ -12,7 +12,7 @@ class datasourceall_images extends SectionDatasource
     public $dsParamREDIRECTONEMPTY = 'no';
     public $dsParamREDIRECTONFORBIDDEN = 'no';
     public $dsParamREDIRECTONREQUIRED = 'no';
-    public $dsParamSORT = 'system:id';
+    public $dsParamSORT = 'order';
     public $dsParamASSOCIATEDENTRYCOUNTS = 'no';
 
     public $dsParamFILTERS = array(
@@ -23,7 +23,7 @@ class datasourceall_images extends SectionDatasource
         'file',
         'bundle',
         'description: formatted',
-        'attributes'
+        'attributes',
     );
 
     public function __construct($env = null, $process_params = true)
@@ -38,10 +38,10 @@ class datasourceall_images extends SectionDatasource
             'name' => 'All Images',
             'author' => array(
                 'name' => 'Pablo Canillas',
-                'website' => 'http://fulanito.localhost',
+                'website' => 'http://folio.local.',
                 'email' => 'noreply@localhost.tld'),
             'version' => 'Symphony 2.5.1',
-            'release-date' => '2014-10-28T23:07:43+00:00'
+            'release-date' => '2014-11-05T14:49:07+00:00'
         );
     }
 

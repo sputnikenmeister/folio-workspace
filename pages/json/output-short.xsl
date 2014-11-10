@@ -34,7 +34,8 @@
 			<id><xsl:value-of select="@id"/></id>
 			<handle><xsl:value-of select="name/@handle"/></handle>
 			<xsl:copy-of select="name | completed"/>
-			<xsl:apply-templates select="keywords | images" mode="prepare-json"/>
+			<xsl:apply-templates select="keywords" mode="prepare-json"/>
+			<xsl:apply-templates select="images" mode="prepare-json"/>
 			<xsl:apply-templates select="attributes" mode="prepare-json"/>
 		</xsl:with-param>
 	</xsl:call-template>
@@ -72,6 +73,7 @@
 		</xsl:choose>
 	</iIds>
 </xsl:template>
+
 <xsl:template match="iIds/item" mode="output-json">
 	<xsl:value-of select="@id" />
 	<xsl:if test="position() != last()">

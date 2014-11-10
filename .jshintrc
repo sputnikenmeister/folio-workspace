@@ -12,7 +12,9 @@
 		"process": false,
 		"setInterval": false,
 		"clearInterval": false,
-		"module": true
+		"module": true,
+		"$": true,
+		"_": true
 	},
 	"boss": true,
 	"curly": false,

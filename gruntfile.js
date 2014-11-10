@@ -3,58 +3,17 @@ module.exports = function (grunt) {
 	"use strict";
 
 	grunt.loadNpmTasks("grunt-contrib-watch");			// Workflow
-	grunt.loadNpmTasks("grunt-contrib-concat");
-	// grunt.loadNpmTasks('grunt-contrib-copy');
 	grunt.loadNpmTasks("grunt-bower-install-simple");	// Dependencies
-	grunt.loadNpmTasks("grunt-bowercopy");
 	grunt.loadNpmTasks("grunt-contrib-compass");		// Sass
 	grunt.loadNpmTasks("grunt-autoprefixer");			// CSS
-	grunt.loadNpmTasks("grunt-csso");
 	grunt.loadNpmTasks("grunt-contrib-jshint");			// JavaScript
-	grunt.loadNpmTasks("grunt-contrib-cjsc");
-	// grunt.loadNpmTasks('grunt-browserify');
-	// grunt.loadNpmTasks("grunt-contrib-jscs");
+	grunt.loadNpmTasks("grunt-browserify");
 
 	grunt.initConfig({
 		pkg: grunt.file.readJSON("package.json"),
 
 		/*
-		 * Bower dependencies
-		 */
-		"bower-install-simple": {
-			options: {
-				color: true,
-				directory: ".bower_components"
-			},
-			dev: {
-				options: {
-					production: false,
-					clean: false
-				}
-			}
-		},
-
-		bowercopy: {
-			options: {
-				srcPrefix: ".bower_components"
-			},
-			libs: {
-				options: {
-					destPrefix: "assets/lib"
-				},
-				files: {
-					"jquery.js"			: "jquery/dist/jquery.js",
-					"hammer.js"			: "hammerjs/hammer.js",
-					"underscore.js"		: "underscore/underscore.js",
-					"backbone.js"		: "backbone/backbone.js",
-					"backbone.babysitter.js"		: "backbone.babysitter/lib/backbone.babysitter.js",
-				}
-			}
-		},
-
-		/*
-		 * Sass:
-		 * Using Compass compiler (requires gem)
+		 * Sass: Using Compass compiler (requires gem)
 		 */
 		compass: {
 			debug: {
@@ -73,19 +32,8 @@ module.exports = function (grunt) {
 		},
 
 		/*
-		 * CSS:
-		 * Concatenate, add prefixes (-moz-, -webkit-, etc.)
-		 * and optimize/minimize
+		 * CSS prefixes (-moz-, -webkit-, etc.)
 		 */
-		concat: {
-			flash: {
-				files: { "assets/css/flash.css": [
-						"assets/src/css/reset.css",
-						"assets/src/css/flash.css"
-					]
-				}
-			}
-		},
 		autoprefixer: {
 			styles: {
 				files: { "assets/css/folio.css": "assets/css/folio.css" }
@@ -94,97 +42,82 @@ module.exports = function (grunt) {
 				files: { "assets/css/flash.css": "assets/css/flash.css" }
 			}
 		},
-		csso: {
-			styles: {
-				files: { "assets/css/folio.min.css": "assets/css/folio.css" }
-			},
-			flash: {
-				files: { "assets/css/flash.min.css": "assets/css/flash.css" }
-			}
-		},
 
 		/*
-		 * JavaScript:
 		 * jshint: code quality check
-		 * jscs: code style check
-		 * cjsc: CommonJS compile
 		 */
 		jshint: {
 			options: {
 				jshintrc: ".jshintrc"
 			},
 			files: [
-				"assets/src/js/**/**/*.js"
+				"assets/src/js/app/**/*.js"
 			]
 		},
-		jscs: {
-			dist: {
+
+		/*
+		 * bower dependencies
+		 */
+		"bower-install-simple": {
+			options: {
+				color: true,
+				directory: ".bower_components"
+			},
+			dev: {
 				options: {
-					standard: "Jquery",
-					reportFull: true
-				},
-				files: {
-					src: [ "assets/src/js" ]
+					production: false,
+					clean: false
 				}
 			}
 		},
-		cjsc: {
-			debug: {
+
+		browserify: {
+			vendor: {
+				src: [],
+				dest: "assets/js/vendor.js",
 				options: {
-					sourceMap: "assets/js/*.map",
-					sourceMapRoot: "../src/js/app",
-					minify: false,
-					config: {
-						"jquery"      : { "globalProperty": "$" },
-						"hammerjs"    : { "globalProperty": "Hammer" },
-						"underscore"  : { "globalProperty": "_" },
-						"backbone"    : { "globalProperty": "Backbone" }
-					}
-				 },
-				 files: {
-						"assets/js/folio.js": "assets/src/js/app/App.js"
-				 }
-			 },
-			 dist: {
+					 browserifyOptions: {
+					 	debug: false,
+					 },
+					require: [
+						"jquery", "hammerjs", "velocity-animate",
+						"underscore", "backbone", "backbone.babysitter", "backbone.select", "backbone.cycle",
+					],
+					alias: [
+						"./.bower_components/backbone.picky/lib/amd/backbone.picky.js:backbone.picky",
+					]
+				}
+			},
+			client: {
+				dest: "./assets/js/folio.js",
+				src: [
+					"./assets/src/js/app/App.js",
+					// "assets/src/js/app/**/*.js",
+					// "assets/src/js/app/**/*.tpl"
+				],
 				options: {
-					debug: false,
-					minify: true,
-					banner: "/*! <%= pkg.name %> - v<%= pkg.version %> - " +
-								"<%= grunt.template.today(\"yyyy-mm-dd\") %> */",
-					config: {
-						"jquery"      : { "path": "assets/lib/jquery" },
-						"hammerjs"    : { "path": "assets/lib/hammer.js" },
-						"underscore"  : { "path": "assets/lib/underscore.js" },
-						"backbone"    : { "path": "assets/lib/backbone.js" },
-						// "backbone.babysitter"    : { "path": "assets/lib/backbone.babysitter.js" },
-					}
-				 },
-				 files: {
-					"assets/js/folio.min.js": "assets/src/js/app/App.js"
-				 }
-			 }
+					watch: true,
+					browserifyOptions: {
+						baseDir: "./assets/src/js",
+						fullPaths: false,
+						debug: true,
+					},
+					ignore: [
+						"./assets/src/js/app/control/AppModel.js"
+					],
+					transform: [
+						"node-underscorify",
+						// "uglifyify"
+					],
+					external: [
+						"jquery", "hammerjs", "velocity-animate",
+						"underscore", "backbone", "backbone.babysitter", "backbone.select", "backbone.cycle",
+						"backbone.picky",
+					]
+				}
+			}
 		},
 
-		// browserify: {
-		// 	// vendor: {
-		// 	// 	src: [],
-		// 	// 	dest: 'assets/js/bsrfy.vendor.js',
-		// 	// 	options: {
-		// 	// 		require: ['jquery'],
-		// 	// 		alias: [
-		// 	// 			'./lib/moments.js:momentWrapper', //can alias file names
-		// 	// 			'events:evt' //can alias modules
-		// 	// 		]
-		// 	// 	}
-		// 	// },
-		// 	client: {
-		// 		src: ['assets/src/js/**/*.js'],
-		// 		dest: 'assets/js/folio.js',
-		// 		options: {
-		// 			external: ['jquery', 'hammerjs', 'underscore', 'backbone'],
-		// 		}
-		// 	}
-		// },
 		/*
 		 * Watch tasks
 		 */
@@ -193,8 +126,8 @@ module.exports = function (grunt) {
 				livereload: false
 			},
 			js: {
-				files: [ "assets/src/js/**/*.js", "assets/src/js/**/**/**/*.tpl" ],
-				tasks: [ "jshint", "cjsc:debug" ]
+				files: [ "assets/js/folio.js", "assets/src/js/**/*.js", "assets/src/js/**/*.tpl" ],
+				tasks: [ "jshint" ]
 			},
 			styles: {
 				files: [ "assets/src/sass/**/*.scss" ],
@@ -203,32 +136,10 @@ module.exports = function (grunt) {
 		},
 	});
 
-	grunt.registerTask("install", [
-		"bower-install-simple",
-		"bowercopy"
-	]);
+	grunt.registerTask("install", 		[ "bower-install-simple", "bowercopy" ]);
+	grunt.registerTask("debugWatch",	[ "browserify:vendor", "browserify:client", "watch"]);
+	// grunt.registerTask("debug", 		[ "compass:debug", "autoprefixer:styles", "jshint", "cjsc:debug"]);
+	// grunt.registerTask("dist", 		[ "compass:dist", "autoprefixer:styles", "jshint", "cjsc:dist"]);
 
-	grunt.registerTask("css-flash", [
-		"concat:flash",
-		"autoprefixer:flash",
-		"csso:flash"
-	]);
-
-	grunt.registerTask("debug", [
-		"compass:debug",
-		"autoprefixer:styles",
-		"jshint",
-		"cjsc:debug"
-	]);
-
-	grunt.registerTask("dist", [
-		"compass:dist",
-		"autoprefixer:styles",
-		"csso:styles",
-		"jshint",
-//		"jscs:dist",
-		"cjsc:dist"
-	]);
-
-	grunt.registerTask("default", ["debug"]);
+	grunt.registerTask("default", ["debugWatch"]);
 };

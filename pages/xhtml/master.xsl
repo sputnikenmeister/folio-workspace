@@ -16,15 +16,17 @@
 <xsl:template match="/">
 <html lang="en">
 	<head profile="http://gmpg.org/xfn/11">
+		<!--[if lt IE 9]><script language="javascript" type="text/javascript" src="//html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
+		<!-- <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> -->
 		<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8"/>
-		<meta http-equiv="X-UA-Compatible" content="IE=edge"/>
 		<title><xsl:call-template name="page-title"/></title>
 		<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"/>
 		<meta name="author" content="{$root}/humans.txt"/>
-		<meta name="description" content="no description"/>
+		<!-- <meta name="description" content="no description"/> -->
 		<link rel="canonical" href="{$root}/"/><!-- cf. https://support.google.com/webmasters/answer/139066?hl=en#1 -->
 		<link rel="alternate" type="application/rss+xml" href="{$root}/rss"/>
 		<!-- <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,200italic,300,300italic,400,400italic,600,600italic,700,700italic,900,900italic" /> -->
+		<link rel="stylesheet" type="text/css" href="{$workspace}/assets/fonts/source-sans-pro/source-sans-pro.css"/>
 		<link rel="stylesheet" type="text/css" href="{$workspace}/assets/css/folio.css"/>
 		<xsl:apply-templates select="data" mode="html-head-scripts"/>
 	</head>
@@ -42,7 +44,7 @@
 	<body class="{$current-page}-page">
 <!--<![endif]-->
 		<div id="container">
-			<div id="header" class="header" role="header">
+			<div id="header" class="header">
 				<h1 id="site-name">
 					<a href="{$root}/"><xsl:value-of select="$website-name"/></a>
 				</h1>
@@ -50,7 +52,7 @@
 			<xsl:apply-templates select="data"/>
 			<div id="container-footer"></div>
 		</div>
-		<div id="footer" class="footer" role="footer">
+		<div id="footer" class="footer">
 			<xsl:if test="$is-logged-in = 'true'">
 			<dl class="admin">
 				<dt>Tools</dt>
@@ -58,7 +60,7 @@
 				<dd><a href="?debug=xml">Debug</a></dd>
 			</dl>
 			</xsl:if>
-			<p>Copyright 1995-2014 Pablo Canillas. All rights reserved.</p>
+			<p class="copyright">&#169; 1995-2014 Pablo Canillas</p>
 		</div>
 		<xsl:apply-templates select="data" mode="html-footer-scripts"/>
 	</body>
@@ -75,18 +77,18 @@
 <xsl:template match="data" mode="html-footer-scripts"></xsl:template>
 
 <xsl:template match="all-types">
-	<dl id="keyword-list" class="selectable-list">
+	<dl id="keyword-list" class="list selectable filterable grouped">
 		<xsl:apply-templates select="entry"/>
 	</dl>
 </xsl:template>
 
 <xsl:template match="all-types/entry">
-	<dt id="t{@id}" class="group"><xsl:value-of select="name/text()"/></dt>
-	<xsl:apply-templates select="//all-keywords/entry[type/item/@id = current()/@id]"/>
+	<dt id="t{@id}" class="list-group"><xsl:value-of select="name/text()"/></dt>
+	<xsl:apply-templates select="/data/all-keywords/entry[type/item/@id = current()/@id]"/>
 </xsl:template>
 
 <xsl:template match="all-keywords/entry">
-	<dd id="k{@id}" class="item">
+	<dd id="k{@id}" class="list-item">
 		<a href="{$root}/keywords/{name/@handle}">
 			<xsl:value-of select="name/text()"/>
 		</a>

@@ -29,7 +29,7 @@ class datasourceall_bundles extends SectionDatasource
         'images',
         'keywords'
     );
-    
+
     public $dsParamINCLUDEDASSOCIATIONS = array(
         'images' => array(
             'section_id' => '5',

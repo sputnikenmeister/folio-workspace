@@ -2,11 +2,11 @@
 module.exports = function (grunt) {
 	"use strict";
 
-	grunt.loadNpmTasks("grunt-contrib-watch");			// Workflow
-	grunt.loadNpmTasks("grunt-bower-install-simple");	// Dependencies
-	grunt.loadNpmTasks("grunt-contrib-compass");		// Sass
-	grunt.loadNpmTasks("grunt-autoprefixer");			// CSS
-	grunt.loadNpmTasks("grunt-contrib-jshint");			// JavaScript
+	grunt.loadNpmTasks("grunt-contrib-watch"); // Workflow
+	grunt.loadNpmTasks("grunt-bower-install-simple"); // Dependencies
+	grunt.loadNpmTasks("grunt-contrib-compass"); // Sass
+	grunt.loadNpmTasks("grunt-autoprefixer"); // CSS
+	grunt.loadNpmTasks("grunt-contrib-jshint"); // JavaScript
 	grunt.loadNpmTasks("grunt-browserify");
 
 	grunt.initConfig({
@@ -36,10 +36,14 @@ module.exports = function (grunt) {
 		 */
 		autoprefixer: {
 			styles: {
-				files: { "assets/css/folio.css": "assets/css/folio.css" }
+				files: {
+					"assets/css/folio.css": "assets/css/folio.css"
+				}
 			},
 			flash: {
-				files: { "assets/css/flash.css": "assets/css/flash.css" }
+				files: {
+					"assets/css/flash.css": "assets/css/flash.css"
+				}
 			}
 		},
 
@@ -76,16 +80,16 @@ module.exports = function (grunt) {
 				src: [],
 				dest: "assets/js/vendor.js",
 				options: {
-					 browserifyOptions: {
-					 	debug: false,
-					 },
+					browserifyOptions: {
+						debug: false,
+					},
 					require: [
 						"jquery", "hammerjs", "velocity-animate",
 						"underscore", "backbone", "backbone.babysitter", "backbone.select", "backbone.cycle",
 					],
-					alias: [
-						"./.bower_components/backbone.picky/lib/amd/backbone.picky.js:backbone.picky",
-					]
+					// alias: [
+					// 	"./.bower_components/backbone.picky/lib/amd/backbone.picky.js:backbone.picky",
+					// ]
 				}
 			},
 			client: {
@@ -112,7 +116,7 @@ module.exports = function (grunt) {
 					external: [
 						"jquery", "hammerjs", "velocity-animate",
 						"underscore", "backbone", "backbone.babysitter", "backbone.select", "backbone.cycle",
-						"backbone.picky",
+						// "backbone.picky",
 					]
 				}
 			}
@@ -126,20 +130,23 @@ module.exports = function (grunt) {
 				livereload: false
 			},
 			js: {
-				files: [ "assets/js/folio.js", "assets/src/js/**/*.js", "assets/src/js/**/*.tpl" ],
-				tasks: [ "jshint" ]
+				files: [ "assets/src/js/**/*.js", "assets/js/folio.js", "assets/src/js/**/*.tpl"],
+				tasks: ["jshint"]
 			},
 			styles: {
-				files: [ "assets/src/sass/**/*.scss" ],
-				tasks: [ "compass:debug", "autoprefixer:styles" ]
+				files: ["assets/src/sass/**/*.scss"],
+				tasks: ["compass:debug", "autoprefixer:styles"]
 			}
 		},
 	});
 
 	grunt.registerTask("install", 		[ "bower-install-simple", "bowercopy" ]);
-	grunt.registerTask("debugWatch",	[ "browserify:vendor", "browserify:client", "watch"]);
-	// grunt.registerTask("debug", 		[ "compass:debug", "autoprefixer:styles", "jshint", "cjsc:debug"]);
+	grunt.registerTask("debugWatch", 	[ "browserify:vendor", "browserify:client", "watch" ]);
+	grunt.registerTask("buildStyles", 	[ "compass:debug", "autoprefixer:styles" ]);
+	grunt.registerTask("buildScripts", 	[ "browserify:vendor", "jshint", "browserify:client" ]);
+	// grunt.registerTask("debug", 			[ "compass:debug", "autoprefixer:styles", "jshint", "cjsc:debug" ]);
 	// grunt.registerTask("dist", 		[ "compass:dist", "autoprefixer:styles", "jshint", "cjsc:dist"]);
 
-	grunt.registerTask("default", ["debugWatch"]);
+	grunt.registerTask("build", 		["buildStyles", "buildScripts"]);
+	grunt.registerTask("default", 		["debugWatch"]);
 };

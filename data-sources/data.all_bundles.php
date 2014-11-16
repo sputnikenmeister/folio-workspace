@@ -26,18 +26,11 @@ class datasourceall_bundles extends SectionDatasource
         'name',
         'completed',
         'description: formatted',
-        'images',
-        'keywords'
+        'keywords',
+        'attributes'
     );
 
     public $dsParamINCLUDEDASSOCIATIONS = array(
-        'images' => array(
-            'section_id' => '5',
-            'field_id' => '45',
-            'elements' => array(
-                'published'
-            )
-        ),
         'keywords' => array(
             'section_id' => '2',
             'field_id' => '46',

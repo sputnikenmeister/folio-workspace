@@ -61,7 +61,7 @@
 
 <!--  All types -->
 <xsl:template match="all-types/entry" mode="output-json">
-	<xsl:text>&#xa;&#9;&#9;&#9;</xsl:text>
+	<xsl:text>&#xa;&#9;&#9;</xsl:text>
 	<xsl:call-template name="output-json">
 		<xsl:with-param name="xml">
 			<id><xsl:value-of select="@id"/></id>
@@ -76,7 +76,7 @@
 
 <!-- All keywords -->
 <xsl:template match="all-keywords/entry" mode="output-json">
-	<xsl:text>&#xa;&#9;&#9;&#9;</xsl:text>
+	<xsl:text>&#xa;&#9;&#9;</xsl:text>
 	<xsl:call-template name="output-json">
 		<xsl:with-param name="xml">
 			<id><xsl:value-of select="@id"/></id>

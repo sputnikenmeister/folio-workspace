@@ -13,14 +13,14 @@ module.exports = function (grunt) {
 	config.compass = {
 		debug: {
 			options: {
-				sassDir: "assets/src/sass",
-				cssDir: "assets/css"
+				sassDir: "./assets/src/sass",
+				cssDir: "./assets/css"
 			}
 		},
 		dist: {
 			options: {
-				sassDir: "assets/src/sass",
-				cssDir: "assets/css",
+				sassDir: "./assets/src/sass",
+				cssDir: "./assets/css",
 				outputStyle: "compressed"
 			}
 		}
@@ -33,12 +33,12 @@ module.exports = function (grunt) {
 	config.autoprefixer = {
 		styles: {
 			files: {
-				"assets/css/folio.css": "assets/css/folio.css"
+				"./assets/css/folio.css": "./assets/css/folio.css"
 			}
 		},
 		flash: {
 			files: {
-				"assets/css/flash.css": "assets/css/flash.css"
+				"./assets/css/flash.css": "./assets/css/flash.css"
 			}
 		}
 	};
@@ -56,6 +56,18 @@ module.exports = function (grunt) {
 		}
 	};
 
+	// grunt.loadNpmTasks('grunt-browserify-bower');
+	// config.browserifyBower = {
+	// 	vendor: {
+	// 		options: {
+	// 			forceResolve: {
+ //  					"backbone.picky": "lib/backbone.picky.js"
+	// 			}
+	// 		}
+	// 	}
+	// };
+
+
 	/*
 	 * jshint: code quality check
 	 */
@@ -65,9 +77,26 @@ module.exports = function (grunt) {
 			jshintrc: ".jshintrc"
 		},
 		files: [
-			"assets/src/js/app/**/*.js"
+			"./assets/src/js/app/**/*.js"
 		]
 	};
+
+	// var scriptBaseDir = "./assets/src/js";
+	var clientSources = [
+		"./assets/src/js/app/App.js",
+		// "./assets/src/js/app/**/*.js", "./assets/src/js/app/**/*.tpl"
+	];
+	var vendorRequire = [
+		"jquery", "hammerjs", "jquery-hammerjs", "velocity-animate",
+		"underscore", "backbone", "backbone.babysitter",
+		"backbone.select", "backbone.cycle", "backbone-view-options"
+	];
+	var vendorAlias = [
+		"./bower_components/backbone.picky/lib/amd/backbone.picky.js:backbone.picky"
+	];
+	var clientExternal = vendorRequire.concat([
+		"backbone.picky"
+	]);
 
 	/**
 	 * browserify
@@ -75,44 +104,28 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks("grunt-browserify");
 	config.browserify = {
 		vendor: {
-			src: [],
-			dest: "assets/js/vendor.js",
-			options: {
-				browserifyOptions: {
-					debug: false,
-				}
-			}
+			dest: "./assets/js/vendor.js", src: [],
+			options: { browserifyOptions: { debug: false }, require: vendorRequire, alias: vendorAlias }
 		},
 		client: {
-			dest: "./assets/js/folio.js",
-			src: [
-				"./assets/src/js/app/App.js", //, "assets/src/js/app/**/*.js", "assets/src/js/app/**/*.tpl"
-			],
+			dest: "./assets/js/folio.js", src: clientSources,
+			options: {
+				browserifyOptions: { fullPaths: false, debug: true },
+				transform: [ "node-underscorify" ],
+				external: clientExternal
+			}
+		},
+		clientWatch: {
+			dest: "./assets/js/folio.js", src: clientSources,
 			options: {
 				watch: true,
-				browserifyOptions: {
-					// baseDir: "./assets/src/js",
-					fullPaths: false,
-					debug: true,
-				},
-				transform: [
-					"node-underscorify"
-				],
+				browserifyOptions: { fullPaths: false, debug: true },
+				transform: [ "node-underscorify" ],
+				external: clientExternal
 			}
 		}
 	};
 
-	var vendor = config.browserify.vendor.options.require = [
-		"jquery", "hammerjs", "jquery-hammerjs", "velocity-animate",
-		"underscore", "backbone", "backbone.babysitter",
-		"backbone.select", "backbone.cycle", "backbone-view-options"
-	];
-	config.browserify.vendor.options.alias = [
-		"./bower_components/backbone.picky/lib/amd/backbone.picky.js:backbone.picky"
-	];
-	config.browserify.client.options.external = vendor.concat([
-		"backbone.picky"
-	]);
 
 	/*
 	 * Watch tasks
@@ -120,27 +133,40 @@ module.exports = function (grunt) {
 	grunt.loadNpmTasks("grunt-contrib-watch"); // Workflow
 	config.watch = {
 		options: {
-			livereload: false
+			livereload: false,
+			spawn: false,
+			forever: true
 		},
-		js: {
-			files: ["assets/js/folio.js", "assets/src/js/**/*.js", "assets/src/js/**/*.tpl"],
+		config: {
+			files: ["./gruntfile.js"],
+		},
+		jshint: {
+			files: ["./assets/src/js/**/*.js"],
 			tasks: ["jshint"]
 		},
+		scripts: {
+			files: ["./assets/js/folio.js"],
+			options: {
+				livereload: false
+			}
+		},
 		styles: {
-			files: ["assets/src/sass/**/*.scss"],
+			files: ["./assets/src/sass/**/*.scss"],
 			tasks: ["compass:debug", "autoprefixer:styles"]
 		}
 	};
 
 	grunt.initConfig(config);
 
-	grunt.registerTask("install", ["bower-install-simple", "bowercopy", "browserify:vendor"]);
-	grunt.registerTask("buildWatch", ["browserify:vendor", "browserify:client", "watch"]);
+	// Install
+	grunt.registerTask("install", ["bower-install-simple", "browserify:vendor"]);
+	// Watch build
+	grunt.registerTask("buildWatch", ["browserify:vendor", "browserify:clientWatch", "watch"]);
+	grunt.registerTask("sublimeWatch", ["buildWatch"]);
+	// Simple build
 	grunt.registerTask("buildScripts", ["browserify:vendor", "jshint", "browserify:client"]);
 	grunt.registerTask("buildStyles", ["compass:debug", "autoprefixer:styles"]);
-	// grunt.registerTask("debug", 		[ "compass:debug", "autoprefixer:styles", "jshint", "cjsc:debug" ]);
-	// grunt.registerTask("dist", 		[ "compass:dist", "autoprefixer:styles", "jshint", "cjsc:dist"]);
-
 	grunt.registerTask("buildAll", ["buildStyles", "buildScripts"]);
-	grunt.registerTask("default", ["buildWatch"]);
+	// Default task
+	grunt.registerTask("default", ["buildAll"]);
 };

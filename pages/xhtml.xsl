@@ -31,11 +31,10 @@
 	<xsl:with-param name="content">
 	window.approot = "<xsl:value-of select="$root"/>";
 	window.bootstrap = {
-		<xsl:apply-templates select="/data/all-types" mode="output-json"/>,
-		<xsl:apply-templates select="/data/all-keywords" mode="output-json"/>,
-		<xsl:apply-templates select="/data/all-bundles" mode="output-json"/>,
-		<xsl:apply-templates select="/data/all-images" mode="output-json"/>,
-		<!-- <xsl:apply-templates select="/data/params/root" mode="output-json"/> -->
+	<xsl:apply-templates select="/data/all-types" mode="output-json"/>,
+	<xsl:apply-templates select="/data/all-keywords" mode="output-json"/>,
+	<xsl:apply-templates select="/data/all-bundles" mode="output-json"/>,
+	<xsl:apply-templates select="/data/all-images" mode="output-json"/>
 	};
 	</xsl:with-param>
 	</xsl:call-template>

@@ -83,7 +83,9 @@
 </xsl:template>
 
 <xsl:template match="all-types/entry">
-	<dt id="t{@id}" class="list-group"><xsl:value-of select="name/text()"/></dt>
+	<dt id="t{@id}" class="list-group">
+		<span><xsl:value-of select="name/text()"/></span>
+	</dt>
 	<xsl:apply-templates select="/data/all-keywords/entry[type/item/@id = current()/@id]"/>
 </xsl:template>
 

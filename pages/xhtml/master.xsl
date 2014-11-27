@@ -25,8 +25,6 @@
 		<!-- <meta name="description" content="no description"/> -->
 		<link rel="canonical" href="{$root}/"/><!-- cf. https://support.google.com/webmasters/answer/139066?hl=en#1 -->
 		<link rel="alternate" type="application/rss+xml" href="{$root}/rss"/>
-		<!-- <link rel="stylesheet" type="text/css" href="http://fonts.googleapis.com/css?family=Source+Sans+Pro:200,200italic,300,300italic,400,400italic,600,600italic,700,700italic,900,900italic" /> -->
-		<link rel="stylesheet" type="text/css" href="{$workspace}/assets/fonts/source-sans-pro/source-sans-pro.css"/>
 		<link rel="stylesheet" type="text/css" href="{$workspace}/assets/css/folio.css"/>
 		<xsl:apply-templates select="data" mode="html-head-scripts"/>
 	</head>
@@ -53,15 +51,19 @@
 			<div id="container-footer"></div>
 		</div>
 		<div id="footer" class="footer">
-			<xsl:if test="$is-logged-in = 'true'">
-			<dl class="admin">
+			<p class="copyright">&#169; 1995-2014 Pablo Canillas</p>
+		</div>
+
+		<xsl:if test="$is-logged-in = 'true'">
+		<div id="debug">
+			<dl id="symphony-links">
 				<dt>Tools</dt>
 				<dd><a href="{$root}/symphony/">Backend</a></dd>
 				<dd><a href="?debug=xml">Debug</a></dd>
 			</dl>
-			</xsl:if>
-			<p class="copyright">&#169; 1995-2014 Pablo Canillas</p>
 		</div>
+		</xsl:if>
+
 		<xsl:apply-templates select="data" mode="html-footer-scripts"/>
 	</body>
 </html>
@@ -76,20 +78,20 @@
 <!-- Abstract -->
 <xsl:template match="data" mode="html-footer-scripts"></xsl:template>
 
-<xsl:template match="all-types">
+<xsl:template match="types-all">
 	<dl id="keyword-list" class="list selectable filterable grouped">
 		<xsl:apply-templates select="entry"/>
 	</dl>
 </xsl:template>
 
-<xsl:template match="all-types/entry">
+<xsl:template match="types-all/entry">
 	<dt id="t{@id}" class="list-group">
 		<span><xsl:value-of select="name/text()"/></span>
 	</dt>
-	<xsl:apply-templates select="/data/all-keywords/entry[type/item/@id = current()/@id]"/>
+	<xsl:apply-templates select="/data/keywords-all/entry[type/item/@id = current()/@id]"/>
 </xsl:template>
 
-<xsl:template match="all-keywords/entry">
+<xsl:template match="keywords-all/entry">
 	<dd id="k{@id}" class="list-item">
 		<a href="{$root}/keywords/{name/@handle}">
 			<xsl:value-of select="name/text()"/>

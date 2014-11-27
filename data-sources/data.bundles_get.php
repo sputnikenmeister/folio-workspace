@@ -2,51 +2,57 @@
 
 require_once TOOLKIT . '/class.datasource.php';
 
-class datasourceall_types extends SectionDatasource
+class datasourcebundles_get extends SectionDatasource
 {
-    public $dsParamROOTELEMENT = 'all-types';
-    public $dsParamORDER = 'asc';
-    public $dsParamPAGINATERESULTS = 'no';
-    public $dsParamLIMIT = '{$url-pagesize:99}';
-    public $dsParamSTARTPAGE = '{$url-pagenum:1}';
-    public $dsParamREDIRECTONEMPTY = 'no';
+    public $dsParamROOTELEMENT = 'bundles-get';
+    public $dsParamORDER = 'desc';
+    public $dsParamPAGINATERESULTS = 'yes';
+    public $dsParamLIMIT = '1';
+    public $dsParamSTARTPAGE = '1';
+    public $dsParamREDIRECTONEMPTY = 'yes';
     public $dsParamREDIRECTONFORBIDDEN = 'no';
     public $dsParamREDIRECTONREQUIRED = 'no';
-    public $dsParamSORT = 'order';
+    public $dsParamPARAMOUTPUT = array(
+        'system:id',
+        'keywords'
+        );
+    public $dsParamSORT = 'completed';
     public $dsParamASSOCIATEDENTRYCOUNTS = 'no';
 
     public $dsParamFILTERS = array(
-        '29' => 'yes',
-        'system:id' => '{$ds-all-keywords.type}',
+        'system:id' => '{$ds-map-bundles-by-handle.system-id:$bundles:0}',
+        '5' => 'yes',
     );
 
     public $dsParamINCLUDEDELEMENTS = array(
         'name',
+        'completed',
+        'description: formatted',
         'attributes'
     );
 
     public function __construct($env = null, $process_params = true)
     {
         parent::__construct($env, $process_params);
-        $this->_dependencies = array('$ds-all-keywords.type');
+        $this->_dependencies = array('$ds-map-bundles-by-handle.system-id');
     }
 
     public function about()
     {
         return array(
-            'name' => 'All Types',
+            'name' => 'Bundles Get',
             'author' => array(
                 'name' => 'Pablo Canillas',
-                'website' => 'http://fulanito.localhost',
+                'website' => 'http://folio.localhost',
                 'email' => 'noreply@localhost.tld'),
             'version' => 'Symphony 2.5.1',
-            'release-date' => '2014-10-29T11:43:02+00:00'
+            'release-date' => '2014-11-27T10:24:45+00:00'
         );
     }
 
     public function getSource()
     {
-        return '7';
+        return '1';
     }
 
     public function allowEditorToParse()

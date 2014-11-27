@@ -2,56 +2,57 @@
 
 require_once TOOLKIT . '/class.datasource.php';
 
-class datasourcefind_keywords extends SectionDatasource
+class datasourcebundles_all extends SectionDatasource
 {
-    public $dsParamROOTELEMENT = 'find-keywords';
+    public $dsParamROOTELEMENT = 'bundles-all';
     public $dsParamORDER = 'desc';
-    public $dsParamPAGINATERESULTS = 'yes';
-    public $dsParamLIMIT = '{$url-pagesize:99}';
-    public $dsParamSTARTPAGE = '{$url-pagenum:1}';
+    public $dsParamPAGINATERESULTS = 'no';
+    public $dsParamLIMIT = '20';
+    public $dsParamSTARTPAGE = '1';
     public $dsParamREDIRECTONEMPTY = 'no';
     public $dsParamREDIRECTONFORBIDDEN = 'no';
     public $dsParamREDIRECTONREQUIRED = 'no';
     public $dsParamPARAMOUTPUT = array(
-        'type'
+        'system:id',
+        'keywords'
         );
-    public $dsParamSORT = 'system:id';
+    public $dsParamSORT = 'completed';
     public $dsParamASSOCIATEDENTRYCOUNTS = 'no';
 
     public $dsParamFILTERS = array(
-        'system:id' => '{$ds-find-bundles.keywords:$keywords}',
-        '32' => 'yes',
+        '5' => 'yes',
     );
 
     public $dsParamINCLUDEDELEMENTS = array(
-        'system:pagination',
         'name',
-        'type',
+        'completed',
+        'description: formatted',
+        'keywords',
         'attributes'
     );
 
     public function __construct($env = null, $process_params = true)
     {
         parent::__construct($env, $process_params);
-        $this->_dependencies = array('$ds-find-bundles.keywords');
+        $this->_dependencies = array();
     }
 
     public function about()
     {
         return array(
-            'name' => 'Find Keywords',
+            'name' => 'Bundles All',
             'author' => array(
                 'name' => 'Pablo Canillas',
-                'website' => 'http://fulanito.localhost',
+                'website' => 'http://folio.localhost',
                 'email' => 'noreply@localhost.tld'),
             'version' => 'Symphony 2.5.1',
-            'release-date' => '2014-10-30T14:08:31+00:00'
+            'release-date' => '2014-11-27T10:21:24+00:00'
         );
     }
 
     public function getSource()
     {
-        return '2';
+        return '1';
     }
 
     public function allowEditorToParse()

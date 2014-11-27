@@ -8,7 +8,7 @@
 	<xsl:choose>
 		<xsl:when test="$filter = 'count'">
 			<count>
-				<xsl:value-of select="data/find-keywords/pagination/@total-entries" />
+				<xsl:value-of select="data/keywords-find/pagination/@total-entries" />
 			</count>
 		</xsl:when>
 		<xsl:when test="($filter = 'items') and ($keywords = '')">
@@ -16,7 +16,7 @@
 		</xsl:when>
 		<xsl:otherwise>
 			<data>
-				<xsl:apply-templates select="data/find-keywords/entry"/>
+				<xsl:apply-templates select="data/keywords-find/entry"/>
 			</data>
 		</xsl:otherwise>
 	</xsl:choose>

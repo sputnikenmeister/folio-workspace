@@ -16,11 +16,7 @@
 <!-- Head Scripts -->
 <xsl:template match="data" mode="html-head-scripts">
 	<!-- Library bundle -->
-	<script type="text/javascript" src="{$workspace}/assets/js/vendor.js"></script>
-	<!-- <script type="text/javascript" src="{$workspace}/assets/lib/jquery.js"></script> -->
-	<!-- <script type="text/javascript" src="{$workspace}/assets/lib/hammer.js"></script> -->
-	<!-- <script type="text/javascript" src="{$workspace}/assets/lib/underscore.js"></script> -->
-	<!-- <script type="text/javascript" src="{$workspace}/assets/lib/backbone.js"></script> -->
+	<script type="text/javascript" src="{$workspace}/assets/js/vendor.min.js"></script>
 	<!-- <script type="text/javascript" src="{$workspace}/assets/lib/modernizr.js"></script> -->
 </xsl:template>
 
@@ -31,10 +27,10 @@
 	<xsl:with-param name="content">
 	window.approot = "<xsl:value-of select="$root"/>";
 	window.bootstrap = {
-	<xsl:apply-templates select="/data/all-types" mode="output-json"/>,
-	<xsl:apply-templates select="/data/all-keywords" mode="output-json"/>,
-	<xsl:apply-templates select="/data/all-bundles" mode="output-json"/>,
-	<xsl:apply-templates select="/data/all-images" mode="output-json"/>
+	<xsl:apply-templates select="/data/types-all" mode="output-json"/>,
+	<xsl:apply-templates select="/data/keywords-all" mode="output-json"/>,
+	<xsl:apply-templates select="/data/bundles-all" mode="output-json"/>,
+	<xsl:apply-templates select="/data/images-all" mode="output-json"/>
 	};
 	</xsl:with-param>
 	</xsl:call-template>
@@ -46,22 +42,22 @@
 <xsl:template match="data">
 	<div id="navigation" class="navigation">
 		<!-- all keywords+types -->
-		<xsl:apply-templates select="all-types"/>
+		<xsl:apply-templates select="types-all"/>
 		<!-- all bundles-->
-		<xsl:apply-templates select="all-bundles"/>
+		<xsl:apply-templates select="bundles-all"/>
 	</div>
 	<div id="content" class="content viewport"></div>
 </xsl:template>
 
 <!-- bundle-list -->
-<xsl:template match="all-bundles">
+<xsl:template match="bundles-all">
 	<ul id="bundle-list" class="list selectable filterable">
 		<xsl:apply-templates select="entry"/>
 	</ul>
 </xsl:template>
 
 <!-- bundle-list item -->
-<xsl:template match="all-bundles/entry">
+<xsl:template match="bundles-all/entry">
 	<li id="b{@id}" class="list-item">
 		<span class="completed meta pubDate" data-datetime="{completed/text()}">
 			<xsl:value-of select="substring(completed/text(),1,4)"/>

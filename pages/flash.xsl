@@ -19,8 +19,8 @@
 		</xsl:otherwise>
 	</xsl:choose>
 </xsl:variable>
-<xsl:variable name="appswf-url" select="concat($workspace,$approot,'/playerProductInstall.swf')">
-<xsl:variable name="xpinst-url" select="concat($workspace,$approot,'/FolioApp.swf')">
+<xsl:variable name="appswf-url" select="concat($approot,'/playerProductInstall.swf')"/>
+<xsl:variable name="xpinst-url" select="concat($approot,'/FolioApp.swf')"/>
 
 <!-- SWFObject dynamic mode: flash is embedded by the client with JavaScript -->
 <xsl:template match="/">

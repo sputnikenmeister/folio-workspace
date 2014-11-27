@@ -2,43 +2,29 @@
 
 require_once TOOLKIT . '/class.datasource.php';
 
-class datasourceall_bundles extends SectionDatasource
+class datasourceimages_all extends SectionDatasource
 {
-    public $dsParamROOTELEMENT = 'all-bundles';
-    public $dsParamORDER = 'desc';
+    public $dsParamROOTELEMENT = 'images-all';
+    public $dsParamORDER = 'asc';
     public $dsParamPAGINATERESULTS = 'no';
-    public $dsParamLIMIT = '{$url-pagesize:99}';
-    public $dsParamSTARTPAGE = '{$url-pagenum:1}';
+    public $dsParamLIMIT = '20';
+    public $dsParamSTARTPAGE = '1';
     public $dsParamREDIRECTONEMPTY = 'no';
     public $dsParamREDIRECTONFORBIDDEN = 'no';
     public $dsParamREDIRECTONREQUIRED = 'no';
-    public $dsParamPARAMOUTPUT = array(
-        'keywords'
-        );
-    public $dsParamSORT = 'completed';
+    public $dsParamSORT = 'system:id';
     public $dsParamASSOCIATEDENTRYCOUNTS = 'no';
 
     public $dsParamFILTERS = array(
-        '5' => 'yes',
+        '26' => 'yes',
     );
 
     public $dsParamINCLUDEDELEMENTS = array(
-        'name',
-        'completed',
+        'file',
+        'bundle',
         'description: formatted',
-        'keywords',
-        'attributes'
-    );
-
-    public $dsParamINCLUDEDASSOCIATIONS = array(
-        'keywords' => array(
-            'section_id' => '2',
-            'field_id' => '46',
-            'elements' => array(
-                'published',
-                'name'
-            )
-        )
+        'attributes',
+        'order'
     );
 
     public function __construct($env = null, $process_params = true)
@@ -50,19 +36,19 @@ class datasourceall_bundles extends SectionDatasource
     public function about()
     {
         return array(
-            'name' => 'All Bundles',
+            'name' => 'Images All',
             'author' => array(
                 'name' => 'Pablo Canillas',
-                'website' => 'http://folio.local.',
+                'website' => 'http://folio.localhost',
                 'email' => 'noreply@localhost.tld'),
             'version' => 'Symphony 2.5.1',
-            'release-date' => '2014-11-01T23:10:46+00:00'
+            'release-date' => '2014-11-27T10:21:43+00:00'
         );
     }
 
     public function getSource()
     {
-        return '1';
+        return '5';
     }
 
     public function allowEditorToParse()

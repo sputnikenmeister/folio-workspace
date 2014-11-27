@@ -2,55 +2,50 @@
 
 require_once TOOLKIT . '/class.datasource.php';
 
-class datasourceall_keywords extends SectionDatasource
+class datasourcebundles_map_by_handle extends SectionDatasource
 {
-    public $dsParamROOTELEMENT = 'all-keywords';
+    public $dsParamROOTELEMENT = 'bundles-map-by-handle';
     public $dsParamORDER = 'desc';
     public $dsParamPAGINATERESULTS = 'no';
-    public $dsParamLIMIT = '{$url-pagesize:99}';
-    public $dsParamSTARTPAGE = '{$url-pagenum:1}';
+    public $dsParamLIMIT = '20';
+    public $dsParamSTARTPAGE = '1';
     public $dsParamREDIRECTONEMPTY = 'no';
     public $dsParamREDIRECTONFORBIDDEN = 'no';
     public $dsParamREDIRECTONREQUIRED = 'no';
+    public $dsParamREQUIREDPARAM = '$bundles';
     public $dsParamPARAMOUTPUT = array(
-        'type'
+        'system:id'
         );
     public $dsParamSORT = 'system:id';
     public $dsParamASSOCIATEDENTRYCOUNTS = 'no';
 
     public $dsParamFILTERS = array(
-        '32' => 'yes',
-        'system:id' => '{$ds-all-bundles.keywords}',
-    );
-
-    public $dsParamINCLUDEDELEMENTS = array(
-        'name',
-        'type',
-        'attributes'
+        '1' => '{$bundles}',
+        '5' => 'yes',
     );
 
     public function __construct($env = null, $process_params = true)
     {
         parent::__construct($env, $process_params);
-        $this->_dependencies = array('$ds-all-bundles.keywords');
+        $this->_dependencies = array();
     }
 
     public function about()
     {
         return array(
-            'name' => 'All Keywords',
+            'name' => 'Bundles Map by Handle',
             'author' => array(
                 'name' => 'Pablo Canillas',
-                'website' => 'http://fulanito.localhost',
+                'website' => 'http://folio.localhost',
                 'email' => 'noreply@localhost.tld'),
             'version' => 'Symphony 2.5.1',
-            'release-date' => '2014-10-29T12:05:47+00:00'
+            'release-date' => '2014-11-27T10:40:42+00:00'
         );
     }
 
     public function getSource()
     {
-        return '2';
+        return '1';
     }
 
     public function allowEditorToParse()

@@ -10,15 +10,16 @@
 <!-- 				-->
 <!-- All Images 	-->
 <!-- 				-->
-<xsl:template match="all-images/entry" mode="output-json">
+<xsl:template match="images-all/entry" mode="output-json">
 	<xsl:text>&#xa;&#9;&#9;</xsl:text>
 	<xsl:call-template name="output-json">
 		<xsl:with-param name="xml">
+			<bId><xsl:value-of select="bundle/item/@id"/></bId>
 			<id><xsl:value-of select="@id"/></id>
+			<o><xsl:value-of select="order"/></o>
 			<f><xsl:copy-of select="file/filename/text()"/></f>
 			<w><xsl:value-of select="file/meta/@width"/></w>
 			<h><xsl:value-of select="file/meta/@height"/></h>
-			<bId><xsl:value-of select="bundle/item/@id"/></bId>
 			<xsl:apply-templates select="attributes | description" mode="prepare-json"/>
 		</xsl:with-param>
 	</xsl:call-template>
@@ -30,7 +31,7 @@
 <!-- 				-->
 <!-- All bundles 	-->
 <!-- 				-->
-<xsl:template match="all-bundles/entry" mode="output-json">
+<xsl:template match="bundles-all/entry" mode="output-json">
 	<xsl:text>&#xa;&#9;&#9;</xsl:text>
 	<xsl:call-template name="output-json">
 		<xsl:with-param name="xml">
@@ -38,7 +39,6 @@
 			<handle><xsl:value-of select="name/@handle"/></handle>
 			<xsl:copy-of select="name | completed"/>
 			<xsl:apply-templates select="keywords" mode="prepare-json-ids"/>
-			<xsl:apply-templates select="images" mode="prepare-json-ids"/>
 			<xsl:apply-templates select="attributes | description" mode="prepare-json"/>
 		</xsl:with-param>
 	</xsl:call-template>

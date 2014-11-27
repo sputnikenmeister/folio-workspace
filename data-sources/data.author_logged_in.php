@@ -2,52 +2,45 @@
 
 require_once TOOLKIT . '/class.datasource.php';
 
-class datasourcefind_types extends SectionDatasource
+class datasourceauthor_logged_in extends AuthorDatasource
 {
-    public $dsParamROOTELEMENT = 'find-types';
-    public $dsParamORDER = 'asc';
-    public $dsParamPAGINATERESULTS = 'yes';
-    public $dsParamLIMIT = '{$url-pagesize:99}';
-    public $dsParamSTARTPAGE = '{$url-pagenum:1}';
+    public $dsParamROOTELEMENT = 'author-logged-in';
+    public $dsParamORDER = 'desc';
     public $dsParamREDIRECTONEMPTY = 'no';
     public $dsParamREDIRECTONFORBIDDEN = 'no';
     public $dsParamREDIRECTONREQUIRED = 'no';
-    public $dsParamSORT = 'order';
-    public $dsParamASSOCIATEDENTRYCOUNTS = 'no';
+    public $dsParamSORT = 'id';
 
     public $dsParamFILTERS = array(
-        'system:id' => '{$ds-find-keywords.type:$types}',
-        '29' => 'yes',
+        'username' => '{$cookie-username:0}',
     );
 
     public $dsParamINCLUDEDELEMENTS = array(
-        'system:pagination',
-        'name',
-        'attributes'
+        'username'
     );
 
     public function __construct($env = null, $process_params = true)
     {
         parent::__construct($env, $process_params);
-        $this->_dependencies = array('$ds-find-keywords.type');
+        $this->_dependencies = array();
     }
 
     public function about()
     {
         return array(
-            'name' => 'Find Types',
+            'name' => 'Author Logged In',
             'author' => array(
                 'name' => 'Pablo Canillas',
-                'website' => 'http://fulanito.localhost',
+                'website' => 'http://folio.localhost',
                 'email' => 'noreply@localhost.tld'),
             'version' => 'Symphony 2.5.1',
-            'release-date' => '2014-10-30T14:09:06+00:00'
+            'release-date' => '2014-11-27T10:44:42+00:00'
         );
     }
 
     public function getSource()
     {
-        return '7';
+        return 'authors';
     }
 
     public function allowEditorToParse()

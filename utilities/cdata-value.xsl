@@ -18,7 +18,7 @@
 
 	<xsl:template name="cdata-simple-element">
 		<xsl:param name="item" />
-		<xsl:param name="name" />
+		<xsl:param name="name" select="'cdata-simple-element'"/>
 		<xsl:element name="{$name}">
 			<xsl:text disable-output-escaping="yes">&lt;![CDATA[</xsl:text>
 			<xsl:value-of disable-output-escaping="yes" select="$item/text()" />
@@ -28,7 +28,7 @@
 
 	<xsl:template name="cdata-complex-element">
 		<xsl:param name="item" />
-		<xsl:param name="name" />
+		<xsl:param name="name" select="'cdata-complex-element'"/>
 		<xsl:element name="{$name}">
 			<xsl:call-template name="cdata-value">
 				<xsl:with-param name="item" select="$item"/>

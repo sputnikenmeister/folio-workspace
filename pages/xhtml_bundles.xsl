@@ -13,26 +13,26 @@
 <xsl:template name="page-title">
 	<xsl:value-of select="$website-name"/>
 	<xsl:text> &#8212; </xsl:text>
-	<xsl:value-of select="/data/get-bundle/entry[1]/name/text()"/>
+	<xsl:value-of select="/data/bundles-get/entry[1]/name/text()"/>
 </xsl:template>
 
 <xsl:template match="data">
 <div id="navigation">
-	<xsl:apply-templates select="all-types"/>
-	<xsl:apply-templates select="get-bundle/entry[1]" mode="navigation"/>
+	<xsl:apply-templates select="types-all"/>
+	<xsl:apply-templates select="bundles-get/entry[1]" mode="navigation"/>
 </div>
 <div id="content">
-	<xsl:apply-templates select="get-bundle/entry[1]" mode="content"/>
-	<xsl:apply-templates select="get-bundle/error"/>
+	<xsl:apply-templates select="bundles-get/entry[1]" mode="content"/>
+	<xsl:apply-templates select="bundles-get/error"/>
 </div>
 </xsl:template>
 
 <!--
   ~~ Bundle
   -->
-<xsl:template match="get-bundle/entry" mode="navigation">
+<xsl:template match="bundles-get/entry" mode="navigation">
 	<!-- bundle pager -->
-	<xsl:variable name="current-bundle" select="/data/all-bundles/entry[@id = current()/@id]"/>
+	<xsl:variable name="current-bundle" select="/data/bundles-all/entry[@id = current()/@id]"/>
 	<xsl:variable name="preceding-bundle" select="$current-bundle/preceding-sibling::entry[1]"/>
 	<xsl:variable name="following-bundle" select="$current-bundle/following-sibling::entry[1]"/>
 	<div id="bundle-pager" class="text-pager">
@@ -65,15 +65,16 @@
 	</div>
 </xsl:template>
 
-<xsl:template match="get-bundle/error">
+<xsl:template match="bundles-get/error">
 	<div class="bundle-detail">
 		<h2>Here be dragons, ye be warned</h2>
 		<p>Ok, I maybe made a mistake on my website.</p>
 	</div>
 </xsl:template>
 
-<xsl:template match="get-bundle/entry" mode="content">
-	<xsl:apply-templates select="images" />
+<xsl:template match="bundles-get/entry" mode="content">
+	<!-- <xsl:apply-templates select="images" /> -->
+	<xsl:apply-templates select="/data/images-find-by-bundle/bundle[@link-id = current()/@id]" />
 </xsl:template>
 
 <!--
@@ -81,9 +82,11 @@
   -->
 <xsl:variable name="img-width" select="700" />
 
-<xsl:template match="images[item/published/text() = 'Yes']">
-	<xsl:variable name="image-items" select="item"/>
-	<xsl:variable name="max-height" select="round(($img-width div math:max(item/file/meta/@width)) * math:max(item/file/meta/@height))" />
+<!-- <xsl:template match="images[item/published/text() = 'Yes']"> -->
+<xsl:template match="images-find-by-bundle/bundle">
+	<!-- <xsl:variable name="image-items" select="item"/> -->
+	<xsl:variable name="image-items" select="entry"/>
+	<xsl:variable name="max-height" select="round(($img-width div math:max($image-items/file/meta/@width)) * math:max($image-items/file/meta/@height))" />
 	<!-- Image Pager -->
 	<xsl:if test="count($image-items) &gt; 1">
 	<div id="bundle-images-pager" class="rsquare-pager">
@@ -93,11 +96,13 @@
 	</xsl:if>
 	<!-- Image List -->
 	<ul id="bundle-images" class="image-list" style="width: {$img-width}px; height: {$max-height}px;">
-		<xsl:apply-templates select="$image-items"/>
+		<!-- <xsl:apply-templates select="item"/> -->
+		<xsl:apply-templates select="entry"/>
 	</ul>
 </xsl:template>
 
-<xsl:template match="images/item">
+<!-- <xsl:template match="images/item"> -->
+<xsl:template match="images-find-by-bundle/bundle/entry">
 	<li id="i{@id}" class="image-item">
 		<xsl:if test="position() &gt; 1">
 			<xsl:attribute name="style">
@@ -117,16 +122,16 @@
 <!--
   ~~ Types/Keywords
   -->
-<xsl:variable name="bundle-keywords" select="//ds-get-bundle.keywords" />
+<xsl:variable name="bundle-keywords" select="//ds-bundles-get.keywords" />
 
-<xsl:template match="all-types">
+<xsl:template match="types-all">
 	<dl id="keyword-list" class="list selectable filterable grouped">
 		<xsl:apply-templates select="entry"/>
 	</dl>
 </xsl:template>
 
-<xsl:template match="all-types/entry">
-	<xsl:variable name="current-type-keywords" select="/data/all-keywords/entry[type/item/@id = current()/@id]"/>
+<xsl:template match="types-all/entry">
+	<xsl:variable name="current-type-keywords" select="/data/keywords-all/entry[type/item/@id = current()/@id]"/>
 	<dt id="t{@id}">
 		<xsl:attribute name="class">
 			<xsl:choose>
@@ -143,7 +148,7 @@
 	<xsl:apply-templates select="$current-type-keywords"/>
 </xsl:template>
 
-<xsl:template match="all-keywords/entry">
+<xsl:template match="keywords-all/entry">
 	<dd id="k{@id}">
 		<xsl:attribute name="class">
 			<xsl:choose>

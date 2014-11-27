@@ -60,7 +60,7 @@
 </xsl:template>
 
 <!--  All types -->
-<xsl:template match="all-types/entry" mode="output-json">
+<xsl:template match="types-all/entry" mode="output-json">
 	<xsl:text>&#xa;&#9;&#9;</xsl:text>
 	<xsl:call-template name="output-json">
 		<xsl:with-param name="xml">
@@ -75,7 +75,7 @@
 </xsl:template>
 
 <!-- All keywords -->
-<xsl:template match="all-keywords/entry" mode="output-json">
+<xsl:template match="keywords-all/entry" mode="output-json">
 	<xsl:text>&#xa;&#9;&#9;</xsl:text>
 	<xsl:call-template name="output-json">
 		<xsl:with-param name="xml">

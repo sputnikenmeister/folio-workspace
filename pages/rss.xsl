@@ -12,6 +12,7 @@
 <xsl:import href="../utilities/cdata-value.xsl" />
 
 <xsl:output method="xml" encoding="UTF-8" indent="yes" />
+<xsl:strip-space elements="*"/>
 
 <xsl:template match="data">
 	<rss version="2.0" >
@@ -21,24 +22,27 @@
 			<link><xsl:value-of select="$root"/></link>
 			<description><xsl:value-of select="$website-name"/> Feed</description>
 			<dc:creator>Pablo Canillas</dc:creator>
-			<!--
 			<lastBuildDate>
 			<xsl:call-template name="format-date">
-				<xsl:with-param name="date" select="$now"/>
-				<xsl:with-param name="format" select="'w, d m Y T'"/>
+				<xsl:with-param name="date" select="//params/today"/>
+				<!-- <xsl:with-param name="date" select="concat($today,'T',$current-time,':00',$timezone)"/> -->
+				<!-- <date iso="{concat($today,'T',$current-time,':00',$timezone)}"
+						time="{$current-time}" weekday="1" offset="{$timezone}"><xsl:value-of select="$today"/></date> -->
+				<!-- <xsl:with-param name="format" select="'w, d m Y T'"/> -->
+				<xsl:with-param name="format" select="'d m Y T'"/>
 			</xsl:call-template>
+			<xsl:value-of select="translate($timezone,':','')"/>
 			</lastBuildDate>
-			-->
 			<language>en</language>
 			<sy:updatePeriod>weekly</sy:updatePeriod>
 			<sy:updateFrequency>1</sy:updateFrequency>
 			<generator>Symphony (build <xsl:value-of select="$symphony-version"/>)</generator>
-			<xsl:apply-templates select="find-bundles/entry" />
+			<xsl:apply-templates select="bundles-find/entry" />
 		</channel>
 	</rss>
 </xsl:template>
 
-<xsl:template match="find-bundles/entry" >
+<xsl:template match="bundles-find/entry" >
 	<item>
 		<title><xsl:value-of select="name"/></title>
 		<link><xsl:value-of select="$root"/>/bundles/<xsl:value-of select="name/@handle"/>/</link>
@@ -51,19 +55,17 @@
 			<xsl:value-of select="translate($timezone,':','')"/>
 		</pubDate>
 		<guid isPermaLink="false"><xsl:value-of select="concat($root,'/bundles/',name/@handle,'/')" /></guid>
-		
+
 		<description>
-			<xsl:call-template name="cdata-value">
-				<xsl:with-param name="item" select="description" />
-			</xsl:call-template>
+			<xsl:apply-templates select="description" mode="cdata"/>
 		</description>
-		
+
 		<xsl:apply-templates select="keywords/item" />
-		
+
 		<content:encoded></content:encoded>
 	</item>
 </xsl:template>
-	
+
 <xsl:template match="keywords/item" >
 	<!--<xsl:if test="(string-length(text()) &gt; 0) or (count(*) &gt; 0)">-->
 		<category>

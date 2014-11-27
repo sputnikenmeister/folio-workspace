@@ -2,9 +2,9 @@
 
 require_once TOOLKIT . '/class.datasource.php';
 
-class datasourcefind_bundles extends SectionDatasource
+class datasourceimages_find extends SectionDatasource
 {
-    public $dsParamROOTELEMENT = 'find-bundles';
+    public $dsParamROOTELEMENT = 'images-find';
     public $dsParamORDER = 'desc';
     public $dsParamPAGINATERESULTS = 'yes';
     public $dsParamLIMIT = '{$url-pagesize:99}';
@@ -12,47 +12,21 @@ class datasourcefind_bundles extends SectionDatasource
     public $dsParamREDIRECTONEMPTY = 'no';
     public $dsParamREDIRECTONFORBIDDEN = 'no';
     public $dsParamREDIRECTONREQUIRED = 'no';
-    public $dsParamPARAMOUTPUT = array(
-        'keywords'
-        );
-    public $dsParamSORT = 'completed';
+    public $dsParamSORT = 'system:id';
     public $dsParamASSOCIATEDENTRYCOUNTS = 'no';
 
     public $dsParamFILTERS = array(
-        'system:id' => '{$bundles}',
-        '5' => 'yes',
+        'system:id' => '{$images}',
+        '26' => 'yes',
     );
 
     public $dsParamINCLUDEDELEMENTS = array(
         'system:pagination',
-        'name',
-        'completed',
+        'file',
+        'bundle',
         'description: formatted',
-        'images',
-        'keywords',
-        'attributes'
-    );
-    
-    public $dsParamINCLUDEDASSOCIATIONS = array(
-        'images' => array(
-            'section_id' => '5',
-            'field_id' => '45',
-            'elements' => array(
-                'published',
-                'file',
-                'description: formatted',
-                'attributes'
-            )
-        ),
-        'keywords' => array(
-            'section_id' => '2',
-            'field_id' => '46',
-            'elements' => array(
-                'published',
-                'name',
-                'attributes'
-            )
-        )
+        'attributes',
+        'order'
     );
 
     public function __construct($env = null, $process_params = true)
@@ -64,19 +38,19 @@ class datasourcefind_bundles extends SectionDatasource
     public function about()
     {
         return array(
-            'name' => 'Find Bundles',
+            'name' => 'Images Find',
             'author' => array(
                 'name' => 'Pablo Canillas',
-                'website' => 'http://fulanito.localhost',
+                'website' => 'http://folio.localhost',
                 'email' => 'noreply@localhost.tld'),
             'version' => 'Symphony 2.5.1',
-            'release-date' => '2014-10-30T14:07:28+00:00'
+            'release-date' => '2014-11-27T10:23:10+00:00'
         );
     }
 
     public function getSource()
     {
-        return '1';
+        return '5';
     }
 
     public function allowEditorToParse()

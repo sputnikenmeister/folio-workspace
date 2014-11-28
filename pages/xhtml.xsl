@@ -38,7 +38,6 @@
 	</xsl:call-template>
 	<!-- Application -->
 	<script type="text/javascript" src="{$workspace}/assets/js/vendor.js"></script>
-	<script type="text/javascript" src="{$workspace}/assets/js/vendor-bower.js"></script>
 	<script type="text/javascript" src="{$workspace}/assets/js/folio.js"></script>
 </xsl:template>
 

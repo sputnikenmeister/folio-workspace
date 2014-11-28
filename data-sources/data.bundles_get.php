@@ -9,7 +9,7 @@ class datasourcebundles_get extends SectionDatasource
     public $dsParamPAGINATERESULTS = 'yes';
     public $dsParamLIMIT = '1';
     public $dsParamSTARTPAGE = '1';
-    public $dsParamREDIRECTONEMPTY = 'yes';
+    public $dsParamREDIRECTONEMPTY = 'no';
     public $dsParamREDIRECTONFORBIDDEN = 'no';
     public $dsParamREDIRECTONREQUIRED = 'no';
     public $dsParamPARAMOUTPUT = array(
@@ -20,7 +20,7 @@ class datasourcebundles_get extends SectionDatasource
     public $dsParamASSOCIATEDENTRYCOUNTS = 'no';
 
     public $dsParamFILTERS = array(
-        'system:id' => '{$ds-map-bundles-by-handle.system-id:$bundles:0}',
+        'system:id' => '{$ds-bundles-map-by-handle.system-id:$bundles:0}',
         '5' => 'yes',
     );
 
@@ -34,7 +34,7 @@ class datasourcebundles_get extends SectionDatasource
     public function __construct($env = null, $process_params = true)
     {
         parent::__construct($env, $process_params);
-        $this->_dependencies = array('$ds-map-bundles-by-handle.system-id');
+        $this->_dependencies = array('$ds-bundles-map-by-handle.system-id');
     }
 
     public function about()

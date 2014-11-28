@@ -65,14 +65,13 @@
 <!-- 				-->
 <!-- Images (IDs)	-->
 <!-- 				-->
-<xsl:template match="images" mode="prepare-json-ids">
-	<xsl:variable name="item-list" select="item[published/text() = 'Yes']"/>
-	<!-- <xsl:variable name="item-list" select="item"/> -->
+<xsl:template match="images-find-by-bundle | images" mode="prepare-json-ids">
+	<xsl:variable name="images" select="entry | item"/>
 	<iIds>
 		<xsl:choose>
-			<xsl:when test="$item-list">
-				<xsl:copy-of select="$item-list"/>
-				<!-- <xsl:apply-templates select="$item-list" mode="prepare-json"/> -->
+			<xsl:when test="$images">
+				<xsl:copy-of select="$images"/>
+				<!-- <xsl:apply-templates select="$images" mode="prepare-json"/> -->
 			</xsl:when>
 			<xsl:otherwise>
 				<empty/>

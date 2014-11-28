@@ -55,11 +55,12 @@
 		</div>
 
 		<xsl:if test="$is-logged-in = 'true'">
-		<div id="debug">
-			<dl id="symphony-links">
-				<dt>Tools</dt>
-				<dd><a href="{$root}/symphony/">Backend</a></dd>
-				<dd><a href="?debug=xml">Debug</a></dd>
+		<div id="debug-toolbar">
+			<dl id="tools">
+				<dt>Debug</dt>
+				<dd><a id="backend" href="{$root}/symphony/">Backend</a></dd>
+				<dd><a id="source" href="?debug=xml">Source</a></dd>
+				<dd><a id="grid" href="javascript:void(0)">Grid</a></dd>
 			</dl>
 		</div>
 		</xsl:if>

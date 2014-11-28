@@ -16,8 +16,8 @@
 <!-- Head Scripts -->
 <xsl:template match="data" mode="html-head-scripts">
 	<!-- Library bundle -->
-	<script type="text/javascript" src="{$workspace}/assets/js/vendor.min.js"></script>
 	<!-- <script type="text/javascript" src="{$workspace}/assets/lib/modernizr.js"></script> -->
+	<!-- <script type="text/javascript" src="http://modernizr.com/downloads/modernizr.js"></script> -->
 </xsl:template>
 
 <!-- Footer Scripts -->
@@ -25,6 +25,7 @@
 	<!-- Bootstrap data -->
 	<xsl:call-template name="inline-script">
 	<xsl:with-param name="content">
+	window.DEBUG = <xsl:value-of select="$is-logged-in"/>;<!-- $is-logged-in defined in xhtml/master.xsl -->
 	window.approot = "<xsl:value-of select="$root"/>";
 	window.bootstrap = {
 	<xsl:apply-templates select="/data/types-all" mode="output-json"/>,
@@ -32,9 +33,12 @@
 	<xsl:apply-templates select="/data/bundles-all" mode="output-json"/>,
 	<xsl:apply-templates select="/data/images-all" mode="output-json"/>
 	};
+	document.body.className = "app-init";
 	</xsl:with-param>
 	</xsl:call-template>
 	<!-- Application -->
+	<script type="text/javascript" src="{$workspace}/assets/js/vendor.js"></script>
+	<script type="text/javascript" src="{$workspace}/assets/js/vendor-bower.js"></script>
 	<script type="text/javascript" src="{$workspace}/assets/js/folio.js"></script>
 </xsl:template>
 

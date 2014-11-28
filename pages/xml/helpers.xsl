@@ -76,8 +76,7 @@
 		<!-- images as csv -->
 		<xsl:call-template name="csv-attribute">
 			<xsl:with-param name="attribute-name" select="'imageIDs'" />
-			<!-- <xsl:with-param name="items" select="images/item[published = 'Yes']/@id" /> -->
-			<xsl:with-param name="items" select="//images-find-by-bundle/bundle[@link-id = current()/@id]/@id" />
+			<xsl:with-param name="items" select="/data/images-find-by-bundle/bundle[@link-id = current()/@id]/@id" />
 		</xsl:call-template>
 		<!-- label -->
 		<xsl:apply-templates select="name | description" />
@@ -96,13 +95,12 @@
 		<!-- label -->
 		<xsl:apply-templates select="name | description" />
 		<!-- images -->
-		<!-- <xsl:apply-templates select="images/item[published = 'Yes']" /> -->
-		<xsl:apply-templates select="//images-find-by-bundle/bundle[@link-id = current()/@id]/entry" />
+		<xsl:apply-templates select="/data/images-find-by-bundle/bundle[@link-id = current()/@id]/entry" />
 	</bundle>
 </xsl:template>
 
 <!-- images -->
-<xsl:template match="images-find/entry | images-find-by-bundle/bundle/entry | images/item">
+<xsl:template match="images-find/entry | images-find-by-bundle/bundle/entry">
 	<image ID="{@id}" width="{file/meta/@width}" height="{file/meta/@height}" source="{$root}/image/{{0}}{file/@path}/{file/filename/text()}">
 		<xsl:apply-templates select="attributes" />
 		<xsl:apply-templates select="description" />
@@ -115,7 +113,7 @@
 		<!-- bundles as csv -->
 		<xsl:call-template name="csv-attribute">
 			<xsl:with-param name="attribute-name" select="'bundleIDs'" />
-			<xsl:with-param name="items" select="//bundles-find/entry[keywords/item/@id = current()/@id]/@id" />
+			<xsl:with-param name="items" select="/data/bundles-find/entry[keywords/item/@id = current()/@id]/@id" />
 		</xsl:call-template>
 		<!-- label -->
 		<xsl:apply-templates select="name" />
@@ -128,7 +126,7 @@
 		<!-- keywords as csv -->
 		<xsl:call-template name="csv-attribute">
 			<xsl:with-param name="attribute-name" select="'keywordIDs'" />
-			<xsl:with-param name="items" select="//keywords-find/entry[type/item/@id = current()/@id]/@id" />
+			<xsl:with-param name="items" select="/data/keywords-find/entry[type/item/@id = current()/@id]/@id" />
 		</xsl:call-template>
 		<!-- label -->
 		<xsl:apply-templates select="name" />

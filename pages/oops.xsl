@@ -4,7 +4,7 @@
 <xsl:include href="xhtml/master.xsl" />
 
 <xsl:template match="data">
-	<div id="main" class="main">
+	<div id="navigation" class="navigation">
 		<h2>Here be dragons, ye be warned.</h2>
 		<p>Something&#8217;s not right.</p>
 	</div>

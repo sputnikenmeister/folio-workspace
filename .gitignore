@@ -4,7 +4,6 @@
 _~*.scss
 node_modules/
 bower_components/
-.bower_components/
 .sass-cache/
 uploads/
 assets/css/

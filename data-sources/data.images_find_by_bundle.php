@@ -5,10 +5,10 @@ require_once TOOLKIT . '/class.datasource.php';
 class datasourceimages_find_by_bundle extends SectionDatasource
 {
 	public $dsParamROOTELEMENT = 'images-find-by-bundle';
-	public $dsParamORDER = 'desc';
+	public $dsParamORDER = 'asc';
 	public $dsParamGROUP = '51';
 	public $dsParamPAGINATERESULTS = 'no';
-	public $dsParamLIMIT = '99';
+	public $dsParamLIMIT = '20';
 	public $dsParamSTARTPAGE = '1';
 	public $dsParamREDIRECTONEMPTY = 'no';
 	public $dsParamREDIRECTONFORBIDDEN = 'no';
@@ -22,7 +22,6 @@ class datasourceimages_find_by_bundle extends SectionDatasource
 	);
 
 	public $dsParamINCLUDEDELEMENTS = array(
-		'system:pagination',
 		'file',
 		'bundle',
 		'description: formatted',

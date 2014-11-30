@@ -39,7 +39,7 @@
 <![endif]--><!--[if gt IE 9]>
 	<body class="ie {$current-page}-page">
 <![endif]--><!--[if !IE]><!-->
-	<body class="{$current-page}-page">
+	<body class="{$current-page}-page app-initial">
 <!--<![endif]-->
 		<div id="container">
 			<div id="header" class="header">

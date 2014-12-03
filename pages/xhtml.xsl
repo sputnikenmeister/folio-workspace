@@ -37,8 +37,9 @@
 	</xsl:with-param>
 	</xsl:call-template>
 	<!-- Application -->
-	<script type="text/javascript" src="{$workspace}/assets/js/vendor.js"></script>
-	<script type="text/javascript" src="{$workspace}/assets/js/folio.js"></script>
+	<script type="text/javascript" src="{$workspace}/assets/js/folio-vendor.min.js"></script>
+	<script type="text/javascript" src="{$workspace}/assets/js/folio-client.js"></script>
+<!--	<script type="text/javascript" src="{$workspace}/assets/js/folio.js"></script>-->
 </xsl:template>
 
 <!-- Container HTML -->

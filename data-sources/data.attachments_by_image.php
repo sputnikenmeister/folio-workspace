@@ -2,35 +2,24 @@
 
 require_once TOOLKIT . '/class.datasource.php';
 
-class datasourcebundles_all extends SectionDatasource
+class datasourceattachments_by_image extends SectionDatasource
 {
-    public $dsParamROOTELEMENT = 'bundles-all';
+    public $dsParamROOTELEMENT = 'attachments-by-image';
     public $dsParamORDER = 'desc';
+    public $dsParamGROUP = '59';
     public $dsParamPAGINATERESULTS = 'no';
     public $dsParamLIMIT = '20';
     public $dsParamSTARTPAGE = '1';
     public $dsParamREDIRECTONEMPTY = 'no';
     public $dsParamREDIRECTONFORBIDDEN = 'no';
     public $dsParamREDIRECTONREQUIRED = 'no';
-    public $dsParamPARAMOUTPUT = array(
-        'system:id',
-        'keywords'
-        );
-    public $dsParamSORT = 'completed';
+    public $dsParamSORT = 'system:id';
     public $dsParamHTMLENCODE = 'no';
-    public $dsParamASSOCIATEDENTRYCOUNTS = 'no';
-
-    public $dsParamFILTERS = array(
-        '5' => 'yes',
-    );
+    public $dsParamASSOCIATEDENTRYCOUNTS = 'yes';
 
     public $dsParamINCLUDEDELEMENTS = array(
-        'name',
-        'display-name: formatted',
-        'completed',
-        'description: formatted',
-        'keywords',
-        'attributes'
+        'file',
+        'owner'
     );
 
     public function __construct($env = null, $process_params = true)
@@ -42,19 +31,19 @@ class datasourcebundles_all extends SectionDatasource
     public function about()
     {
         return array(
-            'name' => 'Bundles All',
+            'name' => 'Attachments by Image',
             'author' => array(
                 'name' => 'Pablo Canillas',
-                'website' => 'http://folio.localhost',
+                'website' => 'http://krupp.local/projects/folio-sym',
                 'email' => 'noreply@localhost.tld'),
             'version' => 'Symphony 2.5.2',
-            'release-date' => '2014-12-14T17:55:31+00:00'
+            'release-date' => '2015-06-18T17:40:11+00:00'
         );
     }
 
     public function getSource()
     {
-        return '1';
+        return '8';
     }
 
     public function allowEditorToParse()

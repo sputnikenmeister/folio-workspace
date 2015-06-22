@@ -10,61 +10,75 @@
 	encoding="UTF-8"
 	indent="yes" />
 
-<xsl:variable name="is-logged-in" select="'true'"/>
-<!--<xsl:variable name="is-logged-in" select="/data/events/login-info/@logged-in"/>-->
+<xsl:variable name="is-logged-in" select="true()"/>
+<!--<xsl:variable name="is-logged-in" select="/data/author-logged-in/author/@user-type = 'developer'"/>-->
+<!-- <xsl:variable name="body-classes" select="concat($current-page, '-page')"/> -->
+<xsl:variable name="document-classes" select="'app-initial'"/>
+<xsl:variable name="body-classes">
+	<!-- <xsl:value-of select="concat($current-page, '-page')"/>
+	<xsl:if test="$url-layout">
+		<xsl:value-of select="concat(' ', $url-layout, '-layout')"/>
+	</xsl:if> -->
+	<xsl:choose>
+		<xsl:when test="$url-layout">
+			<xsl:value-of select="concat($current-page, '-page ', $url-layout, '-layout')"/>
+		</xsl:when>
+		<xsl:otherwise>
+			<xsl:value-of select="concat($current-page, '-page default-layout')"/>
+		</xsl:otherwise>
+	</xsl:choose>
+</xsl:variable>
 
 <xsl:template match="/">
-<html lang="en">
-	<head profile="http://gmpg.org/xfn/11">
+<html lang="en" class="{$document-classes}">
+	<head>
+	<!-- <head profile="http://gmpg.org/xfn/11"> -->
 		<!--[if lt IE 9]><script language="javascript" type="text/javascript" src="//html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 		<!-- <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> -->
-		<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8"/>
+		<xsl:if test="/data/params/page-types/item[@handle='xhtml']">
+			<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8"/>
+		</xsl:if>
 		<title><xsl:call-template name="page-title"/></title>
 		<meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"/>
-		<meta name="author" content="{$root}/humans.txt"/>
+		<!-- <meta name="viewport" content="user-scalable=no, width=device-width, height=device-height, initial-scale=1, maximum-scale=1"/>-->
+		<!-- <meta name="author" content="{$root}/humans.txt"/>-->
 		<!-- <meta name="description" content="no description"/> -->
-		<link rel="canonical" href="{$root}/"/><!-- cf. https://support.google.com/webmasters/answer/139066?hl=en#1 -->
+		<!-- <link rel="canonical" href="{$root}/"/>--><!-- cf. https://support.google.com/webmasters/answer/139066?hl=en#1 -->
 		<link rel="alternate" type="application/rss+xml" href="{$root}/rss"/>
-		<link rel="stylesheet" type="text/css" href="{$workspace}/assets/css/folio.css"/>
 		<xsl:apply-templates select="data" mode="html-head-scripts"/>
 	</head>
 <!--[if lt IE 7 ]>
-	<body class="ie ie6 {$current-page}-page">
+	<body class="ie ie6 {$body-classes}">
 <![endif]--><!--[if IE 7 ]>
-	<body class="ie ie7 {$current-page}-page">
+	<body class="ie ie7 {$body-classes}">
 <![endif]--><!--[if IE 8 ]>
-	<body class="ie ie8 {$current-page}-page">
+	<body class="ie ie8 {$body-classes}">
 <![endif]--><!--[if IE 9 ]>
-	<body class="ie ie9 {$current-page}-page">
+	<body class="ie ie9 {$body-classes}">
 <![endif]--><!--[if gt IE 9]>
-	<body class="ie {$current-page}-page">
+	<body class="ie {$body-classes}">
 <![endif]--><!--[if !IE]><!-->
-	<body class="{$current-page}-page app-initial">
+	<body class="{$body-classes}">
 <!--<![endif]-->
 		<div id="container">
-			<div id="header" class="header">
-				<h1 id="site-name">
-					<a href="{$root}/"><xsl:value-of select="$website-name"/></a>
-				</h1>
-			</div>
+			<!--<div id="header" class="header">
+				<h3>Subheader</h3>
+			</div>-->
 			<xsl:apply-templates select="data"/>
-			<div id="container-footer"></div>
+			<!--<div id="container-footer"></div>-->
 		</div>
-		<div id="footer" class="footer">
+		<!--<div id="footer" class="footer">
 			<p class="copyright">&#169; 1995-2014 Pablo Canillas</p>
 		</div>
-
-		<xsl:if test="$is-logged-in = 'true'">
-		<div id="debug-toolbar">
-			<dl id="tools">
-				<dt>Debug</dt>
-				<dd><a id="backend" href="{$root}/symphony/" target="_blank">Backend</a></dd>
-				<dd><a id="source" href="?debug=xml" target="_blank">Source</a></dd>
-				<dd><a id="grid" href="javascript:void(0)">Grid</a></dd>
-			</dl>
-		</div>
-		</xsl:if>
-
+ 		<dl id="debug-toolbar" class="toolbar">
+			<dt>Debug</dt>
+			<xsl:if test="$is-logged-in = 'true'">
+			<dd><a id="edit-backend" href="{$root}/symphony/" target="_blank">Edit Backend</a></dd>
+			<dd><a id="source" href="?debug=xml" target="_blank">Source</a></dd>
+			</xsl:if>
+			<dd><a id="show-grid" href="javascript:(void 0)">Grid</a></dd>
+			<dd><a id="show-blocks" href="javascript:(void 0)">Blocks</a></dd>
+		</dl>-->
 		<xsl:apply-templates select="data" mode="html-footer-scripts"/>
 	</body>
 </html>
@@ -86,16 +100,16 @@
 </xsl:template>
 
 <xsl:template match="types-all/entry">
-	<dt id="t{@id}" class="list-group">
-		<span><xsl:value-of select="name/text()"/></span>
+	<dt class="list-group" data-id="{@id}">
+		<span class="name"><xsl:value-of select="name/text()"/></span>
 	</dt>
 	<xsl:apply-templates select="/data/keywords-all/entry[type/item/@id = current()/@id]"/>
 </xsl:template>
 
 <xsl:template match="keywords-all/entry">
-	<dd id="k{@id}" class="list-item">
+	<dd class="list-item" data-id="{@id}">
 		<a href="{$root}/keywords/{name/@handle}">
-			<xsl:value-of select="name/text()"/>
+			<span class="name"><xsl:value-of select="name/text()"/></span>
 		</a>
 	</dd>
 </xsl:template>

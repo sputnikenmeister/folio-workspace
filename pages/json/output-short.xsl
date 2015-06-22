@@ -20,13 +20,78 @@
 			<f><xsl:copy-of select="file/filename/text()"/></f>
 			<w><xsl:value-of select="file/meta/@width"/></w>
 			<h><xsl:value-of select="file/meta/@height"/></h>
+			<!-- <att><xsl:value -->
 			<xsl:apply-templates select="attributes | description" mode="prepare-json"/>
+			<xsl:apply-templates select="/data/attachments-by-image/owner[@link-id = current()/@id]" mode="prepare-json"/>
+			<!-- <xsl:apply-templates select="/data/attachments-by-image/owner[@link-id = current()/@id]" mode="prepare-json2"/> -->
+			<!-- <xsl:apply-templates select="/data/attachments-by-image/owner[@link-id = current()/@id]/entry" mode="prepare-json3"/> -->
 		</xsl:with-param>
 	</xsl:call-template>
 	<xsl:if test="position() != last()">
 		<xsl:text>,</xsl:text>
 	</xsl:if>
 </xsl:template>
+
+<!-- Attachments -->
+
+<!-- Attachments -->
+
+<xsl:template match="attachments-by-image/owner" mode="prepare-json">
+	<xsl:variable name="item-list" select="entry"/>
+	<attch>
+		<xsl:choose>
+			<xsl:when test="$item-list">
+				<xsl:copy-of select="$item-list"/>
+			</xsl:when>
+			<xsl:otherwise>
+				<empty/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</attch>
+</xsl:template>
+<xsl:template match="attch/entry" mode="output-json">
+	<xsl:call-template name="output-json">
+		<xsl:with-param name="xml">
+			<f><xsl:copy-of select="file/filename/text()"/></f>
+			<mime><xsl:value-of select="file/@type"/></mime>
+			<!-- <url><xsl:value-of select="file/@path"/>/<xsl:copy-of select="file/filename/text()"/></url> -->
+		</xsl:with-param>
+	</xsl:call-template>
+	<xsl:if test="position() != last()">
+		<xsl:text>,</xsl:text>
+	</xsl:if>
+</xsl:template>
+
+<!-- <xsl:template match="attachments-by-image/owner" mode="prepare-json1">
+	<attch>
+		<xsl:choose>
+			<xsl:when test="entry">
+				<xsl:for-each select="entry">
+					<item><xsl:copy-of select="file/filename/text()"/></item>
+				</xsl:for-each>
+			</xsl:when>
+			<xsl:otherwise>
+				<empty/>
+			</xsl:otherwise>
+		</xsl:choose>
+	</attch>
+</xsl:template> -->
+
+<!-- <xsl:template match="attachments-by-image/owner" mode="prepare-json2">
+	<xsl:for-each select="entry">
+		<attch2>
+			<f><xsl:copy-of select="file/filename/text()"/></f>
+			<mime><xsl:value-of select="file/@type"/></mime>
+		</attch2>
+	</xsl:for-each>
+</xsl:template> -->
+
+<!-- <xsl:template match="attachments-by-image/owner/entry" mode="prepare-json3">
+	<attch3>
+		<f><xsl:copy-of select="file/filename/text()"/></f>
+		<mime><xsl:value-of select="file/@type"/></mime>
+	</attch3>
+</xsl:template> -->
 
 <!-- 				-->
 <!-- All bundles 	-->
@@ -37,7 +102,17 @@
 		<xsl:with-param name="xml">
 			<id><xsl:value-of select="@id"/></id>
 			<handle><xsl:value-of select="name/@handle"/></handle>
-			<xsl:copy-of select="name | completed"/>
+			<xsl:choose>
+				<xsl:when test="display-name">
+					<name mode="formatted">
+						<xsl:copy-of select="display-name/*[1]/* | display-name/*[1]/text()"/>
+					</name>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:copy-of select="name"/>
+				</xsl:otherwise>
+			</xsl:choose>
+			<xsl:copy-of select="completed"/>
 			<xsl:apply-templates select="keywords" mode="prepare-json-ids"/>
 			<xsl:apply-templates select="attributes | description" mode="prepare-json"/>
 		</xsl:with-param>

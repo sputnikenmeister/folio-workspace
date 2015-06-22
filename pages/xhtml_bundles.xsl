@@ -18,8 +18,8 @@
 
 <xsl:template match="data">
 <div id="navigation">
-	<xsl:apply-templates select="types-all"/>
 	<xsl:apply-templates select="bundles-get/entry[1]" mode="navigation"/>
+	<xsl:apply-templates select="types-all"/>
 </div>
 <div id="content">
 	<xsl:apply-templates select="bundles-get/entry[1]" mode="content"/>

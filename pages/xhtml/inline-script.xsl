@@ -8,6 +8,7 @@
 	<xsl:param name="id"/>
 	<xsl:param name="type" select="'text/javascript'"/>
 	<xsl:param name="content" />
+	<xsl:param name="cdata" select="true()"/>
 	<xsl:element name="script">
 		<xsl:if test="$id">
 			<xsl:attribute name="id">
@@ -17,9 +18,13 @@
 		<xsl:attribute name="type">
 			<xsl:value-of select="$type"/>
 		</xsl:attribute>
-		<xsl:text disable-output-escaping="yes">&lt;![CDATA[</xsl:text>
+		<xsl:if test="$cdata">
+			<xsl:text disable-output-escaping="yes">&lt;![CDATA[</xsl:text>
+		</xsl:if>
 		<xsl:copy-of select="exsl:node-set($content)"/>
-		<xsl:text disable-output-escaping="yes">]]&gt;</xsl:text>
+		<xsl:if test="$cdata">
+			<xsl:text disable-output-escaping="yes">]]&gt;</xsl:text>
+		</xsl:if>
 	</xsl:element>
 </xsl:template>
 

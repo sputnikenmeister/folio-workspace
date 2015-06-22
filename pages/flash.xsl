@@ -12,10 +12,10 @@
 <xsl:variable name="approot">
 	<xsl:choose>
 		<xsl:when test="$url-debug = 'flash'">
-			<xsl:value-of select="concat($workspace,'/assets/flash/debug')"/>
+			<xsl:value-of select="concat($workspace,'/assets/debug')"/>
 		</xsl:when>
 		<xsl:otherwise>
-			<xsl:value-of select="concat($workspace,'/assets/flash/release')"/>
+			<xsl:value-of select="concat($workspace,'/assets/release')"/>
 		</xsl:otherwise>
 	</xsl:choose>
 </xsl:variable>
@@ -28,7 +28,7 @@
 <head>
 	<title><xsl:value-of select="$website-name"/></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<link rel="stylesheet" type="text/css" href="{$workspace}/assets/css/flash.min.css" />
+	<link rel="stylesheet" type="text/css" href="{$workspace}/assets/flash.css" />
 	<link rel="stylesheet" type="text/css" href="{$approot}/history/history.css" />
 	<script type="text/javascript" src="{$approot}/history/history.js"></script>
 	<script type="text/javascript" src="{$approot}/swfobject.js"></script>
@@ -63,7 +63,7 @@
 <head>
 	<title><xsl:value-of select="$website-name"/></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<link rel="stylesheet" type="text/css" href="{$workspace}/assets/css/flash.min.css" />
+	<link rel="stylesheet" type="text/css" href="{$workspace}/assets/flash.css" />
 	<link rel="stylesheet" type="text/css" href="{$approot}/history/history.css" />
 	<script type="text/javascript" src="{$approot}/history/history.js"></script>
 	<script type="text/javascript" src="{$approot}/swfobject.js"></script>

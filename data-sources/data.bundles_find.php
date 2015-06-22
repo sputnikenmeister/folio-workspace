@@ -27,6 +27,7 @@ class datasourcebundles_find extends SectionDatasource
     public $dsParamINCLUDEDELEMENTS = array(
         'system:pagination',
         'name',
+        'display-name: formatted',
         'completed',
         'description: formatted',
         'keywords',

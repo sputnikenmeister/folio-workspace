@@ -6,16 +6,13 @@
 <xsl:strip-space elements="*"/>
 
 <xsl:template match="/data">
-	<xsl:text>&#xa;window.bootstrap = {</xsl:text>
-	<xsl:text>&#xa;&#9;</xsl:text>
-	<xsl:apply-templates select="types-all" mode="output-json"/>
-	<xsl:text>,&#xa;&#9;</xsl:text>
-	<xsl:apply-templates select="keywords-all" mode="output-json"/>
-	<xsl:text>,&#xa;&#9;</xsl:text>
-	<xsl:apply-templates select="bundles-all" mode="output-json"/>
-	<xsl:text>,&#xa;&#9;</xsl:text>
+	window.approot = "<xsl:value-of select="$root"/>/";
+	window.bootstrap = {
+	<xsl:apply-templates select="types-all" mode="output-json"/>,
+	<xsl:apply-templates select="keywords-all" mode="output-json"/>,
+	<xsl:apply-templates select="bundles-all" mode="output-json"/>,
 	<xsl:apply-templates select="images-all" mode="output-json"/>
-	<xsl:text>&#xa;};</xsl:text>
+	};
 </xsl:template>
 
 	<!-- This works but indentation gets messed up -->

@@ -12,7 +12,8 @@ class datasourceimages_all extends SectionDatasource
     public $dsParamREDIRECTONEMPTY = 'no';
     public $dsParamREDIRECTONFORBIDDEN = 'no';
     public $dsParamREDIRECTONREQUIRED = 'no';
-    public $dsParamSORT = 'bundle';
+    public $dsParamSORT = 'system:id';
+    public $dsParamHTMLENCODE = 'no';
     public $dsParamASSOCIATEDENTRYCOUNTS = 'no';
 
     public $dsParamFILTERS = array(
@@ -22,6 +23,7 @@ class datasourceimages_all extends SectionDatasource
     public $dsParamINCLUDEDELEMENTS = array(
         'file',
         'bundle',
+        'attachments',
         'description: formatted',
         'attributes',
         'order'
@@ -39,10 +41,10 @@ class datasourceimages_all extends SectionDatasource
             'name' => 'Images All',
             'author' => array(
                 'name' => 'Pablo Canillas',
-                'website' => 'http://folio.localhost',
+                'website' => 'http://krupp.local/projects/folio-sym',
                 'email' => 'noreply@localhost.tld'),
-            'version' => 'Symphony 2.5.1',
-            'release-date' => '2014-11-27T10:21:43+00:00'
+            'version' => 'Symphony 2.5.2',
+            'release-date' => '2015-06-18T14:09:28+00:00'
         );
     }
 

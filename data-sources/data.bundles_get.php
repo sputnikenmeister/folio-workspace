@@ -26,6 +26,7 @@ class datasourcebundles_get extends SectionDatasource
 
     public $dsParamINCLUDEDELEMENTS = array(
         'name',
+        'display-name: formatted',
         'completed',
         'description: formatted',
         'attributes'

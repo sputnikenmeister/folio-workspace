@@ -1,7 +1,7 @@
 .DS_Store
 ~*
-assets/
-uploads/
-flash/debug/
-flash/release/
-flash/sandbox/
+/assets
+/uploads
+/flash/debug
+/flash/release
+/flash/sandbox

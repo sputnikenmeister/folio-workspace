@@ -73,10 +73,10 @@
 			<xsl:with-param name="attribute-name" select="'keywordIDs'" />
 			<xsl:with-param name="items" select="keywords/item[published = 'Yes']/@id" />
 		</xsl:call-template>
-		<!-- images as csv -->
+		<!-- media as csv -->
 		<xsl:call-template name="csv-attribute">
 			<xsl:with-param name="attribute-name" select="'imageIDs'" />
-			<xsl:with-param name="items" select="/data/images-find-by-bundle/bundle[@link-id = current()/@id]/@id" />
+			<xsl:with-param name="items" select="/data/media-find-by-bundle/bundle[@link-id = current()/@id]/@id" />
 		</xsl:call-template>
 		<!-- label -->
 		<xsl:apply-templates select="name | description" />
@@ -94,17 +94,17 @@
 		</xsl:call-template>
 		<!-- label -->
 		<xsl:apply-templates select="name | description" />
-		<!-- images -->
-		<xsl:apply-templates select="/data/images-find-by-bundle/bundle[@link-id = current()/@id]/entry" />
+		<!-- media -->
+		<xsl:apply-templates select="/data/media-find-by-bundle/bundle[@link-id = current()/@id]/entry" />
 	</bundle>
 </xsl:template>
 
-<!-- images -->
-<xsl:template match="images-find/entry | images-find-by-bundle/bundle/entry">
-	<image ID="{@id}" width="{file/meta/@width}" height="{file/meta/@height}" source="{$root}/image/{{0}}{file/@path}/{file/filename/text()}">
+<!-- media -->
+<xsl:template match="media-find/entry | media-find-by-bundle/bundle/entry">
+	<media ID="{@id}" width="{file/meta/@width}" height="{file/meta/@height}" source="{$root}/image/{{0}}{file/@path}/{file/filename/text()}">
 		<xsl:apply-templates select="attributes" />
 		<xsl:apply-templates select="description" />
-	</image>
+	</media>
 </xsl:template>
 
 <!-- keywords -->

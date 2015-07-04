@@ -8,9 +8,9 @@
 <!-- Two-pass transforms -->
 
 <!-- 				-->
-<!-- All Images 	-->
+<!-- All Media 	-->
 <!-- 				-->
-<xsl:template match="images-all/entry" mode="output-json">
+<xsl:template match="media-all/entry" mode="output-json">
 	<xsl:text>&#xa;&#9;&#9;</xsl:text>
 	<xsl:call-template name="output-json">
 		<xsl:with-param name="xml">
@@ -22,7 +22,7 @@
 			<h><xsl:value-of select="file/meta/@height"/></h>
 			<!-- <att><xsl:value -->
 			<xsl:apply-templates select="attributes | description" mode="prepare-json"/>
-			<xsl:apply-templates select="/data/images-sources/owner[@link-id = current()/@id]" mode="prepare-json"/>
+			<xsl:apply-templates select="/data/media-sources/owner[@link-id = current()/@id]" mode="prepare-json"/>
 		</xsl:with-param>
 	</xsl:call-template>
 	<xsl:if test="position() != last()">
@@ -31,9 +31,9 @@
 </xsl:template>
 
 <!-- 				-->
-<!-- Images Sources	-->
+<!-- Media Sources	-->
 <!-- 				-->
-<xsl:template match="images-sources/owner" mode="prepare-json">
+<xsl:template match="media-sources/owner" mode="prepare-json">
 	<xsl:variable name="item-list" select="entry"/>
 	<srcset>
 		<xsl:choose>
@@ -104,21 +104,21 @@
 </xsl:template>
 
 <!-- 				-->
-<!-- Images (IDs)	-->
+<!-- Media (IDs)	-->
 <!-- 				-->
-<xsl:template match="images-find-by-bundle | images" mode="prepare-json-ids">
-	<xsl:variable name="images" select="entry | item"/>
-	<iIds>
+<xsl:template match="media-find-by-bundle | media" mode="prepare-json-ids">
+	<xsl:variable name="media" select="entry | item"/>
+	<mIds>
 		<xsl:choose>
-			<xsl:when test="$images">
-				<xsl:copy-of select="$images"/>
-				<!-- <xsl:apply-templates select="$images" mode="prepare-json"/> -->
+			<xsl:when test="$media">
+				<xsl:copy-of select="$media"/>
+				<!-- <xsl:apply-templates select="$media" mode="prepare-json"/> -->
 			</xsl:when>
 			<xsl:otherwise>
 				<empty/>
 			</xsl:otherwise>
 		</xsl:choose>
-	</iIds>
+	</mIds>
 </xsl:template>
 <xsl:template match="iIds/item" mode="output-json">
 	<xsl:value-of select="@id" />

@@ -1,8 +1,8 @@
 <?php
 
-class datasourceimages_sources extends SectionDatasource
+class datasourcemedia_sources extends SectionDatasource
 {
-    public $dsParamROOTELEMENT = 'images-sources';
+    public $dsParamROOTELEMENT = 'media-sources';
     public $dsParamORDER = 'asc';
     public $dsParamGROUP = '59';
     public $dsParamPAGINATERESULTS = 'no';
@@ -17,7 +17,9 @@ class datasourceimages_sources extends SectionDatasource
 
     public $dsParamINCLUDEDELEMENTS = array(
         'file',
-        'owner'
+        'owner',
+        'attributes',
+        'order'
     );
 
     public function __construct($env = null, $process_params = true)
@@ -29,13 +31,13 @@ class datasourceimages_sources extends SectionDatasource
     public function about()
     {
         return array(
-            'name' => 'Images Sources',
+            'name' => 'Media Sources',
             'author' => array(
                 'name' => 'Pablo Canillas',
                 'website' => 'http://krupp.local/projects/folio-sym',
                 'email' => 'noreply@localhost.tld'),
             'version' => 'Symphony 2.6.2',
-            'release-date' => '2015-06-22T17:50:57+00:00'
+            'release-date' => '2015-07-04T11:17:49+00:00'
         );
     }
 

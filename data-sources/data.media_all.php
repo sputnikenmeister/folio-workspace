@@ -1,27 +1,24 @@
 <?php
 
-require_once TOOLKIT . '/class.datasource.php';
-
-class datasourceimages_find extends SectionDatasource
+class datasourcemedia_all extends SectionDatasource
 {
-    public $dsParamROOTELEMENT = 'images-find';
+    public $dsParamROOTELEMENT = 'media-all';
     public $dsParamORDER = 'desc';
-    public $dsParamPAGINATERESULTS = 'yes';
-    public $dsParamLIMIT = '{$url-pagesize:99}';
-    public $dsParamSTARTPAGE = '{$url-pagenum:1}';
+    public $dsParamPAGINATERESULTS = 'no';
+    public $dsParamLIMIT = '20';
+    public $dsParamSTARTPAGE = '1';
     public $dsParamREDIRECTONEMPTY = 'no';
     public $dsParamREDIRECTONFORBIDDEN = 'no';
     public $dsParamREDIRECTONREQUIRED = 'no';
-    public $dsParamSORT = 'bundle';
+    public $dsParamSORT = 'system:id';
+    public $dsParamHTMLENCODE = 'no';
     public $dsParamASSOCIATEDENTRYCOUNTS = 'no';
 
     public $dsParamFILTERS = array(
-        'system:id' => '{$images}',
         '26' => 'yes',
     );
 
     public $dsParamINCLUDEDELEMENTS = array(
-        'system:pagination',
         'file',
         'bundle',
         'description: formatted',
@@ -38,13 +35,13 @@ class datasourceimages_find extends SectionDatasource
     public function about()
     {
         return array(
-            'name' => 'Images Find',
+            'name' => 'Media All',
             'author' => array(
                 'name' => 'Pablo Canillas',
-                'website' => 'http://folio.localhost',
+                'website' => 'http://krupp.local/projects/folio-sym',
                 'email' => 'noreply@localhost.tld'),
-            'version' => 'Symphony 2.5.1',
-            'release-date' => '2014-11-27T10:23:10+00:00'
+            'version' => 'Symphony 2.6.2',
+            'release-date' => '2015-07-04T11:19:25+00:00'
         );
     }
 

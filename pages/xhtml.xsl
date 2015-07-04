@@ -68,7 +68,7 @@
 			<xsl:apply-templates select="/data/types-all" mode="output-json"/>,
 			<xsl:apply-templates select="/data/keywords-all" mode="output-json"/>,
 			<xsl:apply-templates select="/data/bundles-all" mode="output-json"/>,
-			<xsl:apply-templates select="/data/images-all" mode="output-json"/>
+			<xsl:apply-templates select="/data/media-all" mode="output-json"/>
 			};
 			window.mediadir = "<xsl:value-of select="$workspace"/>/uploads";
 			window.approot = "<xsl:value-of select="$root"/>/";

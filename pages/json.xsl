@@ -11,14 +11,14 @@
 	<xsl:apply-templates select="types-all" mode="output-json"/>,
 	<xsl:apply-templates select="keywords-all" mode="output-json"/>,
 	<xsl:apply-templates select="bundles-all" mode="output-json"/>,
-	<xsl:apply-templates select="images-all" mode="output-json"/>
+	<xsl:apply-templates select="media-all" mode="output-json"/>
 	};
 </xsl:template>
 
 	<!-- This works but indentation gets messed up -->
 	<!--
 	<xsl:call-template name="output-json">
-		<xsl:with-param name="xml" select="types-all | keywords-all | bundles-all | images-all"/>
+		<xsl:with-param name="xml" select="types-all | keywords-all | bundles-all | media-all"/>
 	</xsl:call-template>
 	-->
 

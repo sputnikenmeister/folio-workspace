@@ -21,15 +21,15 @@
 			<handle><xsl:value-of select="name/@handle"/></handle>
 			<xsl:copy-of select="name | completed "/>
 			<xsl:apply-templates select="description | attributes" mode="prepare-json"/>
-			<xsl:apply-templates select="/data/images-find-by-bundle/bundle[@link-id = current()/@id]" mode="prepare-json"/>
+			<xsl:apply-templates select="/data/media-find-by-bundle/bundle[@link-id = current()/@id]" mode="prepare-json"/>
 		</xsl:with-param>
 	</xsl:call-template>
 </xsl:template>
 
-<!-- Images -->
-<xsl:template match="images-find-by-bundle/bundle" mode="prepare-json">
+<!-- Media -->
+<xsl:template match="media-find-by-bundle/bundle" mode="prepare-json">
 	<xsl:variable name="item-list" select="entry"/>
-	<images>
+	<media>
 		<xsl:choose>
 			<xsl:when test="$item-list">
 				<xsl:copy-of select="$item-list"/>
@@ -38,9 +38,9 @@
 				<empty/>
 			</xsl:otherwise>
 		</xsl:choose>
-	</images>
+	</media>
 </xsl:template>
-<xsl:template match="images/entry" mode="output-json">
+<xsl:template match="media/entry" mode="output-json">
 	<xsl:call-template name="output-json">
 		<xsl:with-param name="xml">
 			<id><xsl:value-of select="@id"/></id>

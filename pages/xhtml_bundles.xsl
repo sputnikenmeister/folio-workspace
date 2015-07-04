@@ -73,36 +73,36 @@
 </xsl:template>
 
 <xsl:template match="bundles-get/entry" mode="content">
-	<!-- <xsl:apply-templates select="images" /> -->
-	<xsl:apply-templates select="/data/images-find-by-bundle/bundle[@link-id = current()/@id]" />
+	<!-- <xsl:apply-templates select="media" /> -->
+	<xsl:apply-templates select="/data/media-find-by-bundle/bundle[@link-id = current()/@id]" />
 </xsl:template>
 
 <!--
-  ~~ Images
+  ~~ Media
   -->
 <xsl:variable name="img-width" select="700" />
 
-<!-- <xsl:template match="images[item/published/text() = 'Yes']"> -->
-<xsl:template match="images-find-by-bundle/bundle">
+<!-- <xsl:template match="media[item/published/text() = 'Yes']"> -->
+<xsl:template match="media-find-by-bundle/bundle">
 	<!-- <xsl:variable name="image-items" select="item"/> -->
 	<xsl:variable name="image-items" select="entry"/>
 	<xsl:variable name="max-height" select="round(($img-width div math:max($image-items/file/meta/@width)) * math:max($image-items/file/meta/@height))" />
 	<!-- Image Pager -->
 	<xsl:if test="count($image-items) &gt; 1">
-	<div id="bundle-images-pager" class="rsquare-pager">
+	<div id="bundle-media-pager" class="rsquare-pager">
 		<a id="preceding-image" class="preceding-button button" href="#"><!--&#x25C0;--></a>
 		<a id="following-image" class="following-button button" href="#"><!--&#x25B6;--></a>
 	</div>
 	</xsl:if>
 	<!-- Image List -->
-	<ul id="bundle-images" class="image-list" style="width: {$img-width}px; height: {$max-height}px;">
+	<ul id="bundle-media" class="image-list" style="width: {$img-width}px; height: {$max-height}px;">
 		<!-- <xsl:apply-templates select="item"/> -->
 		<xsl:apply-templates select="entry"/>
 	</ul>
 </xsl:template>
 
-<!-- <xsl:template match="images/item"> -->
-<xsl:template match="images-find-by-bundle/bundle/entry">
+<!-- <xsl:template match="media/item"> -->
+<xsl:template match="media-find-by-bundle/bundle/entry">
 	<li id="i{@id}" class="image-item">
 		<xsl:if test="position() &gt; 1">
 			<xsl:attribute name="style">

@@ -1,11 +1,9 @@
 <?php
 
-require_once TOOLKIT . '/class.datasource.php';
-
-class datasourceattachments_by_image extends SectionDatasource
+class datasourceimages_sources extends SectionDatasource
 {
-    public $dsParamROOTELEMENT = 'attachments-by-image';
-    public $dsParamORDER = 'desc';
+    public $dsParamROOTELEMENT = 'images-sources';
+    public $dsParamORDER = 'asc';
     public $dsParamGROUP = '59';
     public $dsParamPAGINATERESULTS = 'no';
     public $dsParamLIMIT = '20';
@@ -13,7 +11,7 @@ class datasourceattachments_by_image extends SectionDatasource
     public $dsParamREDIRECTONEMPTY = 'no';
     public $dsParamREDIRECTONFORBIDDEN = 'no';
     public $dsParamREDIRECTONREQUIRED = 'no';
-    public $dsParamSORT = 'system:id';
+    public $dsParamSORT = 'order';
     public $dsParamHTMLENCODE = 'no';
     public $dsParamASSOCIATEDENTRYCOUNTS = 'yes';
 
@@ -31,13 +29,13 @@ class datasourceattachments_by_image extends SectionDatasource
     public function about()
     {
         return array(
-            'name' => 'Attachments by Image',
+            'name' => 'Images Sources',
             'author' => array(
                 'name' => 'Pablo Canillas',
                 'website' => 'http://krupp.local/projects/folio-sym',
                 'email' => 'noreply@localhost.tld'),
-            'version' => 'Symphony 2.5.2',
-            'release-date' => '2015-06-18T17:40:11+00:00'
+            'version' => 'Symphony 2.6.2',
+            'release-date' => '2015-06-22T17:50:57+00:00'
         );
     }
 

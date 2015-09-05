@@ -21,11 +21,22 @@ class datasourcemedia_find extends SectionDatasource
 
     public $dsParamINCLUDEDELEMENTS = array(
         'system:pagination',
-        'file',
         'bundle',
         'description: formatted',
+        'sources',
         'attributes',
         'order'
+    );
+    
+    public $dsParamINCLUDEDASSOCIATIONS = array(
+        'sources' => array(
+            'section_id' => '8',
+            'field_id' => '57',
+            'elements' => array(
+                'file',
+                'attributes'
+            )
+        )
     );
 
     public function __construct($env = null, $process_params = true)
@@ -40,10 +51,10 @@ class datasourcemedia_find extends SectionDatasource
             'name' => 'Media Find',
             'author' => array(
                 'name' => 'Pablo Canillas',
-                'website' => 'http://krupp.local/projects/folio-sym',
+                'website' => 'http://localhost/projects/folio-sym',
                 'email' => 'noreply@localhost.tld'),
             'version' => 'Symphony 2.6.2',
-            'release-date' => '2015-07-04T11:19:00+00:00'
+            'release-date' => '2015-08-29T17:05:16+00:00'
         );
     }
 

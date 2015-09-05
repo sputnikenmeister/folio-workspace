@@ -81,9 +81,11 @@
 <!-- Container HTML -->
 <xsl:template match="data">
 	<div id="navigation" class="navigation">
-		<h1 id="site-name">
-			<a href="{$root}/"><xsl:value-of select="$website-name"/></a>
-		</h1>
+		<div id="site-name-wrapper" class="transform-wrapper">
+			<h1 id="site-name">
+				<a href="{$root}/"><xsl:value-of select="$website-name"/></a>
+			</h1>
+		</div>
 		<!-- all bundles-->
 		<div id="bundle-list-wrapper" class="transform-wrapper">
 			<xsl:apply-templates select="bundles-all"/>

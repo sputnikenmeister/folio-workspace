@@ -12,15 +12,15 @@
 <xsl:variable name="approot">
 	<xsl:choose>
 		<xsl:when test="$url-debug = 'flash'">
-			<xsl:value-of select="concat($workspace,'/assets/debug')"/>
+			<xsl:value-of select="concat($workspace,'/flash/debug')"/>
 		</xsl:when>
 		<xsl:otherwise>
-			<xsl:value-of select="concat($workspace,'/assets/release')"/>
+			<xsl:value-of select="concat($workspace,'/flash/release')"/>
 		</xsl:otherwise>
 	</xsl:choose>
 </xsl:variable>
-<xsl:variable name="appswf-url" select="concat($approot,'/playerProductInstall.swf')"/>
-<xsl:variable name="xpinst-url" select="concat($approot,'/FolioApp.swf')"/>
+<xsl:variable name="appswf-url" select="concat($approot,'/FolioApp.swf')"/>
+<xsl:variable name="xpinst-url" select="concat($approot,'/playerProductInstall.swf')"/>
 
 <!-- SWFObject dynamic mode: flash is embedded by the client with JavaScript -->
 <xsl:template match="/">
@@ -28,7 +28,7 @@
 <head>
 	<title><xsl:value-of select="$website-name"/></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<link rel="stylesheet" type="text/css" href="{$workspace}/assets/flash.css" />
+	<link rel="stylesheet" type="text/css" href="{$workspace}/flash/assets/flash.css" />
 	<link rel="stylesheet" type="text/css" href="{$approot}/history/history.css" />
 	<script type="text/javascript" src="{$approot}/history/history.js"></script>
 	<script type="text/javascript" src="{$approot}/swfobject.js"></script>
@@ -63,7 +63,7 @@
 <head>
 	<title><xsl:value-of select="$website-name"/></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<link rel="stylesheet" type="text/css" href="{$workspace}/assets/flash.css" />
+	<link rel="stylesheet" type="text/css" href="{$workspace}/flash/assets/flash.css" />
 	<link rel="stylesheet" type="text/css" href="{$approot}/history/history.css" />
 	<script type="text/javascript" src="{$approot}/history/history.js"></script>
 	<script type="text/javascript" src="{$approot}/swfobject.js"></script>

@@ -45,10 +45,12 @@
 		<xsl:with-param name="xml">
 			<id><xsl:value-of select="@id"/></id>
 			<o><xsl:value-of select="order"/></o>
-			<f><xsl:copy-of select="file/filename/text()"/></f>
-			<!-- <url><xsl:value-of select="file/@path"/>/<xsl:copy-of select="file/filename/text()"/></url> -->
-			<w><xsl:value-of select="file/meta/@width"/></w>
-			<h><xsl:value-of select="file/meta/@height"/></h>
+			
+			<xsl:variable name="$default-file" select="sources/item/file[contains(@type,'image')][1]"/>
+			<f><xsl:copy-of select="$default-file/filename/text()"/></f>
+			<w><xsl:value-of select="$default-file/meta/@width"/></w>
+			<h><xsl:value-of select="$default-file/meta/@height"/></h>
+			
 			<xsl:apply-templates select="description | attributes" mode="prepare-json"/>
 		</xsl:with-param>
 	</xsl:call-template>

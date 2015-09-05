@@ -101,7 +101,8 @@
 
 <!-- media -->
 <xsl:template match="media-find/entry | media-find-by-bundle/bundle/entry">
-	<media ID="{@id}" width="{file/meta/@width}" height="{file/meta/@height}" source="{$root}/image/{{0}}{file/@path}/{file/filename/text()}">
+	<xsl:variable name="default-source" select="sources/item[contains(file/@type,'image')][1]"/>
+	<media ID="{@id}" width="{$default-source/file/meta/@width}" height="{$default-source/file/meta/@height}" source="{$root}/image/{{0}}{$default-source/file/@path}/{$default-source/file/filename/text()}">
 		<xsl:apply-templates select="attributes" />
 		<xsl:apply-templates select="description" />
 	</media>

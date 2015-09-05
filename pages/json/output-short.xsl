@@ -17,12 +17,25 @@
 			<bId><xsl:value-of select="bundle/item/@id"/></bId>
 			<id><xsl:value-of select="@id"/></id>
 			<o><xsl:value-of select="order"/></o>
-			<src><xsl:copy-of select="file/filename/text()"/></src>
-			<w><xsl:value-of select="file/meta/@width"/></w>
-			<h><xsl:value-of select="file/meta/@height"/></h>
+			
+			<xsl:variable name="default-image" select="sources/item[contains(file/@type,'image')][1]"/>
+			<xsl:choose>
+				<xsl:when test="$default-image">
+					<src><xsl:copy-of select="$default-image/file/filename/text()"/></src>
+					<w><xsl:value-of select="$default-image/file/meta/@width"/></w>
+					<h><xsl:value-of select="$default-image/file/meta/@height"/></h>
+				</xsl:when>
+				<xsl:otherwise>
+					<src><xsl:copy-of select="file/filename/text()"/></src>
+					<w><xsl:value-of select="file/meta/@width"/></w>
+					<h><xsl:value-of select="file/meta/@height"/></h>
+				</xsl:otherwise>
+			</xsl:choose>
+			
 			<!-- <att><xsl:value -->
 			<xsl:apply-templates select="attributes | description" mode="prepare-json"/>
-			<xsl:apply-templates select="/data/media-sources/owner[@link-id = current()/@id]" mode="prepare-json"/>
+			<xsl:apply-templates select="sources" mode="prepare-json"/>
+			<!-- <xsl:apply-templates select="/data/media-sources/owner[@link-id = current()/@id]" mode="prepare-json"/> -->
 		</xsl:with-param>
 	</xsl:call-template>
 	<xsl:if test="position() != last()">
@@ -33,8 +46,8 @@
 <!-- 				-->
 <!-- Media Sources	-->
 <!-- 				-->
-<xsl:template match="media-sources/owner" mode="prepare-json">
-	<xsl:variable name="item-list" select="entry"/>
+<xsl:template match="sources | media-sources/owner" mode="prepare-json">
+	<xsl:variable name="item-list" select="entry | item"/>
 	<srcset>
 		<xsl:choose>
 			<xsl:when test="$item-list">
@@ -46,7 +59,7 @@
 		</xsl:choose>
 	</srcset>
 </xsl:template>
-<xsl:template match="srcset/entry" mode="output-json">
+<xsl:template match="srcset/entry | srcset/item" mode="output-json">
 	<xsl:call-template name="output-json">
 		<xsl:with-param name="xml">
 			<src><xsl:copy-of select="file/filename/text()"/></src>

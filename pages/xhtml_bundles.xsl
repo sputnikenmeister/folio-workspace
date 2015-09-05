@@ -9,6 +9,7 @@
 <xsl:import href="xhtml/master.xsl"/>
 
 <!-- <xsl:strip-space elements="*"/> -->
+<xsl:variable name="url-layout" select="''" />
 
 <xsl:template name="page-title">
 	<xsl:value-of select="$website-name"/>
@@ -85,15 +86,18 @@
 <!-- <xsl:template match="media[item/published/text() = 'Yes']"> -->
 <xsl:template match="media-find-by-bundle/bundle">
 	<!-- <xsl:variable name="image-items" select="item"/> -->
-	<xsl:variable name="image-items" select="entry"/>
-	<xsl:variable name="max-height" select="round(($img-width div math:max($image-items/file/meta/@width)) * math:max($image-items/file/meta/@height))" />
+	<!-- <xsl:variable name="image-items" select="entry"/> -->
+	<xsl:variable name="default-files" select="entry/sources/item/file[contains(@type,'image')][1]"/>
+	
 	<!-- Image Pager -->
-	<xsl:if test="count($image-items) &gt; 1">
+	<xsl:if test="count($default-files) &gt; 1">
 	<div id="bundle-media-pager" class="rsquare-pager">
 		<a id="preceding-image" class="preceding-button button" href="#"><!--&#x25C0;--></a>
 		<a id="following-image" class="following-button button" href="#"><!--&#x25B6;--></a>
 	</div>
 	</xsl:if>
+	
+	<xsl:variable name="max-height" select="round(($img-width div math:max($default-files/meta/@width)) * math:max($default-files/meta/@height))" />
 	<!-- Image List -->
 	<ul id="bundle-media" class="image-list" style="width: {$img-width}px; height: {$max-height}px;">
 		<!-- <xsl:apply-templates select="item"/> -->
@@ -103,16 +107,18 @@
 
 <!-- <xsl:template match="media/item"> -->
 <xsl:template match="media-find-by-bundle/bundle/entry">
+	<xsl:variable name="default-file" select="sources/item/file[contains(@type,'image')][1]"/>
 	<li id="i{@id}" class="image-item">
 		<xsl:if test="position() &gt; 1">
 			<xsl:attribute name="style">
 				<xsl:copy-of select="'display: none'"/>
+				<!-- <xsl:copy-of select="'opacity: 0.5'"/> -->
 			</xsl:attribute>
 		</xsl:if>
 		<img width="{$img-width}"
-			 height="{floor(($img-width div file/meta/@width) * file/meta/@height)}"
-			 title="{file/filename}" alt="{file/filename}" longdesc="#i{@id}-caption"
-			 src="{$root}/image/1/{$img-width}/0{file/@path}/{file/filename}"/>
+			 height="{floor(($img-width div $default-file/meta/@width) * $default-file/meta/@height)}"
+			 title="{$default-file/filename}" alt="{$default-file/filename}" longdesc="#i{@id}-caption"
+			 src="{$root}/image/1/{$img-width}/0{$default-file/@path}/{$default-file/filename}"/>
 		<div id="i{@id}-caption" class="caption longdesc">
 			<xsl:apply-templates select="description/*" mode="html"/>
 		</div>

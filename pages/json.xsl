@@ -7,6 +7,7 @@
 
 <xsl:template match="/data">
 	window.approot = "<xsl:value-of select="$root"/>/";
+	window.mediadir = "<xsl:value-of select="$workspace"/>/uploads";
 	window.bootstrap = {
 	<xsl:apply-templates select="types-all" mode="output-json"/>,
 	<xsl:apply-templates select="keywords-all" mode="output-json"/>,

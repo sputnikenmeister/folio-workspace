@@ -10,21 +10,17 @@
 	encoding="UTF-8"
 	indent="yes" />
 
-<xsl:variable name="is-logged-in" select="true()"/>
-<!--<xsl:variable name="is-logged-in" select="/data/author-logged-in/author/@user-type = 'developer'"/>-->
-<!-- <xsl:variable name="body-classes" select="concat($current-page, '-page')"/> -->
+<!-- <xsl:variable name="is-logged-in" select="true()"/> -->
+<xsl:variable name="is-logged-in" select="boolean(/data/author-logged-in/author[@user-type = 'developer'])"/>
+
 <xsl:variable name="document-classes" select="'app-initial'"/>
 <xsl:variable name="body-classes">
-	<!-- <xsl:value-of select="concat($current-page, '-page')"/>
-	<xsl:if test="$url-layout">
-		<xsl:value-of select="concat(' ', $url-layout, '-layout')"/>
-	</xsl:if> -->
 	<xsl:choose>
-		<xsl:when test="$url-layout">
-			<xsl:value-of select="concat($current-page, '-page ', $url-layout, '-layout')"/>
+		<xsl:when test="count(/data/params/url-layout) = 0">
+			<xsl:value-of select="concat($current-page, '-page default-layout')"/>
 		</xsl:when>
 		<xsl:otherwise>
-			<xsl:value-of select="concat($current-page, '-page default-layout')"/>
+			<xsl:value-of select="concat($current-page, '-page ', /data/params/url-layout/text(), '-layout')"/>
 		</xsl:otherwise>
 	</xsl:choose>
 </xsl:variable>
@@ -33,7 +29,6 @@
 <html lang="en" class="{$document-classes}">
 	<head>
 	<!-- <head profile="http://gmpg.org/xfn/11"> -->
-		<!--[if lt IE 9]><script language="javascript" type="text/javascript" src="//html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 		<!-- <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"> -->
 		<xsl:if test="/data/params/page-types/item[@handle='xhtml']">
 			<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8"/>
@@ -45,13 +40,10 @@
 		<!-- <meta name="description" content="no description"/> -->
 		<!-- <link rel="canonical" href="{$root}/"/>--><!-- cf. https://support.google.com/webmasters/answer/139066?hl=en#1 -->
 		<link rel="alternate" type="application/rss+xml" href="{$root}/rss"/>
+		<!--[if lt IE 9]><script language="javascript" type="text/javascript" src="//html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 		<xsl:apply-templates select="data" mode="html-head-scripts"/>
 	</head>
-<!--[if lt IE 7 ]>
-	<body class="ie ie6 {$body-classes}">
-<![endif]--><!--[if IE 7 ]>
-	<body class="ie ie7 {$body-classes}">
-<![endif]--><!--[if IE 8 ]>
+<!--[if lt IE 9 ]>
 	<body class="ie ie8 {$body-classes}">
 <![endif]--><!--[if IE 9 ]>
 	<body class="ie ie9 {$body-classes}">
@@ -61,9 +53,7 @@
 	<body class="{$body-classes}">
 <!--<![endif]-->
 		<div id="container">
-			<!--<div id="header" class="header">
-				<h3>Subheader</h3>
-			</div>-->
+			<!--<div id="header" class="header"><h3>Subheader</h3></div>-->
 			<xsl:apply-templates select="data"/>
 			<!--<div id="container-footer"></div>-->
 		</div>
@@ -101,7 +91,9 @@
 
 <xsl:template match="types-all/entry">
 	<dt class="list-group" data-id="{@id}">
-		<span class="name"><xsl:value-of select="name/text()"/></span>
+		<span class="name label">
+			<xsl:value-of select="name/text()"/>
+		</span>
 	</dt>
 	<xsl:apply-templates select="/data/keywords-all/entry[type/item/@id = current()/@id]"/>
 </xsl:template>
@@ -109,7 +101,9 @@
 <xsl:template match="keywords-all/entry">
 	<dd class="list-item" data-id="{@id}">
 		<a href="{$root}/keywords/{name/@handle}">
-			<span class="name"><xsl:value-of select="name/text()"/></span>
+			<span class="name label">
+				<xsl:value-of select="name/text()"/>
+			</span>
 		</a>
 	</dd>
 </xsl:template>

@@ -9,7 +9,7 @@
 <xsl:import href="xhtml/master.xsl"/>
 
 <!-- <xsl:strip-space elements="*"/> -->
-<xsl:variable name="url-layout" select="''" />
+<!-- <xsl:variable name="url-layout" select="''" /> -->
 
 <xsl:template name="page-title">
 	<xsl:value-of select="$website-name"/>

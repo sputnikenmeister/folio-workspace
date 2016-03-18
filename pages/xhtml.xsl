@@ -2,7 +2,8 @@
 <xsl:stylesheet version="1.0"
 	 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
 	 xmlns:exsl="http://exslt.org/common"
-	 extension-element-prefixes="exsl">
+	 xmlns:date="http://exslt.org/dates-and-times"
+	 extension-element-prefixes="exsl date">
 
 <xsl:import href="json/output-short.xsl"/>
 <xsl:import href="xhtml/master.xsl"/>
@@ -11,6 +12,7 @@
 	
 <!-- $is-logged-in defined in xhtml/master.xsl -->
 <xsl:variable name="is-xhtml" test="/data/params/page-types/item/@handle = 'xhtml'"/>
+<xsl:variable name="tstamp" select="date:seconds()"/>
 
 <!-- Page Title -->
 <xsl:template name="page-title">
@@ -24,32 +26,33 @@
 	<!-- <script type="text/javascript" src="{$workspace}/assets/lib/modernizr.js"></script> -->
 	<!-- <script type="text/javascript" src="http://modernizr.com/downloads/modernizr.js"></script> -->
 	<xsl:call-template name="favicon">
-		<xsl:with-param name="url-prefix" select="concat($workspace, '/assets/images/favicon')"/>
+		<xsl:with-param name="url-prefix" select="concat($workspace, '/assets/images/favicons')"/>
 	</xsl:call-template>
 	<!-- Stylesheets -->
 	<xsl:choose>
 	<xsl:when test="$is-logged-in">
-		<link rel="stylesheet" type="text/css" href="{$workspace}/assets/css/folio-debug.css"/>
+		<link id="folio" rel="stylesheet" type="text/css" href="{$workspace}/assets/css/folio-debug.css?{$tstamp}"/>
+		<!-- <link id="fonts" rel="stylesheet" type="text/css" href="{$workspace}/assets/css/fonts.css?{$tstamp}"/> -->
 	</xsl:when>
 	<xsl:otherwise>
 		<link id="folio" rel="stylesheet" type="text/css" href="{$workspace}/assets/css/folio.css"/>
 		<link id="fonts" rel="stylesheet" type="text/css" href="{$workspace}/assets/css/fonts.css"/>
 	</xsl:otherwise>
 	</xsl:choose>
-<!--
-	<script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/webfont/1.5.10/webfont.js"></script>
-	<xsl:call-template name="inline-script">
+
+	<!-- <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/webfont/1.5.10/webfont.js"></script> -->
+	<!-- WebFont.load({ custom: { families: ['Franklin Gothic FS', 'fontello'] } }); -->
+	<!-- <xsl:call-template name="inline-script">
 		<xsl:with-param name="content">
-			WebFont.load({ custom: { families: ['Franklin Gothic FS', 'fontello'] } });
+			window.approot = "<xsl:value-of select="$root"/>/";
 		</xsl:with-param>
-	</xsl:call-template>
--->
+	</xsl:call-template> -->
 	
 	<!-- Library bundle -->
 	<xsl:choose>
 	<xsl:when test="$is-logged-in">
 		<script type="text/javascript" src="{$workspace}/assets/js/folio-debug-vendor.js"></script>
-		<script type="text/javascript" src="{$workspace}/assets/js/folio-debug-client.js"></script>
+		<script type="text/javascript" src="{$workspace}/assets/js/folio-debug-client.js?{$tstamp}"></script>
 	</xsl:when>
 	<xsl:otherwise>
 		<script type="text/javascript" src="{$workspace}/assets/js/folio.js"></script>
@@ -61,19 +64,22 @@
 <xsl:template match="data" mode="html-footer-scripts">
 	<!-- Bootstrap data -->
 	<!--<script type="text/javascript" src="{$root}/json"></script>-->
+	<!-- <xsl:if test="$is-logged-in">console.log("inline footer script executed");</xsl:if> -->
+	<!-- window.approot = "<xsl:value-of select="$root"/>/"; -->
 	<xsl:call-template name="inline-script">
 		<xsl:with-param name="cdata" select="$is-xhtml"/>
 		<xsl:with-param name="content">
+			window.DEBUG = <xsl:value-of select="$is-logged-in"/>;
+			<!-- <xsl:if test="$is-logged-in">window.DEBUG = true;</xsl:if> -->
+			<!-- window.DEBUG = true; -->
+			window.approot = "<xsl:value-of select="$root"/>/";
+			window.mediadir = "<xsl:value-of select="$workspace"/>/uploads";
 			window.bootstrap = {
 			<xsl:apply-templates select="/data/types-all" mode="output-json"/>,
 			<xsl:apply-templates select="/data/keywords-all" mode="output-json"/>,
 			<xsl:apply-templates select="/data/bundles-all" mode="output-json"/>,
 			<xsl:apply-templates select="/data/media-all" mode="output-json"/>
 			};
-			window.mediadir = "<xsl:value-of select="$workspace"/>/uploads";
-			window.approot = "<xsl:value-of select="$root"/>/";
-			window.DEBUG = <xsl:value-of select="$is-logged-in"/>;
-			<!-- <xsl:if test="$is-logged-in">console.log("inline footer script executed");</xsl:if> -->
 		</xsl:with-param>
 	</xsl:call-template>
 </xsl:template>
@@ -114,12 +120,12 @@
 			</span>
 			<xsl:choose>
 				<xsl:when test="display-name">
-					<span class="name display-name">
+					<span class="name label display-name">
 						<xsl:copy-of select="display-name/*[1]/* | display-name/*[1]/text()"/>
 					</span>
 				</xsl:when>
 				<xsl:otherwise>
-					<span class="name">
+					<span class="name label">
 						<xsl:copy-of select="name/text()"/>
 					</span>
 				</xsl:otherwise>

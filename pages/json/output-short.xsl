@@ -17,8 +17,23 @@
 			<bId><xsl:value-of select="bundle/item/@id"/></bId>
 			<id><xsl:value-of select="@id"/></id>
 			<o><xsl:value-of select="order"/></o>
+			<name mode="formatted">
+				<xsl:copy-of select="description/*[1]/* | description/*[1]/text()"/>
+			</name>
+			<!-- <xsl:apply-templates mode="prepare-json" select="description"/> -->
 			
-			<xsl:variable name="default-image" select="sources/item[contains(file/@type,'image')][1]"/>
+			<xsl:apply-templates mode="prepare-json" select="attributes"/>
+			<xsl:apply-templates mode="prepare-json" select="sources"/>
+			<!-- <xsl:apply-templates select="/data/media-sources/owner[@link-id = current()/@id]" mode="prepare-json"/> -->
+			
+			<srcIdx><xsl:apply-templates mode="get-position" select="sources/item[contains(file/@type,'image')][1]"/></srcIdx>
+			
+			<!-- <srcIdx><xsl:value-of select="position(sources/item[contains(file/@type,'image')][1])"/></srcIdx> -->
+			<!-- <xsl:call-template name="get-position">
+				<xsl:with-param name="e" select="sources/item[contains(file/@type,'image')][1]"/>
+			</xsl:call-template> -->
+			<!-- <srcIdx><xsl:number value="sources/item[contains(file/@type,'image')][1][position()]"/></srcIdx> -->
+			<!-- <xsl:variable name="default-image" select="sources/item[contains(file/@type,'image')][1]"/>
 			<xsl:choose>
 				<xsl:when test="$default-image">
 					<src><xsl:copy-of select="$default-image/file/filename/text()"/></src>
@@ -30,17 +45,15 @@
 					<w><xsl:value-of select="file/meta/@width"/></w>
 					<h><xsl:value-of select="file/meta/@height"/></h>
 				</xsl:otherwise>
-			</xsl:choose>
-			
-			<!-- <att><xsl:value -->
-			<xsl:apply-templates select="attributes | description" mode="prepare-json"/>
-			<xsl:apply-templates select="sources" mode="prepare-json"/>
-			<!-- <xsl:apply-templates select="/data/media-sources/owner[@link-id = current()/@id]" mode="prepare-json"/> -->
+			</xsl:choose> -->
 		</xsl:with-param>
 	</xsl:call-template>
 	<xsl:if test="position() != last()">
 		<xsl:text>,</xsl:text>
 	</xsl:if>
+</xsl:template>
+<xsl:template match="*/item" mode="get-position">
+	<xsl:value-of select="position() - 1"/>
 </xsl:template>
 
 <!-- 				-->
@@ -64,6 +77,9 @@
 		<xsl:with-param name="xml">
 			<src><xsl:copy-of select="file/filename/text()"/></src>
 			<mime><xsl:value-of select="file/@type"/></mime>
+			<!-- <w><xsl:value-of select="file/meta/@width"/></w> -->
+			<!-- <h><xsl:value-of select="file/meta/@height"/></h> -->
+			<xsl:apply-templates select="file/meta/@width | file/meta/@height" mode="prepare-json"/>
 			<xsl:apply-templates select="attributes" mode="prepare-json"/>
 		</xsl:with-param>
 	</xsl:call-template>
@@ -71,6 +87,19 @@
 		<xsl:text>,</xsl:text>
 	</xsl:if>
 </xsl:template>
+<xsl:template match="meta/@width" mode="prepare-json">
+	<w><xsl:value-of select="."/></w>
+</xsl:template>
+<xsl:template match="meta/@height" mode="prepare-json">
+	<h><xsl:value-of select="."/></h>
+</xsl:template>
+
+<!-- <xsl:template match="file/meta/@height" mode="prepare-json">
+<xsl:template match="file/meta/@width | file/meta/@height" mode="prepare-json">
+	<xsl:element name="{name()}">
+		<xsl:value-of select="."/>
+	</xsl:element>
+</xsl:template> -->
 
 <!-- 				-->
 <!-- All bundles 	-->

@@ -1,0 +1,10 @@
+{
+  "name": "@folio/workspace",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Symphony CMS workspace",
+  "dependencies": {},
+  "devDependencies": {},
+  "scripts": {},
+  "author": "Pablo Canillas"
+}

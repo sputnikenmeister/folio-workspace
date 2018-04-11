@@ -59,6 +59,26 @@
 	</xsl:if>
 </xsl:template>
 
+<!-- All Articles 	-->
+<xsl:template match="articles-all/entry" mode="output-json">
+	<xsl:text>&#xa;&#9;&#9;</xsl:text>
+	<xsl:call-template name="output-json">
+		<xsl:with-param name="xml">
+			<id><xsl:value-of select="@id"/></id>
+			<handle><xsl:value-of select="name/@handle"/></handle>
+			<!-- <xsl:apply-templates select="text" mode="prepare-json"/> -->
+			<!-- <text><xsl:value-of select="text"/></text> -->
+			<xsl:copy-of select="name | text"/>
+			<!-- <name mode="formatted">
+				<xsl:copy-of select="text/*"/>
+			</name> -->
+		</xsl:with-param>
+	</xsl:call-template>
+	<xsl:if test="position() != last()">
+		<xsl:text>,</xsl:text>
+	</xsl:if>
+</xsl:template>
+
 <!--  All types -->
 <xsl:template match="types-all/entry" mode="output-json">
 	<xsl:text>&#xa;&#9;&#9;</xsl:text>

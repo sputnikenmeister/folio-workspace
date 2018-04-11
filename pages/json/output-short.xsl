@@ -8,9 +8,29 @@
 <!-- Two-pass transforms -->
 
 <!-- 				-->
+<!-- All Articles 	-->
+<!-- 				-->
+<!-- <xsl:template match="articles-all/entry" mode="output-json">
+	<xsl:text>&#xa;&#9;&#9;</xsl:text>
+	<xsl:call-template name="output-json">
+		<xsl:with-param name="xml">
+			<id><xsl:value-of select="@id"/></id>
+			<handle><xsl:value-of select="name/@handle"/></handle>
+			<name mode="formatted">
+				<xsl:copy-of select="text/*[1]/* | text/*[1]/text()"/>
+			</name>
+		</xsl:with-param>
+	</xsl:call-template>
+	<xsl:if test="position() != last()">
+		<xsl:text>,</xsl:text>
+	</xsl:if>
+</xsl:template> -->
+
+<!-- 				-->
 <!-- All Media 	-->
 <!-- 				-->
 <xsl:template match="media-all/entry" mode="output-json">
+	<!-- chars: linefeed, tab, tab -->
 	<xsl:text>&#xa;&#9;&#9;</xsl:text>
 	<xsl:call-template name="output-json">
 		<xsl:with-param name="xml">
@@ -21,13 +41,10 @@
 				<xsl:copy-of select="description/*[1]/* | description/*[1]/text()"/>
 			</name>
 			<!-- <xsl:apply-templates mode="prepare-json" select="description"/> -->
-			
 			<xsl:apply-templates mode="prepare-json" select="attributes"/>
 			<xsl:apply-templates mode="prepare-json" select="sources"/>
-			<!-- <xsl:apply-templates select="/data/media-sources/owner[@link-id = current()/@id]" mode="prepare-json"/> -->
-			
 			<srcIdx><xsl:apply-templates mode="get-position" select="sources/item[contains(file/@type,'image')][1]"/></srcIdx>
-			
+			<!-- <xsl:apply-templates select="/data/media-sources/owner[@link-id = current()/@id]" mode="prepare-json"/> -->
 			<!-- <srcIdx><xsl:value-of select="position(sources/item[contains(file/@type,'image')][1])"/></srcIdx> -->
 			<!-- <xsl:call-template name="get-position">
 				<xsl:with-param name="e" select="sources/item[contains(file/@type,'image')][1]"/>
@@ -93,7 +110,6 @@
 <xsl:template match="meta/@height" mode="prepare-json">
 	<h><xsl:value-of select="."/></h>
 </xsl:template>
-
 <!-- <xsl:template match="file/meta/@height" mode="prepare-json">
 <xsl:template match="file/meta/@width | file/meta/@height" mode="prepare-json">
 	<xsl:element name="{name()}">
@@ -105,6 +121,7 @@
 <!-- All bundles 	-->
 <!-- 				-->
 <xsl:template match="bundles-all/entry" mode="output-json">
+	<!-- chars: linefeed, tab, tab -->
 	<xsl:text>&#xa;&#9;&#9;</xsl:text>
 	<xsl:call-template name="output-json">
 		<xsl:with-param name="xml">
@@ -121,6 +138,7 @@
 				</xsl:otherwise>
 			</xsl:choose>
 			<xsl:copy-of select="completed"/>
+			<!-- <xsl:apply-templates select="keywords[/data/params/ds-keywords-all/item/@id = item/@id]" mode="prepare-json-ids"/> -->
 			<xsl:apply-templates select="keywords" mode="prepare-json-ids"/>
 			<xsl:apply-templates select="attributes | description" mode="prepare-json"/>
 		</xsl:with-param>
@@ -168,5 +186,6 @@
 		<xsl:text>,</xsl:text>
 	</xsl:if>
 </xsl:template>
+
 
 </xsl:stylesheet>

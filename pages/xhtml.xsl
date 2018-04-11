@@ -9,7 +9,7 @@
 <xsl:import href="xhtml/master.xsl"/>
 <xsl:include href="xhtml/inline-script.xsl"/>
 <xsl:include href="xhtml/favicon.xsl"/>
-	
+
 <!-- $is-logged-in defined in xhtml/master.xsl -->
 <xsl:variable name="is-xhtml" test="/data/params/page-types/item/@handle = 'xhtml'"/>
 <xsl:variable name="tstamp" select="date:seconds()"/>
@@ -47,7 +47,7 @@
 			window.approot = "<xsl:value-of select="$root"/>/";
 		</xsl:with-param>
 	</xsl:call-template> -->
-	
+
 	<!-- Library bundle -->
 	<xsl:choose>
 	<xsl:when test="$is-logged-in">
@@ -78,7 +78,8 @@
 			<xsl:apply-templates select="/data/types-all" mode="output-json"/>,
 			<xsl:apply-templates select="/data/keywords-all" mode="output-json"/>,
 			<xsl:apply-templates select="/data/bundles-all" mode="output-json"/>,
-			<xsl:apply-templates select="/data/media-all" mode="output-json"/>
+			<xsl:apply-templates select="/data/media-all" mode="output-json"/>,
+			<xsl:apply-templates select="/data/articles-all" mode="output-json"/>
 			};
 		</xsl:with-param>
 	</xsl:call-template>
@@ -91,10 +92,12 @@
 			<h1 id="site-name">
 				<a href="{$root}/"><xsl:value-of select="$website-name"/></a>
 			</h1>
+			<h2 id="about"><a href="{$root}/#about">About</a></h2>
 		</div>
 		<!-- all bundles-->
 		<div id="bundle-list-wrapper" class="transform-wrapper">
 			<xsl:apply-templates select="bundles-all"/>
+			<!-- <h2 data-handle="about"><a href="{$root}/#articles/about">About</a></h2> -->
 		</div>
 		<!-- all keywords+types -->
 		<div id="keyword-list-wrapper" class="transform-wrapper">
@@ -114,7 +117,7 @@
 <!-- bundle-list item -->
 <xsl:template match="bundles-all/entry">
 	<li class="list-item" data-id="{@id}">
-		<a href="{$root}/bundles/{name/@handle}">
+		<a href="{$root}/#bundles/{name/@handle}">
 			<span class="completed meta pubDate" data-datetime="{completed/text()}">
 				<xsl:value-of select="substring(completed/text(),1,4)"/>
 			</span>

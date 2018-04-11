@@ -1,8 +1,8 @@
 <?php
 
-class datasourcekeywords_all extends SectionDatasource
+class datasourcearticles_all extends SectionDatasource
 {
-    public $dsParamROOTELEMENT = 'keywords-all';
+    public $dsParamROOTELEMENT = 'articles-all';
     public $dsParamORDER = 'desc';
     public $dsParamPAGINATERESULTS = 'no';
     public $dsParamLIMIT = '20';
@@ -10,46 +10,41 @@ class datasourcekeywords_all extends SectionDatasource
     public $dsParamREDIRECTONEMPTY = 'no';
     public $dsParamREDIRECTONFORBIDDEN = 'no';
     public $dsParamREDIRECTONREQUIRED = 'no';
-    public $dsParamPARAMOUTPUT = array(
-        'type'
-        );
-    public $dsParamSORT = 'order';
+    public $dsParamSORT = 'name';
     public $dsParamHTMLENCODE = 'no';
     public $dsParamASSOCIATEDENTRYCOUNTS = 'no';
 
     public $dsParamFILTERS = array(
-        'system:id' => '{$ds-bundles-all.keywords}',
-        '32' => 'yes',
+        '84' => 'yes',
     );
 
     public $dsParamINCLUDEDELEMENTS = array(
         'name',
-        'type',
-        'attributes'
+        'text: formatted'
     );
 
     public function __construct($env = null, $process_params = true)
     {
         parent::__construct($env, $process_params);
-        $this->_dependencies = array('$ds-bundles-all.keywords');
+        $this->_dependencies = array();
     }
 
     public function about()
     {
         return array(
-            'name' => 'Keywords All',
+            'name' => 'Articles All',
             'author' => array(
                 'name' => 'Pablo Canillas',
                 'website' => 'http://localhost/projects/folio-sym',
                 'email' => 'noreply@localhost.tld'),
             'version' => 'Symphony 2.6.2',
-            'release-date' => '2018-04-08T17:05:28+00:00'
+            'release-date' => '2018-04-04T15:12:36+00:00'
         );
     }
 
     public function getSource()
     {
-        return '2';
+        return '10';
     }
 
     public function allowEditorToParse()

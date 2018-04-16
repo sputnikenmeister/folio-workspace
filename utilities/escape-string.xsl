@@ -8,11 +8,11 @@
 		   Responsibilities: placed quotes around string, and chain up to next filter, escape-bs-string -->
 	<xsl:template name="escape-string">
 		<xsl:param name="s"/>
-		<xsl:text>"</xsl:text>
+		<xsl:text>'</xsl:text>
 		<xsl:call-template name="escape-bs-string">
 			<xsl:with-param name="s" select="$s"/>
 		</xsl:call-template>
-		<xsl:text>"</xsl:text>
+		<xsl:text>'</xsl:text>
 	</xsl:template>
 
 	<!-- Escape the backslash (\) before everything else. -->

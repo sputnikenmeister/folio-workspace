@@ -21,7 +21,8 @@
 		<xsl:if test="$cdata">
 			<xsl:text disable-output-escaping="yes">&lt;![CDATA[</xsl:text>
 		</xsl:if>
-		<xsl:copy-of select="exsl:node-set($content)"/>
+		<!-- <xsl:copy-of select="exsl:node-set($content)"/> -->
+		<xsl:copy-of select="$content"/>
 		<xsl:if test="$cdata">
 			<xsl:text disable-output-escaping="yes">]]&gt;</xsl:text>
 		</xsl:if>

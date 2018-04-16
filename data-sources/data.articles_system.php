@@ -1,8 +1,8 @@
 <?php
 
-class datasourcearticles_all extends SectionDatasource
+class datasourcearticles_system extends SectionDatasource
 {
-    public $dsParamROOTELEMENT = 'articles-all';
+    public $dsParamROOTELEMENT = 'articles-system';
     public $dsParamORDER = 'desc';
     public $dsParamPAGINATERESULTS = 'no';
     public $dsParamLIMIT = '20';
@@ -16,13 +16,14 @@ class datasourcearticles_all extends SectionDatasource
 
     public $dsParamFILTERS = array(
         '84' => 'yes',
-        '90' => 'Content',
+        '90' => 'System',
     );
 
     public $dsParamINCLUDEDELEMENTS = array(
         'name',
         'display-name: formatted',
-        'text: formatted'
+        'text: formatted',
+        'attributes'
     );
 
     public function __construct($env = null, $process_params = true)
@@ -34,13 +35,13 @@ class datasourcearticles_all extends SectionDatasource
     public function about()
     {
         return array(
-            'name' => 'Articles All',
+            'name' => 'Articles System',
             'author' => array(
                 'name' => 'Pablo Canillas',
                 'website' => 'http://localhost/projects/folio-sym',
                 'email' => 'portfolio@canillas.name'),
             'version' => 'Symphony 2.6.2',
-            'release-date' => '2018-04-16T10:42:23+00:00'
+            'release-date' => '2018-04-16T10:12:32+00:00'
         );
     }
 

@@ -30,7 +30,7 @@ Example call:
 	<xsl:variable name="is-node" select="$has-siblings and position() = 1 or not($has-siblings)" />
 
 	<!-- Name -->
-	<xsl:if test="$is-node">"<xsl:value-of select="name(.)" />":</xsl:if>
+	<xsl:if test="$is-node">'<xsl:value-of select="name(.)" />':</xsl:if>
 	<!-- Array -->
 	<xsl:if test="$has-siblings and position() = 1">
 		<xsl:text>[</xsl:text>
@@ -62,11 +62,11 @@ Example call:
 <xsl:template match="text()" mode="output-json">
 	<xsl:variable name="is-string" select="string(number(.)) = 'NaN' and . != 'true' and . != 'false'" />
 
-	<xsl:if test="$is-string">"</xsl:if>
+	<xsl:if test="$is-string">'</xsl:if>
 	<xsl:call-template name="escape-bs-string">
 		<xsl:with-param name="s" select="."/>
 	</xsl:call-template>
-	<xsl:if test="$is-string">"</xsl:if>
+	<xsl:if test="$is-string">'</xsl:if>
 </xsl:template>
 
 </xsl:stylesheet>

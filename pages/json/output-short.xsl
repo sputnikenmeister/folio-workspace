@@ -10,24 +10,32 @@
 <!-- 				-->
 <!-- All Articles 	-->
 <!-- 				-->
-<!-- <xsl:template match="articles-all/entry" mode="output-json">
+<xsl:template match="articles-system/entry | articles-all/entry" mode="output-json">
 	<xsl:text>&#xa;&#9;&#9;</xsl:text>
 	<xsl:call-template name="output-json">
 		<xsl:with-param name="xml">
 			<id><xsl:value-of select="@id"/></id>
 			<handle><xsl:value-of select="name/@handle"/></handle>
-			<name mode="formatted">
-				<xsl:copy-of select="text/*[1]/* | text/*[1]/text()"/>
-			</name>
+			<xsl:choose>
+				<xsl:when test="display-name">
+					<name mode="formatted">
+						<xsl:copy-of select="display-name/*[1]/* | display-name/*[1]/text()"/>
+					</name>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:copy-of select="name"/>
+				</xsl:otherwise>
+			</xsl:choose>
+			<xsl:copy-of select="text"/>
 		</xsl:with-param>
 	</xsl:call-template>
 	<xsl:if test="position() != last()">
 		<xsl:text>,</xsl:text>
 	</xsl:if>
-</xsl:template> -->
+</xsl:template>
 
 <!-- 				-->
-<!-- All Media 	-->
+<!-- All Media		-->
 <!-- 				-->
 <xsl:template match="media-all/entry" mode="output-json">
 	<!-- chars: linefeed, tab, tab -->

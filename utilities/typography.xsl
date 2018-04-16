@@ -24,7 +24,7 @@ Usage:
 
 <xsl:template match="@*" mode="html">
 	<xsl:attribute name="{name()}">
-		<xsl:value-of select="."/>
+		<xsl:value-of disable-output-escaping="yes" select="."/>
 	</xsl:attribute>
 </xsl:template>
 

@@ -24,8 +24,9 @@
 		</xsl:otherwise>
 	</xsl:choose>
 </xsl:variable>
-<xsl:variable name="document-classes" select="'app-initial'"/>
-<xsl:variable name="body-classes" select="concat($page-class,' ', $layout-class,' app-initial')"/>
+<!-- <xsl:variable name="document-classes" select="'app-initial'"/> -->
+<xsl:variable name="body-classes" select="'app-initial route-initial'"/>
+<!-- <xsl:variable name="body-classes" select="concat($page-class,' ', $layout-class,' app-initial')"/> -->
 
 <xsl:template match="/">
 <html lang="en">
@@ -55,29 +56,8 @@
 	<body class="{$body-classes}">
 <!--<![endif]-->
 		<div id="container">
-			<!--<div id="header" class="header"><h3>Subheader</h3></div>-->
 			<xsl:apply-templates select="data"/>
-			<!--<div id="container-footer"></div>-->
-			<div id="unsupported">
-				<h2 class="color-ln">Portfolio</h2>
-				<p>A layout for mobile-sized screens is not yet ready… Please use a tablet or computer to view this website.</p>
-				<p class="contact">You can reach me at <a href="mailto:blah@nowhere.tld">blah@nowhere.tld</a> or <a href="https://www.linkedin.com/in/pablo-canillas" rel="noopener noreferrer" target="_blank">view my profile on LinkedIn</a></p>
-			</div>
 		</div>
-		<!--
-		<div id="footer" class="footer">
-			<p class="copyright">&#169; 1995-2014 Pablo Canillas</p>
-		</div>
- 		<dl id="debug-toolbar" class="toolbar">
-			<dt>Debug</dt>
-			<xsl:if test="$is-logged-in = 'true'">
-			<dd><a id="edit-backend" href="{$root}/symphony/" target="_blank">Edit Backend</a></dd>
-			<dd><a id="source" href="?debug=xml" target="_blank">Source</a></dd>
-			</xsl:if>
-			<dd><a id="show-grid" href="javascript:(void 0)">Grid</a></dd>
-			<dd><a id="show-blocks" href="javascript:(void 0)">Blocks</a></dd>
-		</dl>
-		-->
 		<xsl:apply-templates select="data" mode="html-footer-scripts"/>
 	</body>
 </html>
@@ -92,6 +72,7 @@
 <!-- Abstract -->
 <xsl:template match="data" mode="html-footer-scripts"></xsl:template>
 
+<!--  -->
 <xsl:template match="types-all">
 	<dl id="keyword-list" class="list selectable filterable grouped">
 		<xsl:apply-templates select="entry"/>

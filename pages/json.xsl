@@ -6,8 +6,8 @@
 <xsl:strip-space elements="*"/>
 
 <xsl:template match="/data">
-	window.approot = "<xsl:value-of select="$root"/>/";
-	window.mediadir = "<xsl:value-of select="$workspace"/>/uploads";
+	window.approot = '<xsl:value-of select="$root"/>/';
+	window.mediadir = '<xsl:value-of select="$workspace"/>/uploads';
 	window.bootstrap = {
 	<xsl:apply-templates select="articles-all" mode="output-json"/>,
 	<xsl:apply-templates select="types-all" mode="output-json"/>,
@@ -18,7 +18,7 @@
 </xsl:template>
 
 	<!-- This works but indentation gets messed up -->
-	<!--
+	<!--/data/articles-all/group[@handle = 'content']
 	<xsl:call-template name="output-json">
 		<xsl:with-param name="xml" select="types-all | keywords-all | bundles-all | media-all"/>
 	</xsl:call-template>

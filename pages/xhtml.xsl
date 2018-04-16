@@ -5,8 +5,8 @@
 	 xmlns:date="http://exslt.org/dates-and-times"
 	 extension-element-prefixes="exsl date">
 
-<xsl:import href="json/output-short.xsl"/>
 <xsl:import href="xhtml/master.xsl"/>
+<xsl:import href="json/output-short.xsl"/><!-- json -->
 <xsl:include href="xhtml/inline-script.xsl"/>
 <xsl:include href="xhtml/favicon.xsl"/>
 
@@ -60,20 +60,47 @@
 	</xsl:choose>
 </xsl:template>
 
+<!-- Container HTML -->
+<xsl:template match="data">
+	<div id="navigation" class="navigation">
+		<div id="site-name-wrapper" class="transform-wrapper">
+			<h1 id="site-name">
+				<a href="{$root}/#"><xsl:value-of select="$website-name"/></a>
+			</h1>
+		</div>
+		<div id="article-list-wrapper" class="transform-wrapper">
+			<h2 id="about" class="article-button">
+				<a href="{$root}/#about">About</a>
+			</h2>
+		</div>
+		<!-- all bundles-->
+		<div id="bundle-list-wrapper" class="transform-wrapper">
+			<xsl:apply-templates select="bundles-all"/>
+		</div>
+		<!-- all types->keywords -->
+		<div id="keyword-list-wrapper" class="transform-wrapper">
+			<xsl:apply-templates select="types-all"/>
+		</div>
+	</div>
+	<div id="content" class="content viewport">
+	</div>
+	<xsl:apply-templates select="articles-system/entry[name/@handle = 'unsupported']"/>
+	<!-- <div id="unsupported">
+		<h2 class="color-ln">Portfolio</h2>
+		<p>A layout for mobile-sized screens is not yet ready… Please use a tablet or computer to view this website.</p>
+		<p class="contact">You can reach me at <a href="mailto:blah@nowhere.tld">blah@nowhere.tld</a> or <a href="https://www.linkedin.com/in/pablo-canillas" rel="noopener noreferrer" target="_blank">view my profile on LinkedIn</a></p>
+	</div> -->
+</xsl:template>
+
 <!-- Footer Scripts -->
 <xsl:template match="data" mode="html-footer-scripts">
-	<!-- Bootstrap data -->
-	<!--<script type="text/javascript" src="{$root}/json"></script>-->
-	<!-- <xsl:if test="$is-logged-in">console.log("inline footer script executed");</xsl:if> -->
-	<!-- window.approot = "<xsl:value-of select="$root"/>/"; -->
 	<xsl:call-template name="inline-script">
+		<!-- Bootstrap data -->
 		<xsl:with-param name="cdata" select="$is-xhtml"/>
 		<xsl:with-param name="content">
 			window.DEBUG = <xsl:value-of select="$is-logged-in"/>;
-			<!-- <xsl:if test="$is-logged-in">window.DEBUG = true;</xsl:if> -->
-			<!-- window.DEBUG = true; -->
-			window.approot = "<xsl:value-of select="$root"/>/";
-			window.mediadir = "<xsl:value-of select="$workspace"/>/uploads";
+			window.approot = '<xsl:value-of select="$root"/>/';
+			window.mediadir = '<xsl:value-of select="$workspace"/>/uploads';
 			window.bootstrap = {
 			<xsl:apply-templates select="/data/types-all" mode="output-json"/>,
 			<xsl:apply-templates select="/data/keywords-all" mode="output-json"/>,
@@ -85,26 +112,22 @@
 	</xsl:call-template>
 </xsl:template>
 
-<!-- Container HTML -->
-<xsl:template match="data">
-	<div id="navigation" class="navigation">
-		<div id="site-name-wrapper" class="transform-wrapper">
-			<h1 id="site-name">
-				<a href="{$root}/"><xsl:value-of select="$website-name"/></a>
-			</h1>
-			<h2 id="about"><a href="{$root}/#about">About</a></h2>
-		</div>
-		<!-- all bundles-->
-		<div id="bundle-list-wrapper" class="transform-wrapper">
-			<xsl:apply-templates select="bundles-all"/>
-			<!-- <h2 data-handle="about"><a href="{$root}/#articles/about">About</a></h2> -->
-		</div>
-		<!-- all keywords+types -->
-		<div id="keyword-list-wrapper" class="transform-wrapper">
-			<xsl:apply-templates select="types-all"/>
-		</div>
+<!-- article-view item -->
+<xsl:template match="articles-all/entry">
+	<article id="{name/@handle}" class="article-view" data-id="{@id}">
+		<xsl:apply-templates select="text/*" mode="html"/>
+		<!-- <xsl:copy-of select="text/* | text/text()" /> -->
+	</article>
+</xsl:template>
+
+<!-- article-view item -->
+<xsl:template match="articles-system/entry">
+	<div id="{name/@handle}" class="system-view" data-id="{@id}">
+		<h2 class="color-ln">
+			<xsl:copy-of select="display-name/*[1]/* | display-name/*[1]/text()"/>
+		</h2>
+		<xsl:apply-templates select="text/* | text/text()" mode="html"/>
 	</div>
-	<div id="content" class="content viewport"></div>
 </xsl:template>
 
 <!-- bundle-list -->

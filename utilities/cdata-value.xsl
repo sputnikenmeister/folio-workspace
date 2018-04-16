@@ -8,9 +8,11 @@
 		<xsl:param name="item" />
 		<xsl:text disable-output-escaping="yes">&lt;![CDATA[</xsl:text>
 		<!--- Non EXSL version -->
-		<!-- <xsl:for-each select="$item/self::*">
+		<!--
+		<xsl:for-each select="$item/self::*">
 			<xsl:copy-of select="text() | node()" />
-		</xsl:for-each> -->
+		</xsl:for-each>
+		-->
 		<!--- This is untested but likely more efficient (requires EXSL) -->
 		<xsl:copy-of select="exsl:node-set(node()|text())"/>
 		<xsl:text disable-output-escaping="yes">]]&gt;</xsl:text>

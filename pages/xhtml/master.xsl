@@ -42,7 +42,7 @@
 		<!-- <meta name="author" content="{$root}/humans.txt"/>-->
 		<!-- <meta name="description" content="no description"/> -->
 		<!-- <link rel="canonical" href="{$root}/"/>--><!-- cf. https://support.google.com/webmasters/answer/139066?hl=en#1 -->
-		<link rel="alternate" type="application/rss+xml" href="{$root}/rss"/>
+		<!-- <link rel="alternate" type="application/rss+xml" href="{$root}/rss"/> -->
 		<!--[if lt IE 9]><script language="javascript" type="text/javascript" src="//html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
 		<xsl:apply-templates select="data" mode="html-head-scripts"/>
 	</head>

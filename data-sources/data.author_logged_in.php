@@ -1,7 +1,5 @@
 <?php
 
-require_once TOOLKIT . '/class.datasource.php';
-
 class datasourceauthor_logged_in extends AuthorDatasource
 {
     public $dsParamROOTELEMENT = 'author-logged-in';
@@ -9,6 +7,9 @@ class datasourceauthor_logged_in extends AuthorDatasource
     public $dsParamREDIRECTONEMPTY = 'no';
     public $dsParamREDIRECTONFORBIDDEN = 'no';
     public $dsParamREDIRECTONREQUIRED = 'no';
+    public $dsParamPARAMOUTPUT = array(
+        'id'
+        );
     public $dsParamSORT = 'id';
 
     public $dsParamFILTERS = array(
@@ -31,10 +32,10 @@ class datasourceauthor_logged_in extends AuthorDatasource
             'name' => 'Author Logged In',
             'author' => array(
                 'name' => 'Pablo Canillas',
-                'website' => 'http://folio.localhost',
-                'email' => 'noreply@localhost.tld'),
-            'version' => 'Symphony 2.5.1',
-            'release-date' => '2014-11-27T10:44:42+00:00'
+                'website' => 'http://localhost/projects/folio-sym',
+                'email' => 'nobody@domain.tld'),
+            'version' => 'Symphony 2.6.2',
+            'release-date' => '2018-04-17T11:45:49+00:00'
         );
     }
 

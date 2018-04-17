@@ -38,7 +38,7 @@ class datasourcearticles_all extends SectionDatasource
             'author' => array(
                 'name' => 'Pablo Canillas',
                 'website' => 'http://localhost/projects/folio-sym',
-                'email' => 'portfolio@canillas.name'),
+                'email' => 'nobody@domain.tld'),
             'version' => 'Symphony 2.6.2',
             'release-date' => '2018-04-16T10:42:23+00:00'
         );

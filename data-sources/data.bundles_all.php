@@ -1,7 +1,5 @@
 <?php
 
-require_once TOOLKIT . '/class.datasource.php';
-
 class datasourcebundles_all extends SectionDatasource
 {
     public $dsParamROOTELEMENT = 'bundles-all';
@@ -45,10 +43,10 @@ class datasourcebundles_all extends SectionDatasource
             'name' => 'Bundles All',
             'author' => array(
                 'name' => 'Pablo Canillas',
-                'website' => 'http://folio.localhost',
-                'email' => 'noreply@localhost.tld'),
-            'version' => 'Symphony 2.5.2',
-            'release-date' => '2014-12-14T17:55:31+00:00'
+                'website' => 'http://localhost/projects/folio-sym',
+                'email' => 'nobody@domain.tld'),
+            'version' => 'Symphony 2.6.2',
+            'release-date' => '2018-04-17T10:11:12+00:00'
         );
     }
 

@@ -5,12 +5,10 @@
 	xmlns:date="http://exslt.org/dates-and-times"
 	extension-element-prefixes="exsl date">
 
-<xsl:import href="xhtml/master.xsl"/>
-<xsl:import href="json/output-short.xsl"/><!-- json -->
-<xsl:include href="xhtml/inline-script.xsl"/>
-<xsl:include href="xhtml/favicon.xsl"/>
+<xsl:import href="html/master.xsl"/>
+<xsl:import href="json/output-items.xsl"/>
 
-<!-- $is-logged-in defined in xhtml/master.xsl -->
+<!-- $is-logged-in defined in html/master.xsl -->
 <xsl:variable name="is-xhtml" test="/data/params/page-types/item/@handle = 'xhtml'"/>
 <xsl:variable name="tstamp" select="date:seconds()"/>
 <!-- Google Analytics -->

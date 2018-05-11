@@ -3,9 +3,45 @@
 
 <xsl:import href="common-prepare-json.xsl"/>
 <xsl:import href="common-output-json.xsl"/>
+
 <xsl:strip-space elements="*"/>
 
 <!-- Two-pass transforms -->
+
+<!-- 				-->
+<!--  All types		-->
+<!-- 				-->
+<xsl:template match="types-all/entry" mode="output-json">
+	<xsl:text>&#xa;&#9;&#9;</xsl:text>
+	<xsl:call-template name="output-json">
+		<xsl:with-param name="xml">
+			<id><xsl:value-of select="@id"/></id>
+			<handle><xsl:value-of select="name/@handle"/></handle>
+			<xsl:copy-of select="name"/>
+		</xsl:with-param>
+	</xsl:call-template>
+	<xsl:if test="position() != last()">
+		<xsl:text>,</xsl:text>
+	</xsl:if>
+</xsl:template>
+
+<!-- 				-->
+<!-- All keywords 	-->
+<!-- 				-->
+<xsl:template match="keywords-all/entry" mode="output-json">
+	<xsl:text>&#xa;&#9;&#9;</xsl:text>
+	<xsl:call-template name="output-json">
+		<xsl:with-param name="xml">
+			<id><xsl:value-of select="@id"/></id>
+			<handle><xsl:value-of select="name/@handle"/></handle>
+			<xsl:copy-of select="name"/>
+			<tId><xsl:value-of select="type/item/@id"/></tId>
+		</xsl:with-param>
+	</xsl:call-template>
+	<xsl:if test="position() != last()">
+		<xsl:text>,</xsl:text>
+	</xsl:if>
+</xsl:template>
 
 <!-- 				-->
 <!-- All Articles 	-->
@@ -27,6 +63,37 @@
 				</xsl:otherwise>
 			</xsl:choose>
 			<xsl:copy-of select="text"/>
+		</xsl:with-param>
+	</xsl:call-template>
+	<xsl:if test="position() != last()">
+		<xsl:text>,</xsl:text>
+	</xsl:if>
+</xsl:template>
+
+<!-- 				-->
+<!-- All bundles 	-->
+<!-- 				-->
+<xsl:template match="bundles-all/entry" mode="output-json">
+	<!-- chars: linefeed, tab, tab -->
+	<xsl:text>&#xa;&#9;&#9;</xsl:text>
+	<xsl:call-template name="output-json">
+		<xsl:with-param name="xml">
+			<id><xsl:value-of select="@id"/></id>
+			<handle><xsl:value-of select="name/@handle"/></handle>
+			<xsl:choose>
+				<xsl:when test="display-name">
+					<name mode="formatted">
+						<xsl:copy-of select="display-name/*[1]/* | display-name/*[1]/text()"/>
+					</name>
+				</xsl:when>
+				<xsl:otherwise>
+					<xsl:copy-of select="name"/>
+				</xsl:otherwise>
+			</xsl:choose>
+			<xsl:copy-of select="completed"/>
+			<!-- <xsl:apply-templates select="keywords[/data/params/ds-keywords-all/item/@id = item/@id]" mode="prepare-json-ids"/> -->
+			<xsl:apply-templates select="keywords" mode="prepare-json-ids"/>
+			<xsl:apply-templates select="attributes | description" mode="prepare-json"/>
 		</xsl:with-param>
 	</xsl:call-template>
 	<xsl:if test="position() != last()">
@@ -126,37 +193,6 @@
 </xsl:template> -->
 
 <!-- 				-->
-<!-- All bundles 	-->
-<!-- 				-->
-<xsl:template match="bundles-all/entry" mode="output-json">
-	<!-- chars: linefeed, tab, tab -->
-	<xsl:text>&#xa;&#9;&#9;</xsl:text>
-	<xsl:call-template name="output-json">
-		<xsl:with-param name="xml">
-			<id><xsl:value-of select="@id"/></id>
-			<handle><xsl:value-of select="name/@handle"/></handle>
-			<xsl:choose>
-				<xsl:when test="display-name">
-					<name mode="formatted">
-						<xsl:copy-of select="display-name/*[1]/* | display-name/*[1]/text()"/>
-					</name>
-				</xsl:when>
-				<xsl:otherwise>
-					<xsl:copy-of select="name"/>
-				</xsl:otherwise>
-			</xsl:choose>
-			<xsl:copy-of select="completed"/>
-			<!-- <xsl:apply-templates select="keywords[/data/params/ds-keywords-all/item/@id = item/@id]" mode="prepare-json-ids"/> -->
-			<xsl:apply-templates select="keywords" mode="prepare-json-ids"/>
-			<xsl:apply-templates select="attributes | description" mode="prepare-json"/>
-		</xsl:with-param>
-	</xsl:call-template>
-	<xsl:if test="position() != last()">
-		<xsl:text>,</xsl:text>
-	</xsl:if>
-</xsl:template>
-
-<!-- 				-->
 <!-- Keywords (IDs)	-->
 <!-- 				-->
 <xsl:template match="keywords" mode="prepare-json-ids">
@@ -194,6 +230,7 @@
 		<xsl:text>,</xsl:text>
 	</xsl:if>
 </xsl:template>
+
 
 
 </xsl:stylesheet>

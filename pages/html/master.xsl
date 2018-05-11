@@ -10,6 +10,9 @@
 	encoding="UTF-8"
 	indent="yes" />
 
+	<xsl:include href="inline-script.xsl"/>
+	<xsl:include href="favicon.xsl"/>
+
 <!-- <xsl:variable name="is-logged-in" select="true()"/> -->
 <xsl:variable name="is-logged-in" select="boolean(/data/author-logged-in/author[@user-type = 'developer'])"/>
 

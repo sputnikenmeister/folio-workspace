@@ -30,8 +30,8 @@
 
 <xsl:template match="/">
 <html lang="en">
-	<head>
-		<!-- <head profile="http://gmpg.org/xfn/11"> -->
+	<!-- <head profile="http://gmpg.org/xfn/11"> -->
+		<head>
 		<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
 		<xsl:if test="/data/params/page-types/item[@handle='xhtml']">
 			<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8"/>
@@ -41,36 +41,40 @@
 		<meta name="viewport" content="user-scalable=no, width=device-width, height=device-height, initial-scale=1, maximum-scale=1"/>
 		<!-- <meta name="author" content="{$root}/humans.txt"/>-->
 		<!-- <meta name="description" content="no description"/> -->
-		<!-- <link rel="canonical" href="{$root}/"/>--><!-- cf. https://support.google.com/webmasters/answer/139066?hl=en#1 -->
+		<!-- <link rel="canonical" href="{$root}/"/> --><!-- cf. https://support.google.com/webmasters/answer/139066?hl=en#1 -->
 		<!-- <link rel="alternate" type="application/rss+xml" href="{$root}/rss"/> -->
-		<!--[if lt IE 9]><script language="javascript" type="text/javascript" src="//html5shim.googlecode.com/svn/trunk/html5.js"></script><![endif]-->
-		<xsl:apply-templates select="data" mode="html-head-scripts"/>
+		<xsl:apply-templates select="data" mode="html-head"/>
 	</head>
-<!--[if lt IE 9 ]>
-	<body class="ie ie8 {$body-classes}">
-<![endif]--><!--[if IE 9 ]>
-	<body class="ie ie9 {$body-classes}">
-<![endif]--><!--[if gt IE 9]>
-	<body class="ie {$body-classes}">
-<![endif]--><!--[if !IE]><!-->
+	<xsl:comment>IE conditional comments</xsl:comment>
+<xsl:comment><![CDATA[[if lt IE 9]>
+	<body class="ie ie8 ]]><xsl:value-of select="$body-classes"/><![CDATA[>
+<![endif]]]></xsl:comment>
+<xsl:comment><![CDATA[[if IE 9]>
+	<body class="ie ie9 ]]><xsl:value-of select="$body-classes"/><![CDATA[>
+<![endif]]]></xsl:comment>
+<xsl:comment><![CDATA[[if gt IE 9]>
+	<body class="ie ]]><xsl:value-of select="$body-classes"/><![CDATA[>
+<![endif]]]></xsl:comment>
+<xsl:comment><![CDATA[[if !IE]><!]]></xsl:comment>
 	<body class="{$body-classes}">
-<!--<![endif]-->
+<xsl:comment><![CDATA[<![endif]]]></xsl:comment>
+		<xsl:apply-templates select="data" mode="html-body-first"/>
 		<div id="container">
 			<xsl:apply-templates select="data"/>
 		</div>
-		<xsl:apply-templates select="data" mode="html-footer-scripts"/>
+		<xsl:apply-templates select="data" mode="html-body-last"/>
 	</body>
 </html>
 </xsl:template>
 
 <!-- Abstract -->
 <xsl:template match="data"></xsl:template>
-
 <!-- Abstract -->
-<xsl:template match="data" mode="html-head-scripts"></xsl:template>
-
+<xsl:template match="data" mode="html-head"></xsl:template>
 <!-- Abstract -->
-<xsl:template match="data" mode="html-footer-scripts"></xsl:template>
+<xsl:template match="data" mode="html-body-first"></xsl:template>
+<!-- Abstract -->
+<xsl:template match="data" mode="html-body-last"></xsl:template>
 
 <!--  -->
 <xsl:template match="types-all">

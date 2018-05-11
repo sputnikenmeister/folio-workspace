@@ -14,7 +14,7 @@
 </xsl:template>
 
 <!-- Head Scripts -->
-<xsl:template match="data" mode="html-head-scripts">
+<xsl:template match="data" mode="html-head">
 	<xsl:call-template name="favicon">
 		<xsl:with-param name="url-prefix" select="concat($workspace, '/assets/images/favicon')"/>
 	</xsl:call-template>
@@ -22,7 +22,7 @@
 </xsl:template>
 
 <!-- Footer Scripts -->
-<xsl:template match="data" mode="html-footer-scripts">
+<xsl:template match="data" mode="html-body-last">
 	<!-- Library bundle -->
 	<script type="text/javascript" src="{$workspace}/assets/js/folio-compat.js"></script>
 </xsl:template>

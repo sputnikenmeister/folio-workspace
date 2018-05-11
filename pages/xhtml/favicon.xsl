@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0"
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:template name="favicon">
 	<xsl:param name="url-prefix" select="concat($workspace, '/assets/images/favicons')"/>
 	<xsl:param name="bg-color" select="'#000000'"/>
+	<xsl:param name="output-apps" select="false()"/>
+	<xsl:param name="output-comments" select="false()"/>
+	<xsl:if test="$output-comments"><xsl:comment>favicon begin</xsl:comment></xsl:if>
+	<xsl:if test="$output-apps">
 	<meta name="msapplication-square70x70logo" content="{$url-prefix}/square/windows-tile-70x70.png"/>
 	<meta name="msapplication-square150x150logo" content="{$url-prefix}/square/windows-tile-150x150.png"/>
 	<meta name="msapplication-square310x310logo" content="{$url-prefix}/square/windows-tile-310x310.png"/>
@@ -17,8 +22,10 @@
 	<link rel="apple-touch-icon-precomposed" sizes="114x114" href="{$url-prefix}/square/apple-touch-icon-114x114-precomposed.png"/>
 	<link rel="apple-touch-icon-precomposed" sizes="72x72" href="{$url-prefix}/square/apple-touch-icon-72x72-precomposed.png"/>
 	<link rel="apple-touch-icon" sizes="57x57" href="{$url-prefix}/square/apple-touch-icon.png"/>
+	</xsl:if>
 	<link rel="shortcut icon" href="{$url-prefix}/circle/favicon.ico"/>
 	<link rel="icon" type="image/png" sizes="64x64" href="{$url-prefix}/circle/favicon.png"/>
+	<xsl:if test="$output-comments"><xsl:comment>favicon end</xsl:comment></xsl:if>
 </xsl:template>
 
 </xsl:stylesheet>

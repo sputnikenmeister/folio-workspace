@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0"
-	 xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	 xmlns:exsl="http://exslt.org/common"
-	 xmlns:date="http://exslt.org/dates-and-times"
-	 extension-element-prefixes="exsl date">
+	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+	xmlns:exsl="http://exslt.org/common"
+	xmlns:date="http://exslt.org/dates-and-times"
+	extension-element-prefixes="exsl date">
 
 <xsl:import href="xhtml/master.xsl"/>
 <xsl:import href="json/output-short.xsl"/><!-- json -->
@@ -13,6 +13,8 @@
 <!-- $is-logged-in defined in xhtml/master.xsl -->
 <xsl:variable name="is-xhtml" test="/data/params/page-types/item/@handle = 'xhtml'"/>
 <xsl:variable name="tstamp" select="date:seconds()"/>
+<!-- Google Analytics -->
+<xsl:variable name="ga-tracking-id" select="'UA-9123564-7'"/>
 
 <!-- Page Title -->
 <xsl:template name="page-title">
@@ -20,44 +22,49 @@
 </xsl:template>
 
 <!-- Head Scripts -->
-<xsl:template match="data" mode="html-head-scripts">
-<!--[if gt IE 8]><!-->
-<!--<![endif]-->
-	<!-- <script type="text/javascript" src="{$workspace}/assets/lib/modernizr.js"></script> -->
-	<!-- <script type="text/javascript" src="http://modernizr.com/downloads/modernizr.js"></script> -->
+<xsl:template match="data" mode="html-head">
+
+	<!-- Favicons -->
 	<xsl:call-template name="favicon">
 		<xsl:with-param name="url-prefix" select="concat($workspace, '/assets/images/favicons')"/>
 	</xsl:call-template>
+
 	<!-- Stylesheets -->
 	<xsl:choose>
 	<xsl:when test="$is-logged-in">
 		<link id="folio" rel="stylesheet" type="text/css" href="{$workspace}/assets/css/folio-debug.css?{$tstamp}"/>
-		<!-- <link id="fonts" rel="stylesheet" type="text/css" href="{$workspace}/assets/css/fonts.css?{$tstamp}"/> -->
 	</xsl:when>
 	<xsl:otherwise>
-		<link id="folio" rel="stylesheet" type="text/css" href="{$workspace}/assets/css/folio.css"/>
 		<link id="fonts" rel="stylesheet" type="text/css" href="{$workspace}/assets/css/fonts.css"/>
+		<link id="folio" rel="stylesheet" type="text/css" href="{$workspace}/assets/css/folio.css"/>
 	</xsl:otherwise>
 	</xsl:choose>
 
-	<!-- <script type="text/javascript" src="//ajax.googleapis.com/ajax/libs/webfont/1.5.10/webfont.js"></script> -->
-	<!-- WebFont.load({ custom: { families: ['Franklin Gothic FS', 'fontello'] } }); -->
-	<!-- <xsl:call-template name="inline-script">
-		<xsl:with-param name="content">
-			window.approot = "<xsl:value-of select="$root"/>/";
-		</xsl:with-param>
-	</xsl:call-template> -->
+	<!-- IE conditional comments -->
+<xsl:comment><![CDATA[[if lte IE 9]>
+	<link rel="stylesheet" type="text/css" href="]]><xsl:value-of select="$workspace"/><![CDATA[/assets/css/ie.css"/>
+<![endif]]]></xsl:comment>
 
-	<!-- Library bundle -->
+	<!-- <xsl:call-template name="ga-inline-script"/> -->
+
+	<!-- JS library bundles -->
 	<xsl:choose>
 	<xsl:when test="$is-logged-in">
-		<script type="text/javascript" src="{$workspace}/assets/js/folio-debug-vendor.js"></script>
-		<script type="text/javascript" src="{$workspace}/assets/js/folio-debug-client.js?{$tstamp}"></script>
+		<script type="text/javascript" async="true" src="https://www.google-analytics.com/analytics_debug.js"></script>
+		<script type="text/javascript" async="true" src="{$workspace}/assets/js/folio-debug-vendor.js"></script>
+		<script type="text/javascript" async="true" src="{$workspace}/assets/js/folio-debug-client.js?{$tstamp}"></script>
 	</xsl:when>
 	<xsl:otherwise>
-		<script type="text/javascript" src="{$workspace}/assets/js/folio.js"></script>
+		<script type="text/javascript" async="true" src="https://www.google-analytics.com/analytics.js"></script>
+		<script type="text/javascript" async="true" src="{$workspace}/assets/js/folio.js"></script>
 	</xsl:otherwise>
 	</xsl:choose>
+
+	<!-- IE conditional comments -->
+<xsl:comment><![CDATA[[if lt IE 9]>
+	<script language="javascript" type="text/javascript" src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
+<![endif]]]></xsl:comment>
+
 </xsl:template>
 
 <!-- Container HTML -->
@@ -85,15 +92,16 @@
 	<div id="content" class="content viewport">
 	</div>
 	<xsl:apply-templates select="articles-system/entry[name/@handle = 'unsupported']"/>
-	<!-- <div id="unsupported">
-		<h2 class="color-ln">Portfolio</h2>
-		<p>A layout for mobile-sized screens is not yet ready… Please use a tablet or computer to view this website.</p>
-		<p class="contact">You can reach me at <a href="mailto:blah@nowhere.tld">blah@nowhere.tld</a> or <a href="https://www.linkedin.com/in/pablo-canillas" rel="noopener noreferrer" target="_blank">view my profile on LinkedIn</a></p>
-	</div> -->
+</xsl:template>
+
+
+<xsl:template match="data" mode="html-body-first">
+	<!-- Google Tag Manager -->
+	<!-- <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NGTPHRB" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript> -->
 </xsl:template>
 
 <!-- Footer Scripts -->
-<xsl:template match="data" mode="html-footer-scripts">
+<xsl:template match="data" mode="html-body-last">
 	<xsl:call-template name="inline-script">
 		<!-- Bootstrap data -->
 		<xsl:with-param name="cdata" select="$is-xhtml"/>
@@ -108,6 +116,7 @@
 			<xsl:apply-templates select="/data/media-all" mode="output-json"/>,
 			<xsl:apply-templates select="/data/articles-all" mode="output-json"/>
 			};
+			window.GA_ID = '<xsl:value-of select="$ga-tracking-id"/>';
 		</xsl:with-param>
 	</xsl:call-template>
 </xsl:template>
@@ -158,6 +167,23 @@
 			</xsl:choose>
 		</a>
 	</li>
+</xsl:template>
+
+<xsl:template name="ga-inline-script">
+	<xsl:call-template name="inline-script">
+		<xsl:with-param name="cdata" select="$is-xhtml"/>
+		<xsl:with-param name="content">
+		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+		})(window,document,'script','https://www.google-analytics.com/analytics<xsl:if test="$is-logged-in">_debug</xsl:if>.js','ga');
+
+		window.ga_debug = { trace: false<!-- <xsl:value-of select="$is-logged-in"/>--> };
+		window.ga('create', '<xsl:value-of select="$ga-tracking-id"/>', 'auto');
+		<!-- if (/(?:(localhost|\.local))$/.test(location.hostname)) window.ga('set', 'sendHitTask', null); -->
+		<!-- ga('send', 'pageview'); -->
+		</xsl:with-param>
+	</xsl:call-template>
 </xsl:template>
 
 </xsl:stylesheet>

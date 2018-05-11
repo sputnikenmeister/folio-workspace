@@ -7,7 +7,7 @@
 #
 # Host: localhost (MySQL 5.6.39)
 # Database: development_folio_sym
-# Generation Time: 2018-05-11 11:09:39 +0000
+# Generation Time: 2018-05-11 12:54:21 +0000
 # ************************************************************
 
 
@@ -3149,19 +3149,10 @@ LOCK TABLES `folio_pages` WRITE;
 
 INSERT INTO `folio_pages` (`id`, `parent`, `title`, `handle`, `path`, `params`, `data_sources`, `events`, `sortorder`)
 VALUES
-	(86,NULL,'XHTML','xhtml',NULL,NULL,'author_logged_in,bundles_all,keywords_all,media_all,media_sources,types_all,articles_all,articles_system',NULL,4),
-	(83,NULL,'Flash','flash',NULL,'url-debug',NULL,NULL,10),
-	(80,77,'Keywords','keywords','xml','filter/keywords','bundles_find,keywords_find,media_find_by_bundle',NULL,13),
-	(81,77,'Types','types','xml','filter/types','keywords_find,types_find',NULL,14),
-	(82,77,'Media','media','xml','filter/media','media_find',NULL,15),
-	(78,77,'Bundles','bundles','xml','filter/bundles','bundles_find,media_find_by_bundle',NULL,12),
-	(77,NULL,'XML','xml',NULL,NULL,'bundles_find,keywords_find,media_find_by_bundle,types_find',NULL,11),
-	(88,86,'Bundles','bundles','xhtml','bundles','bundles_all,keywords_all,types_all,media_find_by_bundle,bundles_get,bundles_map_by_handle',NULL,7),
-	(90,NULL,'RSS Feed','rss',NULL,NULL,'bundles_find,media_find_by_bundle',NULL,9),
-	(91,NULL,'Page not found','oops',NULL,NULL,NULL,NULL,8),
-	(92,NULL,'JSON','json',NULL,NULL,'bundles_all,media_all,keywords_all,types_all,media_sources,articles_all,articles_system,author_logged_in',NULL,16),
-	(98,92,'Bundles','bundles','json','bundles','bundles_get,keywords_find,bundles_map_by_handle,media_find_by_bundle',NULL,17),
-	(102,NULL,'XHTML (Static)','xhtml-nojs',NULL,NULL,'author_logged_in,bundles_all,media_all,keywords_all,types_all',NULL,6);
+	(86,NULL,'XHTML','xhtml',NULL,NULL,'author_logged_in,bundles_all,keywords_all,media_all,media_sources,types_all,articles_all,articles_system',NULL,13),
+	(90,NULL,'RSS Feed','rss',NULL,NULL,'bundles_all',NULL,18),
+	(91,NULL,'Page not found','oops',NULL,NULL,NULL,NULL,17),
+	(92,NULL,'JSON','json',NULL,NULL,'bundles_all,media_all,keywords_all,types_all,media_sources,articles_all,articles_system,author_logged_in',NULL,25);
 
 /*!40000 ALTER TABLE `folio_pages` ENABLE KEYS */;
 UNLOCK TABLES;
@@ -3185,14 +3176,7 @@ LOCK TABLES `folio_pages_types` WRITE;
 
 INSERT INTO `folio_pages_types` (`id`, `page_id`, `type`)
 VALUES
-	(845,77,'hidden'),
-	(684,78,'XML'),
-	(695,80,'XML'),
-	(697,81,'XML'),
-	(836,82,'XML'),
-	(710,90,'RSS'),
-	(711,90,'hidden'),
-	(807,88,'XHTML'),
+	(849,90,'hidden'),
 	(847,86,'hidden'),
 	(715,91,'hidden'),
 	(716,91,'404'),
@@ -3200,12 +3184,8 @@ VALUES
 	(718,91,'XHTML'),
 	(848,86,'index'),
 	(805,92,'hidden'),
-	(794,98,'JSON'),
-	(726,83,'hidden'),
-	(806,92,'JSON'),
-	(846,77,'XML'),
-	(820,102,'XHTML'),
-	(819,102,'hidden');
+	(850,90,'RSS'),
+	(806,92,'JSON');
 
 /*!40000 ALTER TABLE `folio_pages_types` ENABLE KEYS */;
 UNLOCK TABLES;

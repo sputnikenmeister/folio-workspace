@@ -29,6 +29,9 @@
 		<xsl:with-param name="url-prefix" select="concat($workspace, '/assets/images/favicons')"/>
 	</xsl:call-template>
 
+	<!-- RSS -->
+	<link rel="alternate" type="application/rss+xml" href="{$root}/rss"/>
+
 	<!-- Stylesheets -->
 	<xsl:choose>
 	<xsl:when test="$is-logged-in">

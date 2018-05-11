@@ -37,15 +37,15 @@
 			<sy:updatePeriod>weekly</sy:updatePeriod>
 			<sy:updateFrequency>1</sy:updateFrequency>
 			<generator>Symphony (build <xsl:value-of select="$symphony-version"/>)</generator>
-			<xsl:apply-templates select="bundles-find/entry" />
+			<xsl:apply-templates select="bundles-all/entry" />
 		</channel>
 	</rss>
 </xsl:template>
 
-<xsl:template match="bundles-find/entry" >
+<xsl:template match="bundles-all/entry" >
 	<item>
 		<title><xsl:value-of select="name"/></title>
-		<link><xsl:value-of select="$root"/>/bundles/<xsl:value-of select="name/@handle"/>/</link>
+		<link><xsl:value-of select="$root"/>/#bundles/<xsl:value-of select="name/@handle"/>/</link>
 		<pubDate>
 			<xsl:call-template name="format-date">
 				<xsl:with-param name="date" select="completed"/>
@@ -54,14 +54,11 @@
 			<xsl:text> </xsl:text>
 			<xsl:value-of select="translate($timezone,':','')"/>
 		</pubDate>
-		<guid isPermaLink="false"><xsl:value-of select="concat($root,'/bundles/',name/@handle,'/')" /></guid>
-
+		<guid isPermaLink="false"><xsl:value-of select="concat($root,'/#bundles/',name/@handle,'/')" /></guid>
 		<description>
 			<xsl:apply-templates select="description" mode="cdata"/>
 		</description>
-
 		<xsl:apply-templates select="keywords/item" />
-
 		<content:encoded></content:encoded>
 	</item>
 </xsl:template>

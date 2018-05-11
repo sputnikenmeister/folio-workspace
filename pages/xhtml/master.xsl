@@ -41,8 +41,9 @@
 		<meta name="viewport" content="user-scalable=no, width=device-width, height=device-height, initial-scale=1, maximum-scale=1"/>
 		<!-- <meta name="author" content="{$root}/humans.txt"/>-->
 		<!-- <meta name="description" content="no description"/> -->
-		<!-- <link rel="canonical" href="{$root}/"/> --><!-- cf. https://support.google.com/webmasters/answer/139066?hl=en#1 -->
-		<!-- <link rel="alternate" type="application/rss+xml" href="{$root}/rss"/> -->
+
+		<!-- cf. https://support.google.com/webmasters/answer/139066?hl=en#1 -->
+		<!-- <link rel="canonical" href="{$root}/"/> -->
 		<xsl:apply-templates select="data" mode="html-head"/>
 	</head>
 	<xsl:comment>IE conditional comments</xsl:comment>

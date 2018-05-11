@@ -1,7 +1,8 @@
 .DS_Store
 ~*
 /uploads
-/flash/debug
-/flash/release
 /flash/sandbox
+#/flash/release
+#/flash/debug
+/flash/debug/generated/
 assets

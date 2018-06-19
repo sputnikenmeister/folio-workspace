@@ -17,7 +17,7 @@ class eventadministrator_only extends SectionEvent
             'author' => array(
                 'name' => 'Pablo Canillas',
                 'website' => 'http://fulanito.localhost',
-                'email' => 'noreply@localhost.tld'),
+                'email' => 'nobody@localhost'),
             'version' => 'Symphony 2.5.0',
             'release-date' => '2014-09-27T12:06:56+00:00',
             'trigger-condition' => 'action[administrator-only]'

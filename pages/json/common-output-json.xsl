@@ -23,9 +23,17 @@
 	<!-- Escape Quotes -->
 	<!-- extends html mode in escape-string.xsl -->
 	<xsl:template match="text()" mode="html">
+		<!-- <span class="s"> -->
 		<xsl:call-template name="escape-bs-string">
 			<xsl:with-param name="s" select="."/>
 		</xsl:call-template>
+		<!-- </span> -->
+	</xsl:template>
+	<xsl:template match="@href[starts-with(.,'http')]" mode="html">
+		<xsl:attribute name="{name()}">
+			<xsl:value-of disable-output-escaping="yes" select="."/>
+		</xsl:attribute>
+		<xsl:attribute name="target">_blank</xsl:attribute>
 	</xsl:template>
 
 <!-- Ignored -->

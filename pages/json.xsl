@@ -3,21 +3,68 @@
 	 xmlns:exsl="http://exslt.org/common" extension-element-prefixes="exsl">
 
 <xsl:import href="json/output-items.xsl"/>
-<xsl:output method="text" omit-xml-declaration="yes" encoding="UTF-8" indent="no" />
+
+<!-- NOTE: method="text" strips out html tags -->
+<xsl:output method="xml" omit-xml-declaration="yes" encoding="UTF-8" indent="no" />
 <xsl:strip-space elements="*"/>
 
-<xsl:template match="/data">
-window.approot = '<xsl:value-of select="$root"/>/';
+<xsl:param name="url-callback"/>
+
+<xsl:template match="/">
+	<xsl:choose>
+		<xsl:when test="$url-callback">
+			<xsl:value-of select="$url-callback"/>
+			<xsl:text>({</xsl:text>
+			<xsl:apply-templates select="data" mode="output-json"/>
+			<xsl:text>});</xsl:text>
+		</xsl:when>
+		<xsl:otherwise>
+			<xsl:text>{</xsl:text>
+			<xsl:apply-templates select="data" mode="output-json"/>
+			<xsl:text>}</xsl:text>
+		</xsl:otherwise>
+	</xsl:choose>
+</xsl:template>
+
+<!-- <xsl:template match="data" mode="output-json">
+	<xsl:apply-templates select="params/website-name | params/root | params/workspace | types-all | keywords-all | articles-all | media-all | bundles-all" mode="output-json"/>
+</xsl:template> -->
+
+<!-- <xsl:template match="events | params" mode="output-json"/> -->
+
+<!-- <xsl:text>,</xsl:text> -->
+<!-- ({
+<xsl:apply-templates select="data"/>},
+'<xsl:value-of select="$root"/>/',
+'<xsl:value-of select="$workspace"/>/uploads'
+); -->
+
+<!-- <xsl:otherwise>{
+	<xsl:apply-templates select="data"/>,
+	'approot': '<xsl:value-of select="$root"/>/',
+	'mediadir': '<xsl:value-of select="$workspace"/>/uploads'
+
+		<xsl:apply-templates select="data/params/root | data/params/workspace" mode="output-json"/>
+}
+</xsl:otherwise> -->
+
+<!-- <xsl:template match="params" mode="output-json">
+	<xsl:apply-templates select="root | workspace" mode="output-json"/>
+</xsl:template> -->
+
+<!-- window.approot = '<xsl:value-of select="$root"/>/';
 window.mediadir = '<xsl:value-of select="$workspace"/>/uploads';
 window.bootstrap = {
+	<xsl:apply-templates select="types-all | keywords-all | articles-all | media-all | bundles-all" mode="output-json"/>
+}; -->
+<!-- window.bootstrap = {
 	<xsl:apply-templates select="articles-all" mode="output-json"/>,
-	<xsl:apply-templates select="types-all" mode="output-json"/>,
-	<xsl:apply-templates select="keywords-all" mode="output-json"/>,
 	<xsl:apply-templates select="bundles-all" mode="output-json"/>,
-	<xsl:apply-templates select="media-all" mode="output-json"/>
-};
+	<xsl:apply-templates select="media-all" mode="output-json"/>,
+	<xsl:apply-templates select="keywords-all" mode="output-json"/>,
+	<xsl:apply-templates select="types-all" mode="output-json"/>,
+}; -->
 <!-- window.bootstrap = {<xsl:apply-templates select="types-all | keywords-all | articles-all | media-all | bundles-all" mode="filter"/>}; -->
-</xsl:template>
 
 <!--
 <xsl:template match="*" mode="filter">

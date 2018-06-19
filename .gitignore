@@ -1,7 +1,8 @@
 .DS_Store
 ~*
+/node_modules
 /uploads
 /flash/debug
 /flash/release
 /flash/sandbox
-assets
+/assets

@@ -1,36 +1,18 @@
 <?php
 
-class datasourcebundles_all extends SectionDatasource
+class datasourceproperties_ga_analytics extends StaticXMLDatasource
 {
-    public $dsParamROOTELEMENT = 'bundles-all';
-    public $dsParamORDER = 'desc';
-    public $dsParamPAGINATERESULTS = 'no';
-    public $dsParamLIMIT = '20';
-    public $dsParamSTARTPAGE = '1';
-    public $dsParamREDIRECTONEMPTY = 'no';
-    public $dsParamREDIRECTONFORBIDDEN = 'no';
-    public $dsParamREDIRECTONREQUIRED = 'no';
-    public $dsParamPARAMOUTPUT = array(
-        'system:id',
-        'keywords'
-        );
-    public $dsParamSORT = 'completed';
-    public $dsParamHTMLENCODE = 'no';
-    public $dsParamASSOCIATEDENTRYCOUNTS = 'no';
-
-    public $dsParamFILTERS = array(
-        '5' => 'yes',
-    );
-
-    public $dsParamINCLUDEDELEMENTS = array(
-        'name',
-        'display-name: formatted',
-        'completed',
-        'sub: formatted',
-        'description: formatted',
-        'keywords',
-        'attributes'
-    );
+    public $dsParamROOTELEMENT = 'properties-ga-analytics';
+    public $dsParamSTATIC = '
+        <item>
+          <key>portfolio.canillas.name</key>
+          <value>UA-9123564-7</value>
+        </item>
+        <item>
+          <key>fulanito.org</key>
+          <value>UA-9123564-8</value>
+        </item>
+    ';
 
     public function __construct($env = null, $process_params = true)
     {
@@ -41,19 +23,19 @@ class datasourcebundles_all extends SectionDatasource
     public function about()
     {
         return array(
-            'name' => 'Bundles/All',
+            'name' => 'Properties/GA Analytics',
             'author' => array(
                 'name' => 'Pablo Canillas',
                 'website' => 'http://localhost/projects/folio-sym',
                 'email' => 'nobody@localhost'),
             'version' => 'Symphony 2.7.6',
-            'release-date' => '2018-05-25T18:53:54+00:00'
+            'release-date' => '2018-05-25T18:36:19+00:00'
         );
     }
 
     public function getSource()
     {
-        return '1';
+        return 'static_xml';
     }
 
     public function allowEditorToParse()

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0"
-	xmlns:exsl="http://exslt.org/common"
-	extension-element-prefixes="exsl">
+xmlns:exsl="http://exslt.org/common"
+xmlns:date="http://exslt.org/dates-and-times"
+extension-element-prefixes="exsl date">
 
 <xsl:output method="xml"
 	doctype-public="-//W3C//DTD XHTML 1.0 Strict//EN"
@@ -13,11 +14,20 @@
 	<xsl:include href="inline-script.xsl"/>
 	<xsl:include href="favicon.xsl"/>
 
-<!-- <xsl:variable name="is-logged-in" select="true()"/> -->
-<xsl:variable name="is-logged-in" select="boolean(/data/author-logged-in/author[@user-type = 'developer'])"/>
+<!-- Params & Variables -->
+<!-- - - - - - - - - - - - - - - - - - - - - -->
+<xsl:param name="url-force-debug" select="'false'"/>
+<xsl:param name="url-force-nodebug" select="'false'"/>
 
-<xsl:variable name="page-class" select="concat($current-page, '-page')"/>
-<xsl:variable name="layout-class">
+<xsl:variable name="debug" select="boolean(not($url-force-debug = 'false')
+		or /data/author-logged-in/author[@user-type = 'developer']
+		and boolean($url-force-nodebug = 'false'))"/>
+
+<xsl:variable name="is-xhtml" test="boolean(/data/params/page-types/item/@handle = 'xhtml')"/>
+<xsl:variable name="tstamp" select="date:seconds()"/>
+
+<!-- <xsl:variable name="page-class" select="concat($current-page, '-page')"/> -->
+<!-- <xsl:variable name="layout-class">
 	<xsl:choose>
 		<xsl:when test="count(/data/params/url-layout) = 0">
 			<xsl:value-of select="'left-layout'"/>
@@ -26,10 +36,10 @@
 			<xsl:value-of select="concat(/data/params/url-layout/text(), '-layout')"/>
 		</xsl:otherwise>
 	</xsl:choose>
-</xsl:variable>
+</xsl:variable> -->
 <!-- <xsl:variable name="document-classes" select="'app-initial'"/> -->
-<xsl:variable name="body-classes" select="'app-initial route-initial'"/>
 <!-- <xsl:variable name="body-classes" select="concat($page-class,' ', $layout-class,' app-initial')"/> -->
+<xsl:variable name="body-classes" select="'app-initial route-initial'"/>
 
 <xsl:template match="/">
 <html lang="en">
@@ -41,7 +51,9 @@
 		</xsl:if>
 		<title><xsl:call-template name="page-title"/></title>
 		<!-- <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"/> -->
+		<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=1"/> -->
 		<meta name="viewport" content="user-scalable=no, width=device-width, height=device-height, initial-scale=1, maximum-scale=1"/>
+		<!-- <meta name="viewport" content="user-scalable=no, width=440, height=540, initial-scale=1, maximum-scale=1"/> -->
 		<!-- <meta name="author" content="{$root}/humans.txt"/>-->
 		<!-- <meta name="description" content="no description"/> -->
 
@@ -99,12 +111,14 @@
 </xsl:template>
 
 <xsl:template match="keywords-all/entry">
-	<dd class="list-item" data-id="{@id}">
-		<a href="{$root}/#keywords/{name/@handle}">
+	<dd class="list-item" data-id="{@id}" data-handle="{name/@handle}">
+		<!-- <a data-href="{$root}/#keywords/{name/@handle}"> -->
+		<a href="">
 			<span class="name label">
 				<xsl:value-of select="name/text()"/>
 			</span>
 		</a>
+		<!-- </a> -->
 	</dd>
 </xsl:template>
 

@@ -19,8 +19,9 @@ class datasourcemedia_all extends SectionDatasource
     );
 
     public $dsParamINCLUDEDELEMENTS = array(
+        'name: formatted',
+        'sub: formatted',
         'bundle',
-        'description: formatted',
         'sources',
         'attributes',
         'order'
@@ -29,7 +30,7 @@ class datasourcemedia_all extends SectionDatasource
     public $dsParamINCLUDEDASSOCIATIONS = array(
         'sources' => array(
             'section_id' => '8',
-            'field_id' => '60',
+            'field_id' => '57',
             'elements' => array(
                 'file',
                 'attributes'
@@ -46,13 +47,13 @@ class datasourcemedia_all extends SectionDatasource
     public function about()
     {
         return array(
-            'name' => 'Media All',
+            'name' => 'Media/All',
             'author' => array(
                 'name' => 'Pablo Canillas',
                 'website' => 'http://localhost/projects/folio-sym',
-                'email' => 'noreply@localhost.tld'),
-            'version' => 'Symphony 2.6.2',
-            'release-date' => '2015-08-29T14:06:47+00:00'
+                'email' => 'nobody@localhost'),
+            'version' => 'Symphony 2.7.6',
+            'release-date' => '2018-05-25T18:54:27+00:00'
         );
     }
 
@@ -70,14 +71,16 @@ class datasourcemedia_all extends SectionDatasource
     {
         $result = new XMLElement($this->dsParamROOTELEMENT);
 
-        try{
+        try {
             $result = parent::execute($param_pool);
         } catch (FrontendPageNotFoundException $e) {
             // Work around. This ensures the 404 page is displayed and
             // is not picked up by the default catch() statement below
             FrontendPageNotFoundExceptionHandler::render($e);
         } catch (Exception $e) {
-            $result->appendChild(new XMLElement('error', $e->getMessage() . ' on ' . $e->getLine() . ' of file ' . $e->getFile()));
+            $result->appendChild(new XMLElement('error',
+                General::wrapInCDATA($e->getMessage() . ' on ' . $e->getLine() . ' of file ' . $e->getFile())
+            ));
             return $result;
         }
 

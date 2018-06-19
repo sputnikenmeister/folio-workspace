@@ -8,11 +8,21 @@
 <xsl:import href="html/master.xsl"/>
 <xsl:import href="json/output-items.xsl"/>
 
-<!-- $is-logged-in defined in html/master.xsl -->
-<xsl:variable name="is-xhtml" test="/data/params/page-types/item/@handle = 'xhtml'"/>
-<xsl:variable name="tstamp" select="date:seconds()"/>
+<!-- Params & Variables -->
+<!-- - - - - - - - - - - - - - - - - - - - - -->
+
+<!-- NOTE: $tstamp $debug $is-xhtml defined in html/master.xsl -->
+
+<!-- Async script loading -->
+<xsl:variable name="js-attrs">
+	<xsl:if test="$is-xhtml"><xsl:attribute name="type">text/javascript</xsl:attribute></xsl:if>
+	<xsl:attribute name="async">true</xsl:attribute>
+</xsl:variable>
+
 <!-- Google Analytics -->
 <xsl:variable name="ga-tracking-id" select="'UA-9123564-7'"/>
+<!-- <xsl:variable name="fonts-css" select="document(concat($workspace, '/assets/css/fonts.xml?', $tstamp))/*/text()"/> -->
+<!-- <style><xsl:copy-of select="$fonts-css"/></style> -->
 
 <!-- Page Title -->
 <xsl:template name="page-title">
@@ -24,47 +34,66 @@
 
 	<!-- Favicons -->
 	<xsl:call-template name="favicon">
-		<xsl:with-param name="url-prefix" select="concat($workspace, '/assets/images/favicons')"/>
+		<xsl:with-param name="url-prefix">
+			<xsl:value-of select="$workspace"/><xsl:text>/assets/images/favicons</xsl:text>
+			<xsl:choose>
+				<xsl:when test="$debug">/white</xsl:when>
+				<xsl:otherwise>/black</xsl:otherwise>
+			</xsl:choose>
+		</xsl:with-param>
+		<xsl:with-param name="output-apps" select="true()"/>
+		<xsl:with-param name="bg-color" select="'#000000'"/>
+		<xsl:with-param name="prevent-cache" select="$debug"/>
 	</xsl:call-template>
 
 	<!-- RSS -->
 	<link rel="alternate" type="application/rss+xml" href="{$root}/rss"/>
 
 	<!-- Stylesheets -->
+	<link id="fonts" rel="stylesheet" type="text/css" href="{$workspace}/assets/css/fonts.css"/>
+
 	<xsl:choose>
-	<xsl:when test="$is-logged-in">
+	<xsl:when test="$debug">
 		<link id="folio" rel="stylesheet" type="text/css" href="{$workspace}/assets/css/folio-debug.css?{$tstamp}"/>
 	</xsl:when>
 	<xsl:otherwise>
-		<link id="fonts" rel="stylesheet" type="text/css" href="{$workspace}/assets/css/fonts.css"/>
 		<link id="folio" rel="stylesheet" type="text/css" href="{$workspace}/assets/css/folio.css"/>
 	</xsl:otherwise>
 	</xsl:choose>
 
-	<!-- IE conditional comments -->
+	<!-- IE conditional comments CSS -->
 <xsl:comment><![CDATA[[if lte IE 9]>
-	<link rel="stylesheet" type="text/css" href="]]><xsl:value-of select="$workspace"/><![CDATA[/assets/css/ie.css"/>
+	<link rel="stylesheet" type="text/css" href="]]><xsl:value-of select="$workspace"/><![CDATA[/assets/css/folio-ie.css"/>
 <![endif]]]></xsl:comment>
 
-	<!-- <xsl:call-template name="ga-inline-script"/> -->
+	<!-- IE conditional comments JS -->
+<!-- <xsl:comment><![CDATA[[if lt IE 9]>
+	<script language="javascript" type="text/javascript" src="https://raw.githubusercontent.com/jonathantneal/html5shim/master/html5shiv.js"></script>
+<![endif]]]></xsl:comment> -->
 
 	<!-- JS library bundles -->
 	<xsl:choose>
-	<xsl:when test="$is-logged-in">
-		<script type="text/javascript" async="true" src="https://www.google-analytics.com/analytics_debug.js"></script>
-		<script type="text/javascript" async="true" src="{$workspace}/assets/js/folio-debug-vendor.js"></script>
-		<script type="text/javascript" async="true" src="{$workspace}/assets/js/folio-debug-client.js?{$tstamp}"></script>
+	<xsl:when test="$debug">
+		<!-- <script type="text/javascript" async="true" src="https://www.google-analytics.com/analytics_debug.js"></script> -->
+		<script src="{$workspace}/assets/js/folio-debug-vendor.js?{$tstamp}">
+			<xsl:copy-of select="$js-attrs"/>
+		</script>
+		<script src="{$workspace}/assets/js/folio-debug-client.js?{$tstamp}">
+			<xsl:copy-of select="$js-attrs"/>
+		</script>
 	</xsl:when>
 	<xsl:otherwise>
-		<script type="text/javascript" async="true" src="https://www.google-analytics.com/analytics.js"></script>
-		<script type="text/javascript" async="true" src="{$workspace}/assets/js/folio.js"></script>
+		<!-- <script type="text/javascript" async="true" src="https://www.google-analytics.com/analytics.js"></script> -->
+		<script src="{$workspace}/assets/js/folio.js">
+			<xsl:copy-of select="$js-attrs"/>
+		</script>
 	</xsl:otherwise>
 	</xsl:choose>
-
-	<!-- IE conditional comments -->
-<xsl:comment><![CDATA[[if lt IE 9]>
-	<script language="javascript" type="text/javascript" src="//html5shim.googlecode.com/svn/trunk/html5.js"></script>
-<![endif]]]></xsl:comment>
+	<script src="https://www.google-analytics.com/analytics.js" async="true">
+		<xsl:if test="$is-xhtml">
+			<xsl:attribute name="type">text/javascript</xsl:attribute>
+		</xsl:if>
+	</script>
 
 </xsl:template>
 
@@ -77,7 +106,7 @@
 			</h1>
 		</div>
 		<div id="article-list-wrapper" class="transform-wrapper">
-			<h2 id="about" class="article-button">
+			<h2 id="about-button" class="article-button" data-handle="about">
 				<a href="{$root}/#about">About</a>
 			</h2>
 		</div>
@@ -92,7 +121,7 @@
 	</div>
 	<div id="content" class="content viewport">
 	</div>
-	<xsl:apply-templates select="articles-system/entry[name/@handle = 'unsupported']"/>
+	<!-- <xsl:apply-templates select="articles-system/entry[name/@handle = 'unsupported']"/> -->
 </xsl:template>
 
 
@@ -103,23 +132,27 @@
 
 <!-- Footer Scripts -->
 <xsl:template match="data" mode="html-body-last">
-	<xsl:call-template name="inline-script">
-		<!-- Bootstrap data -->
-		<xsl:with-param name="cdata" select="$is-xhtml"/>
-		<xsl:with-param name="content">
-			window.DEBUG = <xsl:value-of select="$is-logged-in"/>;
-			window.approot = '<xsl:value-of select="$root"/>/';
-			window.mediadir = '<xsl:value-of select="$workspace"/>/uploads';
-			window.bootstrap = {
-			<xsl:apply-templates select="/data/types-all" mode="output-json"/>,
-			<xsl:apply-templates select="/data/keywords-all" mode="output-json"/>,
-			<xsl:apply-templates select="/data/bundles-all" mode="output-json"/>,
-			<xsl:apply-templates select="/data/media-all" mode="output-json"/>,
-			<xsl:apply-templates select="/data/articles-all" mode="output-json"/>
-			};
-			window.GA_ID = '<xsl:value-of select="$ga-tracking-id"/>';
-		</xsl:with-param>
-	</xsl:call-template>
+<xsl:call-template name="inline-script">
+<!-- Bootstrap data -->
+<xsl:with-param name="cdata" select="$is-xhtml"/>
+<xsl:with-param name="content">
+	window.DEBUG = <xsl:value-of select="$debug"/>;
+	window.approot = '<xsl:value-of select="$root"/>/';
+	window.mediadir = '<xsl:value-of select="$workspace"/>/uploads';
+	window.GA_ID = '<xsl:value-of select="$ga-tracking-id"/>';
+
+	window.bootstrap = {
+		<xsl:apply-templates select="/data" mode="output-json"/>
+	};
+
+	window.params = {
+		'website-name': '<xsl:value-of select="$website-name"/>',
+		'media-dir': '<xsl:value-of select="$workspace"/>/uploads',
+		'root': '<xsl:value-of select="$root"/>',
+		<!-- 'data': window.bootstrap, -->
+	};
+</xsl:with-param>
+</xsl:call-template>
 </xsl:template>
 
 <!-- article-view item -->
@@ -177,9 +210,9 @@
 		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
 		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
 		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-		})(window,document,'script','https://www.google-analytics.com/analytics<xsl:if test="$is-logged-in">_debug</xsl:if>.js','ga');
+		})(window,document,'script','https://www.google-analytics.com/analytics<xsl:if test="$debug">_debug</xsl:if>.js','ga');
 
-		window.ga_debug = { trace: false<!-- <xsl:value-of select="$is-logged-in"/>--> };
+		window.ga_debug = { trace: false<!-- <xsl:value-of select="$debug"/>--> };
 		window.ga('create', '<xsl:value-of select="$ga-tracking-id"/>', 'auto');
 		<!-- if (/(?:(localhost|\.local))$/.test(location.hostname)) window.ga('set', 'sendHitTask', null); -->
 		<!-- ga('send', 'pageview'); -->

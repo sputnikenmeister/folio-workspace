@@ -1,11 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns:exsl="http://exslt.org/common"
-	extension-element-prefixes="exsl">
+	xmlns:e="http://exslt.org/common"
+	extension-element-prefixes="e">
 
+<!-- <xsl:import href="escape-string.xsl" /> -->
+<xsl:import href="escape-string-exslt.xsl" />
 <!-- <xsl:import href="string-replace.xsl" /> -->
-<xsl:import href="escape-string.xsl" />
 <!-- <xsl:strip-space elements="*"/> -->
 
 <!--
@@ -20,7 +21,7 @@ Example call:
 <xsl:template name="output-json">
 	<xsl:param name="xml" />
 	<xsl:text>{</xsl:text>
-	<xsl:apply-templates select="exsl:node-set($xml)" mode="output-json"/>
+	<xsl:apply-templates select="e:node-set($xml)" mode="output-json"/>
 	<xsl:text>}</xsl:text>
 </xsl:template>
 
@@ -63,9 +64,13 @@ Example call:
 	<xsl:variable name="is-string" select="string(number(.)) = 'NaN' and . != 'true' and . != 'false'" />
 
 	<xsl:if test="$is-string">'</xsl:if>
-	<xsl:call-template name="escape-bs-string">
-		<xsl:with-param name="s" select="."/>
-	</xsl:call-template>
+	<!-- <xsl:call-template name="escape-bs-string"> -->
+		<!-- <xsl:with-param name="s"> -->
+			<xsl:call-template name="escape-bs-string">
+				<xsl:with-param name="s" select="."/>
+			</xsl:call-template>
+		<!-- </xsl:with-param> -->
+	<!-- </xsl:call-template> -->
 	<xsl:if test="$is-string">'</xsl:if>
 </xsl:template>
 

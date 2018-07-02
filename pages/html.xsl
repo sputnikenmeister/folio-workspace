@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0"
 	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns:exsl="http://exslt.org/common"
-	xmlns:date="http://exslt.org/dates-and-times"
-	extension-element-prefixes="exsl date">
+	xmlns:e="http://exslt.org/common"
+	extension-element-prefixes="e">
 
 <xsl:import href="html/master.xsl"/>
+<xsl:import href="html/webfonts.xsl"/>
 <xsl:import href="json/output-items.xsl"/>
+
+<!-- <xsl:strip-space elements="url"/> -->
 
 <!-- Params & Variables -->
 <!-- - - - - - - - - - - - - - - - - - - - - -->
@@ -19,15 +21,14 @@
 	<xsl:attribute name="async">true</xsl:attribute>
 </xsl:variable>
 
-<!-- Google Analytics -->
-<xsl:variable name="ga-tracking-id" select="'UA-9123564-7'"/>
-<!-- <xsl:variable name="fonts-css" select="document(concat($workspace, '/assets/css/fonts.xml?', $tstamp))/*/text()"/> -->
-<!-- <style><xsl:copy-of select="$fonts-css"/></style> -->
-
 <!-- Page Title -->
 <xsl:template name="page-title">
 	<xsl:value-of select="$website-name"/>
 </xsl:template>
+
+<!-- Webfonts overrides -->
+<!-- <xsl:template match="src[url[@scheme = 'data'] and (format/text() = 'woff' or format/text() = 'woff2')">
+</xsl:template> -->
 
 <!-- Head Scripts -->
 <xsl:template match="data" mode="html-head">
@@ -50,13 +51,16 @@
 	<link rel="alternate" type="application/rss+xml" href="{$root}/rss"/>
 
 	<!-- Stylesheets -->
-	<link id="fonts" rel="stylesheet" type="text/css" href="{$workspace}/assets/css/fonts.css"/>
 
 	<xsl:choose>
 	<xsl:when test="$debug">
+		<xsl:apply-templates select="document(concat($workspace, '/assets/fonts/data.xml?', $tstamp))/webfonts" mode="webfonts"/>
+		<!-- <link id="fonts" rel="stylesheet" type="text/css" href="{$workspace}/assets/css/fonts-debug.css?{$tstamp}"/> -->
 		<link id="folio" rel="stylesheet" type="text/css" href="{$workspace}/assets/css/folio-debug.css?{$tstamp}"/>
 	</xsl:when>
 	<xsl:otherwise>
+		<xsl:apply-templates select="document(concat($workspace, '/assets/fonts/data.xml?', $tstamp))/webfonts" mode="webfonts"/>
+		<!-- <link id="fonts" rel="stylesheet" type="text/css" href="{$workspace}/assets/css/fonts.css"/> -->
 		<link id="folio" rel="stylesheet" type="text/css" href="{$workspace}/assets/css/folio.css"/>
 	</xsl:otherwise>
 	</xsl:choose>
@@ -89,6 +93,7 @@
 		</script>
 	</xsl:otherwise>
 	</xsl:choose>
+
 	<script src="https://www.google-analytics.com/analytics.js" async="true">
 		<xsl:if test="$is-xhtml">
 			<xsl:attribute name="type">text/javascript</xsl:attribute>
@@ -132,6 +137,11 @@
 
 <!-- Footer Scripts -->
 <xsl:template match="data" mode="html-body-last">
+
+<!-- Google Analytics -->
+<!-- <xsl:variable name="ga-tracking-id" select="'UA-9123564-7'"/> -->
+<xsl:variable name="ga-tracking-id" select="'UA-0000000-0'"/>
+
 <xsl:call-template name="inline-script">
 <!-- Bootstrap data -->
 <xsl:with-param name="cdata" select="$is-xhtml"/>
@@ -143,13 +153,6 @@
 
 	window.bootstrap = {
 		<xsl:apply-templates select="/data" mode="output-json"/>
-	};
-
-	window.params = {
-		'website-name': '<xsl:value-of select="$website-name"/>',
-		'media-dir': '<xsl:value-of select="$workspace"/>/uploads',
-		'root': '<xsl:value-of select="$root"/>',
-		<!-- 'data': window.bootstrap, -->
 	};
 </xsl:with-param>
 </xsl:call-template>
@@ -201,23 +204,6 @@
 			</xsl:choose>
 		</a>
 	</li>
-</xsl:template>
-
-<xsl:template name="ga-inline-script">
-	<xsl:call-template name="inline-script">
-		<xsl:with-param name="cdata" select="$is-xhtml"/>
-		<xsl:with-param name="content">
-		(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
-		(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
-		m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
-		})(window,document,'script','https://www.google-analytics.com/analytics<xsl:if test="$debug">_debug</xsl:if>.js','ga');
-
-		window.ga_debug = { trace: false<!-- <xsl:value-of select="$debug"/>--> };
-		window.ga('create', '<xsl:value-of select="$ga-tracking-id"/>', 'auto');
-		<!-- if (/(?:(localhost|\.local))$/.test(location.hostname)) window.ga('set', 'sendHitTask', null); -->
-		<!-- ga('send', 'pageview'); -->
-		</xsl:with-param>
-	</xsl:call-template>
 </xsl:template>
 
 </xsl:stylesheet>

@@ -1,10 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	 xmlns:exsl="http://exslt.org/common" extension-element-prefixes="exsl">
+	 xmlns:e="http://exslt.org/common"
+	 xmlns:s="http://exslt.org/strings"
+	 extension-element-prefixes="e s">
 
 <xsl:import href="../../utilities/output-json.xsl"/>
 <xsl:import href="../../utilities/typography.xsl"/>
-<xsl:import href="../../utilities/escape-string.xsl"/>
+<!-- <xsl:import href="../../utilities/escape-string.xsl"/> -->
 
 <xsl:strip-space elements="*"/>
 

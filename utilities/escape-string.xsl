@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xsl:stylesheet version="1.0"
-	xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	xmlns:exsl="http://exslt.org/common"
-	extension-element-prefixes="exsl">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
-	<!-- Main template for escaping strings; used by above template and for object-properties
-		   Responsibilities: placed quotes around string, and chain up to next filter, escape-bs-string -->
+	<!--
+		Main template for escaping strings; Used by above template and for
+		object-properties. Responsibilities: placed quotes around string, and
+		chain up to next filter, escape-bs-string .
+	-->
 	<xsl:template name="escape-string">
 		<xsl:param name="s"/>
 		<xsl:text>'</xsl:text>
@@ -55,10 +55,13 @@
 		</xsl:choose>
 	</xsl:template>
 
-	<!-- Replace tab, line feed and/or carriage return by its matching escape code. Can't escape backslash
-		   or double quote here, because they don't replace characters (&#x0; becomes \t), but they prefix
-		   characters (\ becomes \\). Besides, backslash should be seperate anyway, because it should be
-		   processed first. This function can't do that. -->
+	<!--
+		Replace tab, line feed and/or carriage return by its matching escape
+		code. Can't escape backslash or double quote here, because they don't
+		replace characters (&#x0; becomes \t), but they prefix characters
+		(\ becomes \\). Besides, backslash should be seperate anyway, because
+		it should be processed first. This function can't do that.
+	-->
 	<xsl:template name="encode-string">
 		<xsl:param name="s"/>
 		<xsl:choose>
@@ -80,7 +83,9 @@
 					<xsl:with-param name="s" select="concat(substring-before($s,'&#xD;'),'\r',substring-after($s,'&#xD;'))"/>
 				</xsl:call-template>
 			</xsl:when>
-			<xsl:otherwise><xsl:value-of select="$s"/></xsl:otherwise>
+			<xsl:otherwise>
+				<xsl:value-of select="$s"/>
+			</xsl:otherwise>
 		</xsl:choose>
 	</xsl:template>
 

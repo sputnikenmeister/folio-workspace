@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
+		xmlns:s="http://exslt.org/strings"
+		extension-element-prefixes="s">
 
 <!--
 Example call
@@ -15,7 +17,10 @@ Example call
 	<xsl:param name="haystack" />
 	<xsl:param name="search" />
 	<xsl:param name="replace" select="''" />
-	
+
+	<xsl:value-of select="s:replace($haystack, $search, $replace" />
+
+	<!--
 	<xsl:choose>
 		<xsl:when test="contains($haystack, $search)">
 			<xsl:value-of select="substring-before($haystack, $search)" />
@@ -30,6 +35,7 @@ Example call
 			<xsl:value-of select="$haystack" />
 		</xsl:otherwise>
 	</xsl:choose>
+	-->
 </xsl:template>
 
 </xsl:stylesheet>

@@ -7,8 +7,8 @@ class datasourceproperties_ui extends RemoteDatasource {
     public $dsParamROOTELEMENT = 'properties-ui';
     public $dsParamURL = '{$workspace}/assets/src/sass/variables.json';
     public $dsParamFORMAT = 'json';
-    public $dsParamXPATH = '/';
-    public $dsParamCACHE = 5;
+    public $dsParamXPATH = '/data/*';
+    public $dsParamCACHE = 0;
     public $dsParamTIMEOUT = 6;
 
     public function __construct($env=NULL, $process_params=true)
@@ -24,9 +24,9 @@ class datasourceproperties_ui extends RemoteDatasource {
             'author' => array(
                 'name' => 'Pablo Canillas',
                 'website' => 'http://localhost/projects/folio-sym',
-                'email' => 'nobody@localhost'),
+                'email' => 'portfolio@canillas.name'),
             'version' => 'Symphony 2.7.6',
-            'release-date' => '2018-05-25T18:20:12+00:00'
+            'release-date' => '2018-06-19T12:25:04+00:00'
         );
     }
 

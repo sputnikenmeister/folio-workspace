@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform"
-	 xmlns:exsl="http://exslt.org/common" extension-element-prefixes="exsl">
+	 xmlns:e="http://exslt.org/common"
+	 extension-element-prefixes="e">
 
 <xsl:import href="common-prepare-json.xsl"/>
 <xsl:import href="common-output-json.xsl"/>
@@ -10,79 +11,13 @@
 <!-- 								-->
 <!--  All data-sources entry-point	-->
 <!-- 								-->
-<!-- <xsl:template match="data" mode="output-json">
-	<xsl:variable name="uploads">
-		<approot><xsl:value-of select="$root"/>/uploads</approot>
-		<mediadir><xsl:value-of select="$workspace"/>/uploads</mediadir>
-	</xsl:variable>
-	<xsl:apply-templates select="params/website-name | types-all | keywords-all | articles-all | media-all | bundles-all | exsl:node-set($uploads)/*" mode="output-json"/>
-</xsl:template> -->
 <xsl:template match="data" mode="output-json">
 	<xsl:text>&#xa;&#9;</xsl:text>
-	<xsl:apply-templates select="params | types-all | keywords-all | articles-all | media-all | bundles-all" mode="output-json"/>
+	<xsl:apply-templates select="types-all | keywords-all | articles-all | media-all | bundles-all | params | properties-ga" mode="output-json"/>
 	<xsl:text>&#xa;</xsl:text>
 </xsl:template>
 
 <!-- Two-pass transforms -->
-
-<!-- 						-->
-<!--  Parameters			-->
-<!-- 						-->
-
-<xsl:template match="params" mode="output-json">
-	<xsl:variable name="uploads">
-		<params><uploads><xsl:value-of select="workspace"/>/uploads</uploads></params>
-	</xsl:variable>
-
-	<xsl:if test="position() != 1">
-		<xsl:text>&#xa;&#9;</xsl:text>
-	</xsl:if>
-	<xsl:text>'</xsl:text>
-	<xsl:value-of select="name(.)"/>
-	<xsl:text>': {</xsl:text>
-	<!-- <xsl:text>': {&#xa;&#9;</xsl:text> -->
-	<xsl:apply-templates select="website-name | root | workspace | exsl:node-set($uploads)/params/*" mode="output-json"/>
-	<xsl:text>}</xsl:text>
-	<!-- <xsl:text>&#xa;&#9;}</xsl:text> -->
-	<xsl:if test="position() != last()">
-		<xsl:text>,</xsl:text>
-	</xsl:if>
-</xsl:template>
-
-<!-- <xsl:template match="params" mode="output-json">
-	<xsl:call-template name="output-json">
-		<xsl:with-param name="xml">
-			<properties>
-				<xsl:copy-of select="website-name | root | workspace"/>
-			</properties>
-		</xsl:with-param>
-	</xsl:call-template>
-</xsl:template> -->
-
-<!-- <xsl:template match="params/website-name | params/root | params/workspace" mode="output-json"> -->
-<!-- <xsl:template match="params/*" mode="output-json">
-	<xsl:if test="position() != 1">
-		<xsl:text>&#xa;&#9;&#9;</xsl:text>
-	</xsl:if>
-	<xsl:text>'</xsl:text>
-	<xsl:value-of select="name(.)"/>
-	<xsl:text>': </xsl:text>
-	<xsl:apply-templates select="text()[1]" mode="output-json"/>
-	<xsl:text></xsl:text>
-	<xsl:if test="position() != last()">
-		<xsl:text>,</xsl:text>
-	</xsl:if>
-</xsl:template> -->
-
-<!-- <xsl:template match="params/*" mode="output-json"></xsl:template> -->
-
-<!-- <xsl:call-template name="output-json">
-	<xsl:with-param name="xml">
-		<xsl:copy-of select="."/>
-	</xsl:with-param>
-</xsl:call-template> -->
-
-<!-- <xsl:apply-templates select="exsl:node-set(.)" mode="output-json"/> -->
 
 <!-- 						-->
 <!--  Generic data-source	-->
@@ -203,42 +138,26 @@
 	<xsl:text>&#xa;&#9;&#9;</xsl:text>
 	<xsl:call-template name="output-json">
 		<xsl:with-param name="xml">
-			<bId><xsl:value-of select="bundle/item/@id"/></bId>
 			<id><xsl:value-of select="@id"/></id>
 			<o><xsl:value-of select="order"/></o>
 			<name mode="formatted">
 				<xsl:copy-of select="name/*[1]/* | name/*[1]/text()"/>
 			</name>
 			<xsl:copy-of select="sub"/>
-			<!-- <xsl:apply-templates mode="prepare-json" select=""/> -->
+			<bId>
+				<xsl:value-of select="bundle/item/@id"/>
+			</bId>
+			<srcIdx>
+				<xsl:apply-templates mode="get-position" select="sources/item[contains(file/@type,'image')][1]"/>
+			</srcIdx>
 			<xsl:apply-templates mode="prepare-json" select="attributes | description | sources"/>
-			<srcIdx><xsl:apply-templates mode="get-position" select="sources/item[contains(file/@type,'image')][1]"/></srcIdx>
-			<!-- <xsl:apply-templates select="/data/media-sources/owner[@link-id = current()/@id]" mode="prepare-json"/> -->
-			<!-- <srcIdx><xsl:value-of select="position(sources/item[contains(file/@type,'image')][1])"/></srcIdx> -->
-			<!-- <xsl:call-template name="get-position">
-				<xsl:with-param name="e" select="sources/item[contains(file/@type,'image')][1]"/>
-			</xsl:call-template> -->
-			<!-- <srcIdx><xsl:number value="sources/item[contains(file/@type,'image')][1][position()]"/></srcIdx> -->
-			<!-- <xsl:variable name="default-image" select="sources/item[contains(file/@type,'image')][1]"/>
-			<xsl:choose>
-				<xsl:when test="$default-image">
-					<src><xsl:copy-of select="$default-image/file/filename/text()"/></src>
-					<w><xsl:value-of select="$default-image/file/meta/@width"/></w>
-					<h><xsl:value-of select="$default-image/file/meta/@height"/></h>
-				</xsl:when>
-				<xsl:otherwise>
-					<src><xsl:copy-of select="file/filename/text()"/></src>
-					<w><xsl:value-of select="file/meta/@width"/></w>
-					<h><xsl:value-of select="file/meta/@height"/></h>
-				</xsl:otherwise>
-			</xsl:choose> -->
 		</xsl:with-param>
 	</xsl:call-template>
 	<xsl:if test="position() != last()">
 		<xsl:text>,</xsl:text>
 	</xsl:if>
 </xsl:template>
-<xsl:template match="*/item" mode="get-position">
+<xsl:template match="*" mode="get-position">
 	<xsl:value-of select="position() - 1"/>
 </xsl:template>
 
@@ -325,6 +244,59 @@
 	</xsl:if>
 </xsl:template>
 
+<!-- 						-->
+<!--  Parameters			-->
+<!-- 						-->
+<xsl:template match="params" mode="output-json">
+	<xsl:variable name="uploads">
+		<params><uploads><xsl:value-of select="workspace"/>/uploads</uploads></params>
+	</xsl:variable>
+	<xsl:if test="position() != 1">
+		<xsl:text>&#xa;&#9;</xsl:text>
+	</xsl:if>
+	<!-- <xsl:text>&#xa;&#9;&#9;</xsl:text> -->
+	<xsl:text>'</xsl:text>
+	<xsl:value-of select="name(.)"/>
+	<xsl:text>': {</xsl:text>
+	<!-- <xsl:text>': {&#xa;&#9;</xsl:text> -->
+	<xsl:apply-templates select="website-name | root | workspace | e:node-set($uploads)/params/*" mode="output-json"/>
+	<xsl:text>}</xsl:text>
+	<!-- <xsl:text>&#xa;&#9;}</xsl:text> -->
+	<xsl:if test="position() != last()">
+		<xsl:text>,</xsl:text>
+	</xsl:if>
+</xsl:template>
 
+
+<!-- 						-->
+<!--  GA tracking			-->
+<!-- 						-->
+<xsl:template match="properties-ga" mode="output-json">
+	<xsl:if test="position() != 1">
+		<xsl:text>&#xa;&#9;</xsl:text>
+	</xsl:if>
+	<xsl:text>'ga-tags': [</xsl:text>
+	<!-- <xsl:text>'ga-tags': {&#xa;&#9;</xsl:text> -->
+	<xsl:apply-templates select="tags/item" mode="output-json"/>
+	<!-- <xsl:text>}</xsl:text> -->
+	<xsl:text>&#xa;&#9;]</xsl:text>
+	<xsl:if test="position() != last()">
+		<xsl:text>,</xsl:text>
+	</xsl:if>
+</xsl:template>
+
+<xsl:template match="tags/item" mode="output-json">
+	<xsl:text>&#xa;&#9;&#9;</xsl:text>
+	<xsl:call-template name="output-json">
+		<xsl:with-param name="xml">
+			<xsl:element name="{domain/text()}">
+				<xsl:copy-of select="id/text()"/>
+			</xsl:element>
+		</xsl:with-param>
+	</xsl:call-template>
+	<xsl:if test="position() != last()">
+		<xsl:text>,</xsl:text>
+	</xsl:if>
+</xsl:template>
 
 </xsl:stylesheet>

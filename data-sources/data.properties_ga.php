@@ -2,12 +2,12 @@
 
 require_once(EXTENSIONS . '/remote_datasource/data-sources/datasource.remote.php');
 
-class datasourceproperties_analytics extends RemoteDatasource {
+class datasourceproperties_ga extends RemoteDatasource {
 
-    public $dsParamROOTELEMENT = 'properties-analytics';
+    public $dsParamROOTELEMENT = 'properties-ga';
     public $dsParamURL = '{$workspace}/properties/ga.json';
     public $dsParamFORMAT = 'json';
-    public $dsParamXPATH = '*';
+    public $dsParamXPATH = '/data/tags';
     public $dsParamCACHE = 0;
     public $dsParamTIMEOUT = 6;
 
@@ -20,13 +20,13 @@ class datasourceproperties_analytics extends RemoteDatasource {
     public function about()
     {
         return array(
-            'name' => 'Properties/Analytics',
+            'name' => 'Properties/GA',
             'author' => array(
                 'name' => 'Pablo Canillas',
                 'website' => 'http://localhost/projects/folio-sym',
-                'email' => 'nobody@localhost'),
+                'email' => 'portfolio@canillas.name'),
             'version' => 'Symphony 2.7.6',
-            'release-date' => '2018-05-25T18:18:56+00:00'
+            'release-date' => '2018-06-19T13:32:14+00:00'
         );
     }
 

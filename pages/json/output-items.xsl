@@ -3,8 +3,8 @@
 	 xmlns:e="http://exslt.org/common"
 	 extension-element-prefixes="e">
 
-<xsl:import href="common-prepare-json.xsl"/>
 <xsl:import href="common-output-json.xsl"/>
+<xsl:include href="common-prepare-json.xsl"/>
 
 <xsl:strip-space elements="*"/>
 

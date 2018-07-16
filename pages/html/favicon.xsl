@@ -5,11 +5,11 @@
 	extension-element-prefixes="date">
 
 <xsl:template name="favicon">
-	<xsl:param name="url-prefix" select="concat($workspace, '/assets/images/favicons')"/>
-	<xsl:param name="bg-color" select="'#000000'"/>
-	<xsl:param name="output-apps" select="false()"/>
-	<xsl:param name="output-comments" select="true()"/>
-	<xsl:param name="prevent-cache" select="true()"/>
+	<xsl:param name="url-prefix"/>
+	<xsl:param name="bg-color" select="'#ffffff'"/>
+	<xsl:param name="output-apps" select="true()"/>
+	<xsl:param name="output-comments" select="false()"/>
+	<xsl:param name="prevent-cache" select="false()"/>
 	<xsl:param name="ts">
 		<xsl:if test="$prevent-cache">?<xsl:value-of select="date:seconds()"/></xsl:if>
 	</xsl:param>

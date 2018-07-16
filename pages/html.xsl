@@ -26,26 +26,73 @@
 	<xsl:value-of select="$website-name"/>
 </xsl:template>
 
+<!-- - - - - - - - - - - - - - - - - - - - - -->
 <!-- Webfonts overrides -->
-<!-- <xsl:template match="src[url[@scheme = 'data'] and (format/text() = 'woff' or format/text() = 'woff2')">
-</xsl:template> -->
+<!-- - - - - - - - - - - - - - - - - - - - - -->
+<xsl:template match="src" mode="webfonts">
+	<xsl:choose>
+		<!-- if inline base64 data available -->
+		<xsl:when test="url[@scheme = 'data'] and (
+				../font-style/text() = 'normal' or
+				../font-style/text() = 'italic'
+			) and (
+				format/text() = 'woff' or
+				format/text() = 'woff2'
+			)">
+			<xsl:apply-templates select="url[@scheme = 'data'][1]" mode="webfonts"/>
+		</xsl:when>
+		<xsl:otherwise>
+			<xsl:apply-templates select="url[not(@scheme = 'data')][1]" mode="webfonts"/>
+		</xsl:otherwise>
+	</xsl:choose>
+	<xsl:apply-templates select="format" mode="webfonts"/>
+	<xsl:if test="position() != last()">
+		<xsl:text>,</xsl:text>
+		<xsl:text>&#xa;&#9;&#9;&#9;</xsl:text>
+	</xsl:if>
+</xsl:template>
 
+<!-- - - - - - - - - - - - - - - - - - - - - -->
 <!-- Head Scripts -->
+<!-- - - - - - - - - - - - - - - - - - - - - -->
 <xsl:template match="data" mode="html-head">
 
 	<!-- Favicons -->
-	<xsl:call-template name="favicon">
+	<xsl:choose>
+		<xsl:when test="$debug">
+		<xsl:call-template name="favicon">
+			<xsl:with-param name="url-prefix" select="concat($workspace, '/assets/images/favicons/white')"/>
+			<xsl:with-param name="bg-color" select="'#FFFFFF'"/>
+			<xsl:with-param name="prevent-cache" select="true()"/>
+			<xsl:with-param name="output-comments" select="true()"/>
+		</xsl:call-template>
+		</xsl:when>
+		<xsl:otherwise>
+		<xsl:call-template name="favicon">
+			<xsl:with-param name="url-prefix" select="concat($workspace, '/assets/images/favicons/black')"/>
+			<xsl:with-param name="bg-color" select="'#000000'"/>
+		</xsl:call-template>
+		</xsl:otherwise>
+	</xsl:choose>
+
+	<!-- <xsl:call-template name="favicon">
 		<xsl:with-param name="url-prefix">
-			<xsl:value-of select="$workspace"/><xsl:text>/assets/images/favicons</xsl:text>
+			<xsl:value-of select="$workspace"/>
+			<xsl:text>/assets/images/favicons</xsl:text>
 			<xsl:choose>
 				<xsl:when test="$debug">/white</xsl:when>
 				<xsl:otherwise>/black</xsl:otherwise>
 			</xsl:choose>
 		</xsl:with-param>
-		<xsl:with-param name="output-apps" select="true()"/>
 		<xsl:with-param name="bg-color" select="'#000000'"/>
+			<xsl:choose>
+				<xsl:when test="$debug">#ffffff</xsl:when>
+				<xsl:otherwise>#000000</xsl:otherwise>
+			</xsl:choose>
+		</xsl:with-param>
+		<xsl:with-param name="output-apps" select="true()"/>
 		<xsl:with-param name="prevent-cache" select="$debug"/>
-	</xsl:call-template>
+	</xsl:call-template> -->
 
 	<!-- RSS -->
 	<link rel="alternate" type="application/rss+xml" href="{$root}/rss"/>
@@ -102,7 +149,9 @@
 
 </xsl:template>
 
+<!-- - - - - - - - - - - - - - - - - - - - - -->
 <!-- Container HTML -->
+<!-- - - - - - - - - - - - - - - - - - - - - -->
 <xsl:template match="data">
 	<div id="navigation" class="navigation">
 		<div id="site-name-wrapper" class="transform-wrapper">
@@ -124,18 +173,19 @@
 			<xsl:apply-templates select="types-all"/>
 		</div>
 	</div>
-	<div id="content" class="content viewport">
-	</div>
+	<div id="content" class="content viewport"></div>
 	<!-- <xsl:apply-templates select="articles-system/entry[name/@handle = 'unsupported']"/> -->
 </xsl:template>
 
 
-<xsl:template match="data" mode="html-body-first">
-	<!-- Google Tag Manager -->
-	<!-- <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NGTPHRB" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript> -->
-</xsl:template>
+<!-- - - - - - - - - - - - - - - - - - - - - -->
+<!-- html-body-first -->
+<!-- - - - - - - - - - - - - - - - - - - - - -->
+<xsl:template match="data" mode="html-body-first"></xsl:template>
 
-<!-- Footer Scripts -->
+<!-- - - - - - - - - - - - - - - - - - - - - -->
+<!-- html-body-last -->
+<!-- - - - - - - - - - - - - - - - - - - - - -->
 <xsl:template match="data" mode="html-body-last">
 
 <!-- Google Analytics -->
@@ -143,21 +193,22 @@
 <xsl:variable name="ga-tracking-id" select="'UA-0000000-0'"/>
 
 <xsl:call-template name="inline-script">
-<!-- Bootstrap data -->
-<xsl:with-param name="cdata" select="$is-xhtml"/>
-<xsl:with-param name="content">
+	<!-- Bootstrap data -->
+	<xsl:with-param name="cdata" select="$is-xhtml"/>
+	<xsl:with-param name="content">
 	window.DEBUG = <xsl:value-of select="$debug"/>;
 	window.approot = '<xsl:value-of select="$root"/>/';
 	window.mediadir = '<xsl:value-of select="$workspace"/>/uploads';
 	window.GA_ID = '<xsl:value-of select="$ga-tracking-id"/>';
-
-	window.bootstrap = {
-		<xsl:apply-templates select="/data" mode="output-json"/>
-	};
-</xsl:with-param>
+	window.bootstrap = {<xsl:apply-templates select="/data" mode="output-json"/>};
+	</xsl:with-param>
 </xsl:call-template>
+
 </xsl:template>
 
+<!-- - - - - - - - - - - - - - - - - - - - - -->
+<!-- HTML item templates -->
+<!-- - - - - - - - - - - - - - - - - - - - - -->
 <!-- article-view item -->
 <xsl:template match="articles-all/entry">
 	<article id="{name/@handle}" class="article-view" data-id="{@id}">

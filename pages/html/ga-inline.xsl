@@ -7,7 +7,7 @@
 <xsl:include href="inline-script.xsl"/>
 
 <xsl:template name="ga-inline">
-	<xsl:param name="tracking-id" select="'GA-00000-X'"/>
+	<xsl:param name="tracking-id" select="'UA-0000000-0'"/>
 	<xsl:param name="debug" select="'false'"/>
 	<xsl:param name="trace" select="'false'"/>
 	<xsl:param name="send-pageview" select="'false'"/>

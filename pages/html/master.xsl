@@ -13,7 +13,7 @@ extension-element-prefixes="exsl date">
 
 <xsl:include href="inline-script.xsl"/>
 <xsl:include href="favicon.xsl"/>
-<xsl:include href="common-items.xsl"/>
+<xsl:include href="navigation.xsl"/>
 
 <!-- Params & Variables -->
 <!-- - - - - - - - - - - - - - - - - - - - - -->
@@ -24,8 +24,10 @@ extension-element-prefixes="exsl date">
 		or /data/author-logged-in/author[@user-type = 'developer']
 		and boolean($url-force-nodebug = 'false'))"/>
 
-<xsl:variable name="is-xhtml" test="boolean(/data/params/page-types/item/@handle = 'xhtml')"/>
-<xsl:variable name="tstamp" select="date:seconds()"/>
+<xsl:variable name="is-xhtml" select="boolean(/data/params/page-types/item/@handle = 'xhtml')"/>
+<xsl:variable name="tstamp">
+	<xsl:if test="$debug">?<xsl:value-of select="date:seconds()"/></xsl:if>
+</xsl:variable>
 
 <xsl:variable name="app-classes">
 	<xsl:text>app app-initial route-initial</xsl:text>
@@ -33,9 +35,8 @@ extension-element-prefixes="exsl date">
 </xsl:variable>
 
 <xsl:variable name="document-classes" select="$app-classes"/>
-<!-- <xsl:variable name="document-classes" select="''"/> -->
-<!-- <xsl:variable name="body-classes" select="$app-classes"/> -->
 <xsl:variable name="body-classes" select="''"/>
+<xsl:variable name="container-classes" select="''"/>
 
 <!-- - - - - - - - - - - - - - - - - - - - - -->
 <!-- Root entry point -->
@@ -76,7 +77,7 @@ extension-element-prefixes="exsl date">
 <xsl:comment><![CDATA[<![endif]]]></xsl:comment>
 <!-- IE conditional comments END -->
 		<xsl:apply-templates select="data" mode="html-body-first"/>
-		<div id="container">
+		<div id="container" class="{$container-classes}">
 			<xsl:apply-templates select="data"/>
 		</div>
 		<xsl:apply-templates select="data" mode="html-body-last"/>

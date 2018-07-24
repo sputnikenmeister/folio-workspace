@@ -35,7 +35,9 @@ extension-element-prefixes="exsl date">
 </xsl:variable>
 
 <xsl:variable name="document-classes" select="$app-classes"/>
+<xsl:variable name="body-id" select="''"/>
 <xsl:variable name="body-classes" select="''"/>
+<xsl:variable name="container-id" select="''"/>
 <xsl:variable name="container-classes" select="''"/>
 
 <!-- - - - - - - - - - - - - - - - - - - - - -->
@@ -44,11 +46,13 @@ extension-element-prefixes="exsl date">
 
 <xsl:template match="/">
 <!-- IE conditional comments BEGIN -->
-<!-- <xsl:comment><![CDATA[[if lte IE 9]><html lang="en" class="ie ie9 ]]><xsl:value-of select="$document-classes"/><![CDATA["><![endif]]]></xsl:comment> -->
-<!-- <xsl:comment><![CDATA[[if gt IE 9]><html lang="en" class="ie ]]><xsl:value-of select="$document-classes"/><![CDATA["><![endif]]]></xsl:comment> -->
-<!-- <xsl:comment><![CDATA[[if !IE]><!]]></xsl:comment> -->
+<xsl:comment><![CDATA[[if lt IE 9]><html lang="en" class="ie lt-ie9 ]]><xsl:value-of select="$document-classes"/><![CDATA["><![endif]]]></xsl:comment>
+<xsl:comment><![CDATA[[if IE 9]><html lang="en" class="ie ie9 ]]><xsl:value-of select="$document-classes"/><![CDATA["><![endif]]]></xsl:comment>
+<xsl:comment><![CDATA[[if IE 10]><html lang="en" class="ie ie10 ]]><xsl:value-of select="$document-classes"/><![CDATA["><![endif]]]></xsl:comment>
+<xsl:comment><![CDATA[[if IE 11]><html lang="en" class="ie ie11 ]]><xsl:value-of select="$document-classes"/><![CDATA["><![endif]]]></xsl:comment>
+<xsl:comment><![CDATA[[if gt IE 11]><!]]></xsl:comment>
 <html lang="en" class="{$document-classes}">
-<!-- <xsl:comment><![CDATA[<![endif]]]></xsl:comment> -->
+<xsl:comment><![CDATA[<![endif]]]></xsl:comment>
 <!-- IE conditional comments END -->
 	<head>
 		<!-- <head profile="http://gmpg.org/xfn/11"> -->
@@ -57,10 +61,11 @@ extension-element-prefixes="exsl date">
 			<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8"/>
 		</xsl:if>
 		<title><xsl:call-template name="page-title"/></title>
-		<!-- <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"/> -->
-		<!-- <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=1"/> -->
-		<meta name="viewport" content="user-scalable=no, width=device-width, height=device-height, initial-scale=1, maximum-scale=1"/>
+
+		<!-- <meta name="viewport" content="user-scalable=1, width=device-width, initial-scale=1.0, maximum-scale=1.0"/> -->
 		<!-- <meta name="viewport" content="user-scalable=no, width=440, height=540, initial-scale=1, maximum-scale=1"/> -->
+		<meta name="viewport" content="user-scalable=no, width=device-width, height=device-height, initial-scale=1, maximum-scale=1"/>
+		<!-- <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"/> -->
 
 		<!-- <meta name="author" content="{$root}/humans.txt"/>-->
 		<!-- <meta name="description" content="no description"/> -->
@@ -69,17 +74,27 @@ extension-element-prefixes="exsl date">
 		<!-- <link rel="canonical" href="{$root}/"/> -->
 		<xsl:apply-templates select="data" mode="html-head"/>
 	</head>
-<!-- IE conditional comments BEGIN -->
-<xsl:comment><![CDATA[[if lte IE 9]><body class="ie ie9 ]]><xsl:value-of select="$body-classes"/><![CDATA["><![endif]]]></xsl:comment>
-<xsl:comment><![CDATA[[if gt IE 9]><body class="ie ]]><xsl:value-of select="$body-classes"/><![CDATA["><![endif]]]></xsl:comment>
-<xsl:comment><![CDATA[[if !IE]><!]]></xsl:comment>
-	<body class="{$body-classes}">
-<xsl:comment><![CDATA[<![endif]]]></xsl:comment>
-<!-- IE conditional comments END -->
+	<body>
+		<xsl:if test="$body-id">
+			<xsl:attribute name="id"><xsl:value-of select="$body-id"/></xsl:attribute>
+		</xsl:if>
+		<xsl:if test="$body-classes">
+			<xsl:attribute name="class"><xsl:value-of select="$body-classes"/></xsl:attribute>
+		</xsl:if>
 		<xsl:apply-templates select="data" mode="html-body-first"/>
-		<div id="container" class="{$container-classes}">
-			<xsl:apply-templates select="data"/>
-		</div>
+		<xsl:choose>
+			<xsl:when test="$container-id">
+				<div id="{$container-id}">
+					<xsl:if test="$container-classes">
+						<xsl:attribute name="class"><xsl:value-of select="$container-classes"/></xsl:attribute>
+					</xsl:if>
+					<xsl:apply-templates select="data"/>
+				</div>
+			</xsl:when>
+			<xsl:otherwise>
+				<xsl:apply-templates select="data"/>
+			</xsl:otherwise>
+		</xsl:choose>
 		<xsl:apply-templates select="data" mode="html-body-last"/>
 	</body>
 </html>
@@ -94,11 +109,9 @@ extension-element-prefixes="exsl date">
 <!-- Abstract -->
 <xsl:template match="data" mode="html-body-last"></xsl:template>
 
-
+<!-- Abstract -->
 <xsl:template name="page-title">
 	<xsl:value-of select="$website-name"/>
-	<xsl:text> &#8212; </xsl:text>
-	<xsl:value-of select="$page-title"/>
 </xsl:template>
 
 </xsl:stylesheet>

@@ -18,12 +18,16 @@
 <!-- Override variables -->
 <!-- - - - - - - - - - - - - - - - - - - - - -->
 <!-- NOTE: $tstamp $debug $is-xhtml defined in html/master.xsl -->
-<xsl:variable name="body-classes" select="'override'"/>
-<xsl:variable name="container-classes" select="''"/>
+<xsl:variable name="body-id" select="'container'"/>
+<!-- <xsl:variable name="body-classes" select="''"/> -->
+<!-- <xsl:variable name="container-id" select="''"/> -->
+<!-- <xsl:variable name="container-classes" select="''"/> -->
 
 <!-- Async script loading -->
 <xsl:variable name="js-attrs">
-	<xsl:if test="$is-xhtml"><xsl:attribute name="type">text/javascript</xsl:attribute></xsl:if>
+	<xsl:if test="$is-xhtml">
+		<xsl:attribute name="type">text/javascript</xsl:attribute>
+	</xsl:if>
 	<xsl:attribute name="async">true</xsl:attribute>
 </xsl:variable>
 
@@ -55,15 +59,31 @@
 			<xsl:apply-templates select="types-all" mode="navigation"/>
 		</div>
 	</div>
-	<div id="content" class="content viewport"></div>
-	<!-- <xsl:apply-templates select="articles-system/entry[name/@handle = 'unsupported']"/> -->
+	<div id="content" class="content"></div>
+
+<!-- Google Analytics -->
+<!-- <xsl:variable name="ga-tracking-id" select="'UA-9123564-7'"/> -->
+<xsl:variable name="ga-tracking-id" select="'UA-0000000-0'"/>
+<xsl:call-template name="inline-script">
+	<!-- Bootstrap data -->
+	<xsl:with-param name="id" select="'bootstrap-data'"/>
+	<xsl:with-param name="cdata" select="$is-xhtml"/>
+	<xsl:with-param name="content">
+	window.DEBUG = <xsl:value-of select="$debug"/>;
+	window.approot = '<xsl:value-of select="$root"/>/';
+	window.mediadir = '<xsl:value-of select="$workspace"/>/uploads';
+	window.GA_ID = '<xsl:value-of select="$ga-tracking-id"/>';
+	window.bootstrap = {<xsl:apply-templates select="/data" mode="output-json"/>};
+	</xsl:with-param>
+</xsl:call-template>
+
+<!-- <xsl:apply-templates select="articles-system/entry[name/@handle = 'unsupported']"/> -->
 </xsl:template>
 
 <!-- - - - - - - - - - - - - - - - - - - - - -->
 <!-- Override HTML Head -->
 <!-- - - - - - - - - - - - - - - - - - - - - -->
 <xsl:template match="data" mode="html-head">
-
 	<!-- Favicons -->
 	<xsl:choose>
 		<xsl:when test="$debug">
@@ -81,25 +101,6 @@
 		</xsl:call-template>
 		</xsl:otherwise>
 	</xsl:choose>
-
-	<!-- <xsl:call-template name="favicon">
-		<xsl:with-param name="url-prefix">
-			<xsl:value-of select="$workspace"/>
-			<xsl:text>/assets/images/favicons</xsl:text>
-			<xsl:choose>
-				<xsl:when test="$debug">/white</xsl:when>
-				<xsl:otherwise>/black</xsl:otherwise>
-			</xsl:choose>
-		</xsl:with-param>
-		<xsl:with-param name="bg-color" select="'#000000'"/>
-			<xsl:choose>
-				<xsl:when test="$debug">#ffffff</xsl:when>
-				<xsl:otherwise>#000000</xsl:otherwise>
-			</xsl:choose>
-		</xsl:with-param>
-		<xsl:with-param name="output-apps" select="true()"/>
-		<xsl:with-param name="prevent-cache" select="$debug"/>
-	</xsl:call-template> -->
 
 	<!-- RSS -->
 	<link rel="alternate" type="application/rss+xml" href="{$root}/rss"/>
@@ -153,31 +154,12 @@
 <!-- - - - - - - - - - - - - - - - - - - - - -->
 <!-- Override html-body-first -->
 <!-- - - - - - - - - - - - - - - - - - - - - -->
-<xsl:template match="data" mode="html-body-first"></xsl:template>
+<!-- <xsl:template match="data" mode="html-body-first"></xsl:template> -->
 
 <!-- - - - - - - - - - - - - - - - - - - - - -->
 <!-- Override html-body-last -->
 <!-- - - - - - - - - - - - - - - - - - - - - -->
-<xsl:template match="data" mode="html-body-last">
-
-<!-- Google Analytics -->
-<!-- <xsl:variable name="ga-tracking-id" select="'UA-9123564-7'"/> -->
-<xsl:variable name="ga-tracking-id" select="'UA-0000000-0'"/>
-
-<xsl:call-template name="inline-script">
-	<!-- Bootstrap data -->
-	<xsl:with-param name="id" select="'bootstrap-data'"/>
-	<xsl:with-param name="cdata" select="$is-xhtml"/>
-	<xsl:with-param name="content">
-	window.DEBUG = <xsl:value-of select="$debug"/>;
-	window.approot = '<xsl:value-of select="$root"/>/';
-	window.mediadir = '<xsl:value-of select="$workspace"/>/uploads';
-	window.GA_ID = '<xsl:value-of select="$ga-tracking-id"/>';
-	window.bootstrap = {<xsl:apply-templates select="/data" mode="output-json"/>};
-	</xsl:with-param>
-</xsl:call-template>
-
-</xsl:template>
+<!-- <xsl:template match="data" mode="html-body-last"></xsl:template> -->
 
 <!-- - - - - - - - - - - - - - - - - - - - - -->
 <!-- Override page-title -->

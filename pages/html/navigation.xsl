@@ -10,7 +10,7 @@
 
 <!-- bundle-list list-item -->
 <xsl:template match="bundles-all/entry" mode="navigation">
-	<li class="list-item" data-id="{@id}">
+	<li class="list-item" data-id="{@id}" data-handle="{name/@handle}">
 		<a href="{$root}/#bundles/{name/@handle}">
 			<span class="completed meta pubDate" data-datetime="{completed/text()}">
 				<xsl:value-of select="substring(completed/text(),1,4)"/>
@@ -40,7 +40,7 @@
 
 <!-- keyword-list list-group -->
 <xsl:template match="types-all/entry" mode="navigation">
-	<dt class="list-group" data-id="{@id}">
+	<dt class="list-group" data-id="{@id}" data-handle="{name/@handle}">
 		<span class="name label">
 			<span>
 				<xsl:value-of select="name/text()"/>

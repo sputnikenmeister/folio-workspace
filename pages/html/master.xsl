@@ -61,32 +61,31 @@ extension-element-prefixes="exsl date">
 			<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=UTF-8"/>
 		</xsl:if>
 		<title><xsl:call-template name="page-title"/></title>
-
-		<!-- <meta name="viewport" content="user-scalable=1, width=device-width, initial-scale=1.0, maximum-scale=1.0"/> -->
-		<!-- <meta name="viewport" content="user-scalable=no, width=440, height=540, initial-scale=1, maximum-scale=1"/> -->
-		<meta name="viewport" content="user-scalable=no, width=device-width, height=device-height, initial-scale=1, maximum-scale=1"/>
-		<!-- <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1, maximum-scale=1"/> -->
-
-		<!-- <meta name="author" content="{$root}/humans.txt"/>-->
-		<!-- <meta name="description" content="no description"/> -->
-
-		<!-- cf. https://support.google.com/webmasters/answer/139066?hl=en#1 -->
-		<!-- <link rel="canonical" href="{$root}/"/> -->
-		<xsl:apply-templates select="data" mode="html-head"/>
+		<xsl:call-template name="html-head"/>
+		<!-- <xsl:apply-templates select="data" mode="html-head"/> -->
 	</head>
 	<body>
 		<xsl:if test="$body-id">
-			<xsl:attribute name="id"><xsl:value-of select="$body-id"/></xsl:attribute>
+			<xsl:attribute name="id">
+				<xsl:value-of select="$body-id"/>
+			</xsl:attribute>
 		</xsl:if>
 		<xsl:if test="$body-classes">
-			<xsl:attribute name="class"><xsl:value-of select="$body-classes"/></xsl:attribute>
+			<xsl:attribute name="class">
+				<xsl:value-of select="$body-classes"/>
+			</xsl:attribute>
 		</xsl:if>
-		<xsl:apply-templates select="data" mode="html-body-first"/>
+
+		<xsl:call-template name="html-body-first"/>
+		<!-- <xsl:apply-templates select="data" mode="html-body-first"/> -->
+
 		<xsl:choose>
 			<xsl:when test="$container-id">
 				<div id="{$container-id}">
 					<xsl:if test="$container-classes">
-						<xsl:attribute name="class"><xsl:value-of select="$container-classes"/></xsl:attribute>
+						<xsl:attribute name="class">
+							<xsl:value-of select="$container-classes"/>
+						</xsl:attribute>
 					</xsl:if>
 					<xsl:apply-templates select="data"/>
 				</div>
@@ -95,23 +94,35 @@ extension-element-prefixes="exsl date">
 				<xsl:apply-templates select="data"/>
 			</xsl:otherwise>
 		</xsl:choose>
-		<xsl:apply-templates select="data" mode="html-body-last"/>
+
+		<xsl:call-template name="html-body-last"/>
+		<!-- <xsl:apply-templates select="data" mode="html-body-last"/> -->
 	</body>
 </html>
 </xsl:template>
 
-<!-- Abstract -->
-<xsl:template match="data" mode="html-head"></xsl:template>
-<!-- Abstract -->
-<xsl:template match="data" mode="html-body-first"></xsl:template>
-<!-- Abstract -->
-<xsl:template match="data"></xsl:template>
-<!-- Abstract -->
-<xsl:template match="data" mode="html-body-last"></xsl:template>
-
-<!-- Abstract -->
+<!-- Page-title -->
 <xsl:template name="page-title">
 	<xsl:value-of select="$website-name"/>
 </xsl:template>
+
+<!-- - - - - - - - - - - - - - - - - - - - - -->
+<!-- Named Abstract -->
+<!-- - - - - - - - - - - - - - - - - - - - - -->
+
+<!-- Abstract -->
+<xsl:template name="html-head"></xsl:template>
+<!-- Abstract -->
+<xsl:template name="html-body-first"></xsl:template>
+<!-- Abstract -->
+<xsl:template name="html-body-last"></xsl:template>
+
+
+<!-- - - - - - - - - - - - - - - - - - - - - -->
+<!-- Main -->
+<!-- - - - - - - - - - - - - - - - - - - - - -->
+
+<!-- Abstract -->
+<xsl:template match="data"></xsl:template>
 
 </xsl:stylesheet>

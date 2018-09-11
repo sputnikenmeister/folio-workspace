@@ -18,10 +18,10 @@
 <!-- Override variables -->
 <!-- - - - - - - - - - - - - - - - - - - - - -->
 <!-- NOTE: $tstamp $debug $is-xhtml defined in html/master.xsl -->
-<xsl:variable name="body-id" select="''"/>
-<!-- <xsl:variable name="body-classes" select="''"/> -->
-<xsl:variable name="container-id" select="'container'"/>
-<!-- <xsl:variable name="container-classes" select="''"/> -->
+<xsl:variable name="body-id" select="'container'"/>
+<xsl:variable name="body-classes" select="'container'"/>
+<!-- <xsl:variable name="container-id" select="'container'"/> -->
+<!-- <xsl:variable name="container-classes" select="'container'"/> -->
 
 <!-- Async script loading -->
 <xsl:variable name="js-attrs">
@@ -131,14 +131,16 @@
 				</a>
 			</h2>
 		</div>
-		<!-- all bundles-->
-		<div id="bundle-list-wrapper" class="transform-wrapper">
-			<xsl:apply-templates select="bundles-all" mode="navigation"/>
+		<div id="vpan-group">
+			<!-- all bundles-->
+			<div id="bundle-list-wrapper" class="transform-wrapper">
+				<xsl:apply-templates select="bundles-all" mode="navigation"/>
+			</div>
+			<!-- all types->keywords -->
+			<div id="keyword-list-wrapper" class="transform-wrapper">
+				<xsl:apply-templates select="types-all" mode="navigation"/>
 		</div>
-		<!-- all types->keywords -->
-		<div id="keyword-list-wrapper" class="transform-wrapper">
-			<xsl:apply-templates select="types-all" mode="navigation"/>
-		</div>
+	</div>
 	</div>
 	<div id="content" class="content"></div>
 	<!-- <xsl:apply-templates select="articles-system/entry[name/@handle = 'unsupported']"/> -->

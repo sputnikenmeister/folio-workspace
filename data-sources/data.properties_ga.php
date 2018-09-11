@@ -26,7 +26,7 @@ class datasourceproperties_ga extends RemoteDatasource {
                 'website' => 'http://localhost/projects/folio-sym',
                 'email' => 'portfolio@canillas.name'),
             'version' => 'Symphony 2.7.6',
-            'release-date' => '2018-06-19T13:32:14+00:00'
+            'release-date' => '2018-09-11T10:47:46+00:00'
         );
     }
 

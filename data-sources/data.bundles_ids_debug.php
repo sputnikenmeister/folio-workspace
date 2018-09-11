@@ -1,8 +1,8 @@
 <?php
 
-class datasourcebundles_all extends SectionDatasource
+class datasourcebundles_ids_debug extends SectionDatasource
 {
-    public $dsParamROOTELEMENT = 'bundles-all';
+    public $dsParamROOTELEMENT = 'bundles-ids-debug';
     public $dsParamORDER = 'desc';
     public $dsParamPAGINATERESULTS = 'no';
     public $dsParamLIMIT = '20';
@@ -10,44 +10,35 @@ class datasourcebundles_all extends SectionDatasource
     public $dsParamREDIRECTONEMPTY = 'no';
     public $dsParamREDIRECTONFORBIDDEN = 'no';
     public $dsParamREDIRECTONREQUIRED = 'no';
+    public $dsParamREQUIREDPARAM = '$url-force-debug:$ds-author-logged-in.id';
+    public $dsParamNEGATEPARAM = '$url-force-nodebug';
     public $dsParamPARAMOUTPUT = array(
-        'system:id',
-        'keywords'
+        'system:id'
         );
     public $dsParamSORT = 'completed';
     public $dsParamHTMLENCODE = 'no';
     public $dsParamASSOCIATEDENTRYCOUNTS = 'no';
 
     public $dsParamFILTERS = array(
-        'system:id' => '{$ds-bundles-ids-debug.system-id},{$ds-bundles-ids-published.system-id}',
-    );
-
-    public $dsParamINCLUDEDELEMENTS = array(
-        'name',
-        'display-name: formatted',
-        'completed',
-        'sub: formatted',
-        'description: formatted',
-        'keywords',
-        'attributes'
+        '33' => '@debug-only',
     );
 
     public function __construct($env = null, $process_params = true)
     {
         parent::__construct($env, $process_params);
-        $this->_dependencies = array('$ds-bundles-ids-debug.system-id', '$ds-bundles-ids-published.system-id');
+        $this->_dependencies = array('$ds-author-logged-in.id');
     }
 
     public function about()
     {
         return array(
-            'name' => 'Bundles/All',
+            'name' => 'Bundles/IDs/Debug',
             'author' => array(
                 'name' => 'Pablo Canillas',
                 'website' => 'http://localhost/projects/folio-sym',
                 'email' => 'portfolio@canillas.name'),
             'version' => 'Symphony 2.7.6',
-            'release-date' => '2018-09-11T10:48:33+00:00'
+            'release-date' => '2018-09-11T14:26:56+00:00'
         );
     }
 

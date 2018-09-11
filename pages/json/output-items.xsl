@@ -13,7 +13,7 @@
 <!-- 								-->
 <xsl:template match="data" mode="output-json">
 	<xsl:text>&#xa;&#9;</xsl:text>
-	<xsl:apply-templates select="types-all | keywords-all | articles-all | media-all | bundles-all | params | properties-ga" mode="output-json"/>
+	<xsl:apply-templates select="types-all | keywords-all | articles-all | bundles-all | media-all | params | properties-ga" mode="output-json"/>
 	<xsl:text>&#xa;</xsl:text>
 </xsl:template>
 

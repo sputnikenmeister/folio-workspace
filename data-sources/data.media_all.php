@@ -16,6 +16,7 @@ class datasourcemedia_all extends SectionDatasource
 
     public $dsParamFILTERS = array(
         '26' => 'yes',
+        '51' => '{$ds-bundles-all.system-id}',
     );
 
     public $dsParamINCLUDEDELEMENTS = array(
@@ -41,7 +42,7 @@ class datasourcemedia_all extends SectionDatasource
     public function __construct($env = null, $process_params = true)
     {
         parent::__construct($env, $process_params);
-        $this->_dependencies = array();
+        $this->_dependencies = array('$ds-bundles-all.system-id');
     }
 
     public function about()
@@ -51,9 +52,9 @@ class datasourcemedia_all extends SectionDatasource
             'author' => array(
                 'name' => 'Pablo Canillas',
                 'website' => 'http://localhost/projects/folio-sym',
-                'email' => 'nobody@localhost'),
+                'email' => 'portfolio@canillas.name'),
             'version' => 'Symphony 2.7.6',
-            'release-date' => '2018-05-25T18:54:27+00:00'
+            'release-date' => '2018-09-11T10:48:09+00:00'
         );
     }
 

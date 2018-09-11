@@ -1,8 +1,8 @@
 <?php
 
-class datasourcebundles_all extends SectionDatasource
+class datasourcebundles_ids_published extends SectionDatasource
 {
-    public $dsParamROOTELEMENT = 'bundles-all';
+    public $dsParamROOTELEMENT = 'bundles-ids-published';
     public $dsParamORDER = 'desc';
     public $dsParamPAGINATERESULTS = 'no';
     public $dsParamLIMIT = '20';
@@ -11,43 +11,33 @@ class datasourcebundles_all extends SectionDatasource
     public $dsParamREDIRECTONFORBIDDEN = 'no';
     public $dsParamREDIRECTONREQUIRED = 'no';
     public $dsParamPARAMOUTPUT = array(
-        'system:id',
-        'keywords'
+        'system:id'
         );
-    public $dsParamSORT = 'completed';
+    public $dsParamSORT = 'system:id';
     public $dsParamHTMLENCODE = 'no';
     public $dsParamASSOCIATEDENTRYCOUNTS = 'no';
 
     public $dsParamFILTERS = array(
-        'system:id' => '{$ds-bundles-ids-debug.system-id},{$ds-bundles-ids-published.system-id}',
-    );
-
-    public $dsParamINCLUDEDELEMENTS = array(
-        'name',
-        'display-name: formatted',
-        'completed',
-        'sub: formatted',
-        'description: formatted',
-        'keywords',
-        'attributes'
+        '5' => 'yes',
+        '33' => 'not:@debug-only',
     );
 
     public function __construct($env = null, $process_params = true)
     {
         parent::__construct($env, $process_params);
-        $this->_dependencies = array('$ds-bundles-ids-debug.system-id', '$ds-bundles-ids-published.system-id');
+        $this->_dependencies = array();
     }
 
     public function about()
     {
         return array(
-            'name' => 'Bundles/All',
+            'name' => 'Bundles/IDs/Published',
             'author' => array(
                 'name' => 'Pablo Canillas',
                 'website' => 'http://localhost/projects/folio-sym',
                 'email' => 'portfolio@canillas.name'),
             'version' => 'Symphony 2.7.6',
-            'release-date' => '2018-09-11T10:48:33+00:00'
+            'release-date' => '2018-09-11T10:18:50+00:00'
         );
     }
 
